@@ -1,0 +1,15 @@
+{
+  "list": {
+    "name": "Foo Bar List",
+    "from": "Foo Bar <foo@bar.baz>",
+    "signupRedirectUrl": "http://example.com/redirect/signup",
+    "confirmationRedirectUrl": "http://example.com/redirect/confirmation",
+    "unsubscribeRedirectUrl": "http://example.com/redirect/unsubscribe",
+    "confirmationTemplateId": "dummy-confirmation-template-id"
+  },
+  "confirmationTemplate": {
+    "subject": "Foo subject",
+    "html": "<p>Foo <a href=\"{{confirmation}}\">Confirmation</a></p>",
+    "text": "Foo Confirmation [{{confirmation}}]"
+  }
+}
