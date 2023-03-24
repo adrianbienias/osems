@@ -61,12 +61,13 @@ export default function Details({ list, confirmationTemplate, mutate }: Props) {
               placeholder={list.name}
             />
             <Input
-              label="Sender (from)"
+              label="Sender (from) set in .env"
               id="input-from"
               name="from"
               type="text"
-              defaultValue={list.from}
-              placeholder={list.from}
+              defaultValue={process.env.NEXT_PUBLIC_EMAIL_FROM}
+              className="text-slate-400"
+              readOnly={true}
             />
 
             <Input

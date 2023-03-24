@@ -66,12 +66,13 @@ export default function Lists() {
                   placeholder="The Best Newsletter"
                 />
                 <Input
-                  label="Sender (from)"
+                  label="Sender (from) set in .env"
                   id="input-from"
                   name="from"
                   type="text"
-                  defaultValue="John Doe <email@example.com>"
-                  placeholder="John Doe <email@example.com>"
+                  defaultValue={process.env.NEXT_PUBLIC_EMAIL_FROM}
+                  className="text-slate-400"
+                  readOnly={true}
                 />
 
                 <Input

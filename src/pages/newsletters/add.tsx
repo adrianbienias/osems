@@ -133,6 +133,15 @@ export default function Newsletter() {
               <h3>Message details</h3>
 
               <Input
+                label="Sender (from) set in .env"
+                id="input-from"
+                name="from"
+                type="text"
+                defaultValue={process.env.NEXT_PUBLIC_EMAIL_FROM}
+                className="text-slate-400"
+                readOnly={true}
+              />
+              <Input
                 label="Subject"
                 id="input-subject"
                 name="subject"

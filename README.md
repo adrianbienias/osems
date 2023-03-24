@@ -99,7 +99,7 @@ EMAIL_SERVER_HOST=smtp.gmail.com
 EMAIL_SERVER_USER=your-name@gmail.com
 EMAIL_SERVER_PASSWORD=google-generated-app-password
 EMAIL_SERVER_PORT=587
-EMAIL_FROM=Your Name <your-name@gmail.com>
+NEXT_PUBLIC_EMAIL_FROM=Your Name <your-name@gmail.com>
 ```
 
 ## Deployment infrastructure
