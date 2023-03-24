@@ -11,19 +11,18 @@ describe("getLocalDateTime()", () => {
 
 describe("wait()", () => {
   test("should wait", async () => {
+    vi.stubGlobal("setTimeout", vi.fn())
     vi.useFakeTimers()
 
     const setTimeoutSpy = vi.spyOn(global, "setTimeout")
     const waitFn = wait(1500)
 
     vi.runAllTimers()
-
     await waitFn
-
-    vi.useRealTimers()
 
     expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1500)
 
-    setTimeoutSpy.mockClear()
+    vi.useRealTimers()
+    vi.unstubAllGlobals()
   })
 })
