@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma"
+import { addContact } from "@/modules/contacts/contacts.model"
 import { addList, getList, getLists, updateList } from "@/modules/lists"
 import { beforeEach, describe, expect, test, vi } from "vitest"
 import { cleanDatabase } from "../../before-each"
@@ -130,8 +131,12 @@ describe("getLists()", () => {
     expect(await getLists()).toStrictEqual([])
   })
 
-  test("should return array of lists ordered descending by creation", async () => {
-    await addList(testData.list)
+  test("should return array of lists ordered descending by creation including contacts count", async () => {
+    const list = await addList(testData.list)
+    if (list instanceof Error) {
+      return expect(list).not.toBeInstanceOf(Error)
+    }
+    await addContact({ email: "foo@bar.baz", listId: list.id })
     await addList({ ...testData.list, name: "Foo Bar List #2" })
 
     expect(await getLists()).toStrictEqual([
@@ -140,11 +145,13 @@ describe("getLists()", () => {
         id: expect.stringMatching(uuidRegex),
         name: "Foo Bar List #2",
         createdAt: expect.any(Date),
+        _count: { contacts: 0 },
       },
       {
         ...testData.list,
         id: expect.stringMatching(uuidRegex),
         createdAt: expect.any(Date),
+        _count: { contacts: 1 },
       },
     ])
   })

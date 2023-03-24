@@ -57,6 +57,7 @@ export async function getLists() {
   try {
     return await prisma.list.findMany({
       orderBy: { createdAt: "desc" },
+      include: { _count: { select: { contacts: true } } },
     })
   } catch (error) {
     console.error(error)
