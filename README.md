@@ -126,7 +126,7 @@ Also, you're getting a storage of 5 GB, that allows you to store millions of ema
 
 The only downside is that if the database is completely inactive for 7 days, it enters [sleep mode](https://planetscale.com/docs/concepts/database-sleeping).
 
-Of course, it's easy to prevent database sleeping, simply by querying the database at least once per week (you can also set a simple cron job for that).
+But that's not the case for OSEMS, since it has a running cron job that automatically check for scheduled newsletters, so it queries the database very often, preventing it from being idle.
 
 ## Managing database
 
