@@ -1,4 +1,4 @@
-import { List } from "@prisma/client"
+import { List, Newsletter, Template } from "@prisma/client"
 import { ReactNode } from "react"
 
 type RecursiveObject<T> = T extends Date ? never : T extends object ? T : never
@@ -15,3 +15,5 @@ export type ReactFCProps = {
 }
 
 export type ListWithCount = List & { _count: { contacts: number } }
+
+export type NewsletterWithTemplate = Newsletter & { template: Template }

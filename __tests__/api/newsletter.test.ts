@@ -93,7 +93,10 @@ describe("/api/newsletters", () => {
 
     await apiNewslettersHandler(req, res)
 
-    expect(res._getJSONData()).toStrictEqual({ success: "Ok", newsletters: [] })
+    expect(res._getJSONData()).toStrictEqual({
+      success: "Ok",
+      newslettersWithTemplate: [],
+    })
     expect(res._getStatusCode()).toStrictEqual(200)
 
     expect(getNewsletters).toHaveBeenCalled()

@@ -1,5 +1,7 @@
+import { NewsletterWithTemplate } from "@/libs/types"
 import { getList } from "@/modules/lists"
 import { getNewsletters, scheduleNewsletter } from "@/modules/newsletters"
+import { getTemplate } from "@/modules/templates"
 import { Newsletter } from "@prisma/client"
 import type { NextApiRequest, NextApiResponse } from "next"
 
@@ -7,8 +9,9 @@ type Response = {
   error?: string
   success?: string
   newsletter?: Newsletter
-  newsletters?: Newsletter[]
+  // newsletters?: Newsletter[]
   fieldName?: string
+  newslettersWithTemplate?: NewsletterWithTemplate[]
 }
 
 export default async function handler(
@@ -116,5 +119,16 @@ async function handleGetNewsletters({
     return res.status(400).json({ error: newsletters.message })
   }
 
-  return res.status(200).json({ success: "Ok", newsletters })
+  const newslettersWithTemplate: NewsletterWithTemplate[] = []
+  for (const newsletter of newsletters) {
+    const template = await getTemplate({ id: newsletter.templateId })
+    if (template instanceof Error) {
+      return res.status(400).json({ error: template.message })
+    }
+    if (template) {
+      newslettersWithTemplate.push({ ...newsletter, template })
+    }
+  }
+
+  return res.status(200).json({ success: "Ok", newslettersWithTemplate })
 }

@@ -1,10 +1,9 @@
-import { DatetimeUtc } from "@/components/datetime-utc"
 import { LinkButton } from "@/components/button"
+import { DatetimeUtc } from "@/components/datetime-utc"
 import { Navbar } from "@/components/navbar"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
-import { StringValues } from "@/libs/types"
-import { Newsletter } from "@prisma/client"
+import { NewsletterWithTemplate, StringValues } from "@/libs/types"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import useSWR from "swr"
@@ -13,7 +12,9 @@ export default function Lists() {
   const router = useRouter()
   const { data, error, isLoading } = useSWR("/api/v1/newsletters", fetcher)
 
-  const newsletters = data?.newsletters as StringValues<Newsletter[]>
+  const newsletters = data?.newslettersWithTemplate as StringValues<
+    NewsletterWithTemplate[]
+  >
 
   if (error) return <div>Failed to load</div>
   if (isLoading) return <div>Loading...</div>
@@ -34,9 +35,10 @@ export default function Lists() {
         <Table>
           <Thead>
             <Tr>
-              <Th>Id</Th>
+              <Th>Subject</Th>
               <Th>Created at</Th>
               <Th>Scheduled to send at</Th>
+              <Th>Sent at</Th>
               <Th>Status</Th>
             </Tr>
           </Thead>
@@ -46,7 +48,7 @@ export default function Lists() {
                 <Tr key={newsletter.id}>
                   <Td>
                     <Link href={`${router.pathname}/${newsletter.id}`}>
-                      {newsletter.id}
+                      {newsletter.template.subject}
                     </Link>
                   </Td>
                   <Td>
@@ -54,6 +56,13 @@ export default function Lists() {
                   </Td>
                   <Td>
                     <DatetimeUtc datetime={newsletter.toSendAfter} />
+                  </Td>
+                  <Td>
+                    {newsletter.sentAt ? (
+                      <DatetimeUtc datetime={newsletter.sentAt} />
+                    ) : (
+                      "N/A"
+                    )}
                   </Td>
                   <Td>
                     {newsletter.isSending
