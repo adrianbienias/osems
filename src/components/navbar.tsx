@@ -5,8 +5,9 @@ export const NavLink = ({
   children,
   className = "",
   href,
+  ...rest
 }: ReactFCProps & { href: string }) => (
-  <Link href={href} legacyBehavior>
+  <Link href={href} legacyBehavior {...rest}>
     <a className={`${className}`}>{children}</a>
   </Link>
 )

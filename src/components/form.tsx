@@ -5,12 +5,10 @@ import {
 } from "react"
 
 export const Input = ({
-  placeholder,
-  defaultValue,
-  name,
-  type,
   id,
   label,
+  className = "",
+  ...rest
 }: DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
@@ -24,24 +22,17 @@ export const Input = ({
     </div>
     <input
       id={id}
-      name={name}
-      type={type}
-      defaultValue={defaultValue}
-      placeholder={placeholder}
-      className="inline-block w-full placeholder:text-slate-400/60 border-solid border bg-slate-50/50 border-slate-300 px-3 py-1.5 rounded"
+      {...rest}
+      className={`inline-block w-full placeholder:text-slate-400/60 border-solid border bg-slate-50/50 border-slate-300 px-3 py-1.5 rounded ${className}`}
     />
   </div>
 )
 
 export const Textarea = ({
-  placeholder,
-  defaultValue,
-  name,
   id,
   label,
-  rows,
-  cols,
-  onChange,
+  className = "",
+  ...rest
 }: DetailedHTMLProps<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
   HTMLTextAreaElement
@@ -55,13 +46,8 @@ export const Textarea = ({
     </div>
     <textarea
       id={id}
-      name={name}
-      rows={rows}
-      cols={cols}
-      defaultValue={defaultValue}
-      placeholder={placeholder}
-      onChange={onChange}
-      className="block w-full placeholder:text-slate-400/60 border-solid border bg-slate-50/50 border-slate-300 px-3 py-1.5 rounded"
+      {...rest}
+      className={`block w-full placeholder:text-slate-400/60 border-solid border bg-slate-50/50 border-slate-300 px-3 py-1.5 rounded ${className}`}
     ></textarea>
   </div>
 )
