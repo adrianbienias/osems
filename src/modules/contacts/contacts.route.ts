@@ -40,7 +40,11 @@ export async function contactsPostHandler(
           ["listId", listId],
         ])
 
+        // Explicitly set redirect code to 302, because Next.js set it to 307 by default.
+        // That causes preserving POST method in redirect request.
+        // https://nextjs.org/docs/api-reference/next/server#why-does-redirect-use-307-and-308
         return res.redirect(
+          302,
           `${config.signupFormErrorUrl}?${searchParams.toString()}`
         )
       }
@@ -59,7 +63,11 @@ export async function contactsPostHandler(
           ["listId", listId],
         ])
 
+        // Explicitly set redirect code to 302, because Next.js set it to 307 by default.
+        // That causes preserving POST method in redirect request.
+        // https://nextjs.org/docs/api-reference/next/server#why-does-redirect-use-307-and-308
         return res.redirect(
+          302,
           `${config.signupFormErrorUrl}?${searchParams.toString()}`
         )
       }
@@ -94,16 +102,17 @@ export async function contactsPostHandler(
 
   switch (config.signupFormAction) {
     case SIGNUP_FORM_ACTIONS.api: {
-      return res
-        .status(200)
-        .json({
-          success: "Contact subscribed",
-          contact,
-          signupRedirectUrl: list.signupRedirectUrl,
-        })
+      return res.status(200).json({
+        success: "Contact subscribed",
+        contact,
+        signupRedirectUrl: list.signupRedirectUrl,
+      })
     }
     case SIGNUP_FORM_ACTIONS.redirect: {
-      return res.redirect(list.signupRedirectUrl)
+      // Explicitly set redirect code to 302, because Next.js set it to 307 by default.
+      // That causes preserving POST method in redirect request.
+      // https://nextjs.org/docs/api-reference/next/server#why-does-redirect-use-307-and-308
+      return res.redirect(302, list.signupRedirectUrl)
     }
   }
 }
