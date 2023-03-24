@@ -104,7 +104,7 @@ EMAIL_FROM=Your Name <your-name@gmail.com>
 
 ## Deployment infrastructure
 
-You can deploy OSEMS on a regular VPS, but then you need to manage few serer administration related things (e.g. hardening security) on your own. So that can be unnecessary overhead, especially for the beginning.
+You can deploy OSEMS on a regular VPS, but then you need to manage few server administration related things (e.g. hardening security) on your own. So that can be unnecessary overhead, especially for the beginning.
 
 The other, and much simple choice, is to use a serverless hosting provider.
 
