@@ -1,4 +1,6 @@
-# Free Email Marketing Software
+# Open Source Email Marketing Software (OSEMS)
+
+## Motivation
 
 Hi!
 
@@ -14,29 +16,19 @@ Plans that billed for emails sent, were also overpriced.
 
 That's why I brought this software to life.
 
-If you want to send emails for as low as $0.10 per 1000, and store millions of emails in your lists (5 GB database for free), this solution may suit your needs.
+By using it you can create lists, embed customized signup forms on your websites, and send newsletters to your subscribers
 
-The only fixed cost is a server that you need to use in order to run this app (around $5/month).
+And that's for as low as $0.10 per 1000 sent email.
+
+Besides that, storing millions of emails in your lists (5 GB database) costs you totally nothing.
+
+The only fixed cost is a server that you need to use in order to have this app up and running (around $5/month).
 
 More details later on this page.
 
-## OSEMS
-
-OSEMS is an abbreviation from _Open Source Email Marketing Software_, and this is how I called this app.
-
-It allows you to create lists, use signup forms on your websites, build subscriber lists and send newsletters to them.
-
-OSEMS works as BYO SMTP service. BYO stands for _Bring Your Own_.
-
-You use SMTP server of your choice in order to send newsletters via _OSEMS_.
-
-Which SMTP provider to choose? You'll find out later in this doc.
-
 If you find that something doesn't work in this software properly - just [report a bug](https://github.com/adrianbienias/osems/issues).
 
-BTW, OSEMS is powered by [Next.js](https://nextjs.org/).
-
----
+The same goes with features. If you think that something is missing, feel free to [submit a feature request](https://github.com/adrianbienias/osems/issues).
 
 ## Quick test drive
 
@@ -59,6 +51,33 @@ To quickly test OSEMS, just clone the repo and test it in your dev environment.
 
 Click the start on GitHub repo to show your awesomeness. 🤩
 
+## Technical details
+
+OSEMS is build on top of [Next.js](https://nextjs.org/) framework.
+
+It uses [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), and [Node.js](https://nodejs.dev/en/).
+
+For database operations it uses [Prisma](https://www.prisma.io/), that allows you to connect without any hassle with:
+
+- PostgreSQL
+- MySQL
+- SQLite
+- MongoDB
+- CockroachDB
+- Microsoft SQL Server
+
+For authentication (to log in to the dashboard) [NextAuth.js](https://next-auth.js.org/) has been used.
+
+For visual styling, [Tailwind CSS](https://tailwindcss.com/).
+
+Automated tests have been written in [Vitest](https://vitest.dev/) (as a more performant alternative to [Jest](https://jestjs.io/)).
+
+Cron jobs are handled via [node-cron](https://github.com/node-cron/node-cron).
+
+On the frontend side, data is fetch by [SWR](https://swr.vercel.app/).
+
+Emails are sent with [Nodemailer](https://nodemailer.com/about/).
+
 ## Going to production
 
 First of all, set `NODE_ENV=production` in `.env` file.
@@ -74,6 +93,10 @@ Set `ADMIN_EMAIL` in `.env` file. That email is used to authorize access to the 
 Also, you need to set `EMAIL_SERVER_*` variables in `.env`, providing credentials of SMTP server, that you're going to use to handle sending of your emails.
 
 ## Choosing SMTP server
+
+OSEMS works as BYO SMTP service. BYO stands for _Bring Your Own_.
+
+You use SMTP server of your choice in order to send newsletters via _OSEMS_.
 
 The king here is [Amazon SES](https://aws.amazon.com/ses/), which allows you to send emails for a flat price $0.10 per 1000 emails.
 
@@ -201,16 +224,22 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Record demo video showing how to use OSEMS
-- [ ] Test the UI with React Testing Library and/or Playwright
+- [ ] Separate contacts page\
+       - Separate contacts API endpoints from lists\
+       - Add filtering by list\
+       - Provide contacts tagging (also, via public API endpoint)\
+       - Allow to create lists based on tags (segmented lists)
+- [ ] Separate templates page\
+       - Separate templates API endpoints from newsletters\
+       - Assign templates to lists (confirmation templates) and newsletters\
 - [ ] Use [zod](https://github.com/colinhacks/zod) for validating env variables
+- [ ] Test the UI with Playwright
+- [ ] Dockerize the app
+- [ ] Record demo video showing how to use OSEMS
 - [ ] Handle resubscribing (signup again after unsubscribing)\
        - Place resubscribe button on the unsubscribe page
 - [ ] Create a landing page with waiting list for a cloud version
 - [ ] Add fully fledged documentation\
        - [Docusaurus](https://docusaurus.io/)\
        - [Nextra](https://nextra.site/)
-- [ ] Separate templates and make them reusable across lists and newsletters\
-       - Provide visual (markdown) editor
-- [ ] Separate API endpoints for templates and contacts
 - [ ] Handle autoresponders
