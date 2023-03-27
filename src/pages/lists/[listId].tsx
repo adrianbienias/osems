@@ -41,11 +41,11 @@ export default function ListWithContacts() {
         </div>
 
         <div className="my-16">
-          <Contacts list={list} />
+          <ListSignup list={list} />
         </div>
 
         <div className="my-16">
-          <ListSignup list={list} />
+          <Contacts list={list} />
         </div>
       </main>
     </>

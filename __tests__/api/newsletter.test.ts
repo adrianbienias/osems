@@ -11,7 +11,6 @@ import { mockRequestResponse } from "./../api-mocks"
 
 vi.mock("@/modules/lists", () => {
   const mockedListWithContactsToInclude = {
-    from: "Foo Bar <foo@bar.baz>",
     contacts: [
       { email: "foo-1@bar.baz", confirmedAt: new Date() },
       { email: "foo-2@bar.baz", confirmedAt: new Date() },
@@ -20,7 +19,6 @@ vi.mock("@/modules/lists", () => {
     ],
   }
   const mockedListWithContactsToExclude = {
-    from: "Foo Bar <foo@bar.baz>",
     contacts: [
       { email: "foo-2@bar.baz", confirmedAt: new Date() },
       { email: "foo-3@bar.baz", confirmedAt: new Date() },
@@ -75,7 +73,6 @@ describe("/api/newsletters", () => {
     expect(res._getStatusCode()).toStrictEqual(200)
 
     expect(scheduleNewsletter).toBeCalledWith({
-      from: "Foo Bar <foo@bar.baz>",
       listIdToInclude: "list-id-to-include",
       listIdsToExclude: JSON.stringify(["list-id-to-exclude"]),
       newsletterTemplate: {

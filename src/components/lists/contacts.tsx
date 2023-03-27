@@ -26,8 +26,8 @@ export default function Contacts({ list }: Props) {
           </Thead>
           <Tbody>
             {list.contacts.length > 0 ? (
-              list.contacts.map((contact, index) => (
-                <Tr key={index}>
+              list.contacts.map((contact) => (
+                <Tr key={contact.email}>
                   <Td>{contact.email}</Td>
                   <Td>
                     <DatetimeUtc datetime={contact.createdAt} />

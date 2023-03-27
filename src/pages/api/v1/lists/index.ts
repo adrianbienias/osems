@@ -37,7 +37,6 @@ async function handleAddList({
 }) {
   let {
     name,
-    from,
     subject,
     html,
     signupRedirectUrl,
@@ -45,7 +44,6 @@ async function handleAddList({
     unsubscribeRedirectUrl,
   } = req.body as {
     name?: string
-    from?: string
     subject?: string
     html?: string
     signupRedirectUrl?: string
@@ -55,9 +53,6 @@ async function handleAddList({
 
   if (!name) {
     return res.status(400).json({ error: "Missing list name" })
-  }
-  if (!from) {
-    return res.status(400).json({ error: "Missing sender (from)" })
   }
   if (!signupRedirectUrl) {
     return res.status(400).json({ error: "Missing signup redirect url" })
@@ -88,7 +83,6 @@ async function handleAddList({
   const confirmationTemplateId = confirmationTemplate.id
   const list = await addList({
     name,
-    from,
     signupRedirectUrl,
     confirmationRedirectUrl,
     unsubscribeRedirectUrl,

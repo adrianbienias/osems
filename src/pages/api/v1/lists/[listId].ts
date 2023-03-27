@@ -37,7 +37,6 @@ async function handleUpdateList({
 }) {
   let {
     name,
-    from,
     subject,
     html,
     signupRedirectUrl,
@@ -45,7 +44,6 @@ async function handleUpdateList({
     unsubscribeRedirectUrl,
   } = req.body as {
     name?: string
-    from?: string
     subject?: string
     html?: string
     signupRedirectUrl?: string
@@ -60,9 +58,6 @@ async function handleUpdateList({
   }
   if (name === "") {
     return res.status(400).json({ error: "Missing list name" })
-  }
-  if (from === "") {
-    return res.status(400).json({ error: "Missing sender (from)" })
   }
   if (signupRedirectUrl === "") {
     return res.status(400).json({ error: "Missing signup redirect url" })
@@ -106,7 +101,6 @@ async function handleUpdateList({
   const updatedList = await updateList({
     id: listId,
     name,
-    from,
     signupRedirectUrl,
     confirmationRedirectUrl,
     unsubscribeRedirectUrl,

@@ -12,7 +12,6 @@ vi.mock("nodemailer", async () => ({
 }))
 
 const emailData = {
-  from: "from-foo@bar.baz",
   to: "to-foo@bar.baz",
   subject: "Dummy subject",
   html: "<p>Dummy html message</p>",
@@ -28,7 +27,7 @@ describe("sendEmail()", () => {
     })
 
     expect(nodemailer.createTransport().sendMail).toHaveBeenCalledWith({
-      from: "from-foo@bar.baz",
+      from: "John Doe <email@example.com>",
       to: "to-foo@bar.baz",
       subject: "Dummy subject",
       html: `<p>Dummy html message</p>
@@ -40,7 +39,7 @@ describe("sendEmail()", () => {
 Powered by OSEMS [https://osems.dev?ref=email]`,
       list: {
         unsubscribe:
-          "from-foo@bar.baz?subject=Unsubscribe&body=to-foo%2540bar.baz",
+          "John Doe <email@example.com>?subject=Unsubscribe&body=to-foo%2540bar.baz",
       },
     })
   })

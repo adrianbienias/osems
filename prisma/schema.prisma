@@ -23,7 +23,6 @@ model Contact {
 model List {
     id                      String    @id @default(uuid())
     name                    String    @unique
-    from                    String
     confirmationTemplateId  String
     signupRedirectUrl       String
     confirmationRedirectUrl String
@@ -36,7 +35,6 @@ model Newsletter {
     id               String    @id @default(uuid())
     listIdToInclude  String
     listIdsToExclude String
-    from             String
     templateId       String
     toSendAfter      DateTime
     isSending        Boolean   @default(false)

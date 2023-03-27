@@ -7,7 +7,6 @@ import { describe, expect, test, vi } from "vitest"
 
 vi.mock("@/modules/lists/lists.model", () => {
   const mockedListWithContactsToInclude = {
-    from: "Foo Bar <foo@bar.baz>",
     contacts: [
       { email: "foo-1@bar.baz", confirmedAt: new Date() },
       { email: "foo-2@bar.baz", confirmedAt: new Date() },
@@ -16,7 +15,6 @@ vi.mock("@/modules/lists/lists.model", () => {
     ],
   }
   const mockedListWithContactsToExclude = {
-    from: "Foo Bar <foo@bar.baz>",
     contacts: [
       { email: "foo-2@bar.baz", confirmedAt: new Date() },
       { email: "foo-3@bar.baz", confirmedAt: new Date() },

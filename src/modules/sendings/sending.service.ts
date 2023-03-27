@@ -18,13 +18,11 @@ async function createNodemailerTransporter() {
 }
 
 export async function sendEmail({
-  from,
   to,
   subject,
   html,
   text,
 }: {
-  from: string
   to: string
   subject: string
   html: string
@@ -33,6 +31,7 @@ export async function sendEmail({
   html += getEmailFooter().html
   text += getEmailFooter().text
 
+  const from = config.sender
   const transporter = await createNodemailerTransporter()
   const searchParams = new URLSearchParams([
     ["subject", encodeURIComponent("Unsubscribe")],

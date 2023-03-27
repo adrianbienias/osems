@@ -62,16 +62,6 @@ export default function Details({ list, confirmationTemplate, mutate }: Props) {
               placeholder={list.name}
             />
             <Input
-              label="Sender (from) set in .env"
-              id="input-from"
-              name="from"
-              type="text"
-              defaultValue={config.sender}
-              className="text-slate-400"
-              readOnly={true}
-            />
-
-            <Input
               label="Signup redirect URL"
               id="input-signup-redirect-url"
               name="signupRedirectUrl"
@@ -95,7 +85,20 @@ export default function Details({ list, confirmationTemplate, mutate }: Props) {
               defaultValue={list.unsubscribeRedirectUrl}
               placeholder={list.unsubscribeRedirectUrl}
             />
+          </div>
 
+          <h2>Confirmation template</h2>
+
+          <div>
+            <Input
+              label="Sender (set in .env)"
+              id="input-from"
+              name="from"
+              type="text"
+              defaultValue={config.sender}
+              className="text-slate-400"
+              disabled
+            />
             <Input
               label="Confirmation email subject"
               id="input-subject"
@@ -123,7 +126,7 @@ export default function Details({ list, confirmationTemplate, mutate }: Props) {
       </section>
 
       <section className="grow-[0.75]">
-        <h2>Confirmation email preview</h2>
+        <h2>Confirmation template preview</h2>
 
         <div
           className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"

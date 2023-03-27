@@ -3,13 +3,11 @@ import { addTemplate } from "@/modules/templates"
 import { Template } from "@prisma/client"
 
 export async function scheduleNewsletter({
-  from,
   newsletterTemplate,
   listIdToInclude,
   listIdsToExclude,
   toSendAfter,
 }: {
-  from: string
   newsletterTemplate: Pick<Template, "subject" | "html">
   listIdToInclude: string
   listIdsToExclude: string
@@ -23,7 +21,6 @@ export async function scheduleNewsletter({
 
   const newsletter = await prisma.newsletter.create({
     data: {
-      from,
       templateId: template.id,
       listIdToInclude,
       listIdsToExclude,

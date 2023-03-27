@@ -39,51 +39,53 @@ export default function ListWithContacts() {
       <Navbar />
 
       <main>
-        <section>
-          <h2>Email preview</h2>
+        <div className="mt-8 flex flex-col md:flex-row gap-8 justify-between">
+          <section className="grow-[0.25] order-2 md:order-1">
+            <h2>Sendings</h2>
 
-          <p>
-            <span className="text-slate-500 text-base">Subject:</span>{" "}
-            {template.subject}
-          </p>
-          <div
-            className="reset mt-4 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
-            dangerouslySetInnerHTML={{
-              __html: template.html,
-            }}
-          />
-        </section>
-
-        <section>
-          <h2>Sendings</h2>
-
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>Email</Th>
-                <Th>Sent at</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {newsletter.sendings.length > 0 ? (
-                newsletter.sendings.map((sending) => (
-                  <Tr key={newsletter.id}>
-                    <Td>{sending.email}</Td>
-                    <Td>
-                      <DatetimeUtc datetime={sending.sentAt} />
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Email</Th>
+                  <Th>Sent at</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {newsletter.sendings.length > 0 ? (
+                  newsletter.sendings.map((sending) => (
+                    <Tr key={sending.email}>
+                      <Td>{sending.email}</Td>
+                      <Td>
+                        <DatetimeUtc datetime={sending.sentAt} />
+                      </Td>
+                    </Tr>
+                  ))
+                ) : (
+                  <Tr>
+                    <Td colspan={2} className="text-center">
+                      No data
                     </Td>
                   </Tr>
-                ))
-              ) : (
-                <Tr>
-                  <Td colspan={2} className="text-center">
-                    No data
-                  </Td>
-                </Tr>
-              )}
-            </Tbody>
-          </Table>
-        </section>
+                )}
+              </Tbody>
+            </Table>
+          </section>
+
+          <section className="grow-[0.75] order-1 md:order-2">
+            <h2>Newsletter template preview</h2>
+
+            <p>
+              <span className="text-slate-500 text-base">Subject:</span>{" "}
+              {template.subject}
+            </p>
+            <div
+              className="reset mt-4 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
+              dangerouslySetInnerHTML={{
+                __html: template.html,
+              }}
+            />
+          </section>
+        </div>
       </main>
     </>
   )

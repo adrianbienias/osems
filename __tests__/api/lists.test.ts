@@ -47,24 +47,10 @@ describe("/api/lists", () => {
     expect(addList).not.toHaveBeenCalled()
   })
 
-  test("should return an error message for missing from field", async () => {
+  test("should return an error message for missing next field", async () => {
     const { req, res } = mockRequestResponse({
       method: "POST",
       body: { name: "Dummy list name" },
-    })
-
-    await apiListsHandler(req, res)
-
-    expect(res._getJSONData()).toStrictEqual({ error: "Missing sender (from)" })
-    expect(res._getStatusCode()).toStrictEqual(400)
-
-    expect(addList).not.toHaveBeenCalled()
-  })
-
-  test("should return an error message for missing field", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "POST",
-      body: { name: "Dummy list name", from: "foo@bar.baz" },
     })
 
     await apiListsHandler(req, res)
@@ -82,7 +68,6 @@ describe("/api/lists", () => {
       method: "POST",
       body: {
         name: "Foo Bar List",
-        from: "foo@bar.baz",
         signupRedirectUrl: "http://signupRedirectUrl",
         confirmationRedirectUrl: "http://confirmationRedirectUrl",
         unsubscribeRedirectUrl: "http://unsubscribeRedirectUrl",
@@ -100,7 +85,6 @@ describe("/api/lists", () => {
     expect(res._getStatusCode()).toStrictEqual(200)
 
     expect(addList).toHaveBeenCalledWith({
-      from: "foo@bar.baz",
       name: "Foo Bar List",
       signupRedirectUrl: "http://signupRedirectUrl",
       confirmationRedirectUrl: "http://confirmationRedirectUrl",

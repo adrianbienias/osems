@@ -88,7 +88,6 @@ async function handleScheduleNewsletter({
 
   try {
     const newsletter = await scheduleNewsletter({
-      from: list.from,
       newsletterTemplate: { subject, html },
       listIdToInclude,
       listIdsToExclude: JSON.stringify(listIdsToExclude),

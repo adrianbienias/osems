@@ -34,7 +34,6 @@ describe("addList()", () => {
     ).toStrictEqual({
       id: expect.stringMatching(uuidRegex),
       name: "Foo Bar List",
-      from: "Foo Bar <foo@bar.baz>",
       confirmationTemplateId: "dummy-confirmation-template-id",
       signupRedirectUrl: "http://example.com/redirect/signup",
       confirmationRedirectUrl: "http://example.com/redirect/confirmation",
@@ -66,7 +65,6 @@ describe("updateList()", () => {
     const initialList = {
       id: expect.stringMatching(uuidRegex),
       name: "Foo Bar List",
-      from: "Foo Bar <foo@bar.baz>",
       confirmationTemplateId: "dummy-confirmation-template-id",
       signupRedirectUrl: "http://example.com/redirect/signup",
       confirmationRedirectUrl: "http://example.com/redirect/confirmation",
@@ -84,14 +82,13 @@ describe("updateList()", () => {
       await prisma.list.findUnique({ where: { id: addedList.id } })
     ).toStrictEqual({ ...initialList, name: "Foo Foo List" })
 
-    await updateList({ id: addedList.id, from: "Foo Foo <foo@foo.bar>" })
+    await updateList({ id: addedList.id })
 
     expect(
       await prisma.list.findUnique({ where: { id: addedList.id } })
     ).toStrictEqual({
       ...initialList,
       name: "Foo Foo List",
-      from: "Foo Foo <foo@foo.bar>",
     })
 
     await updateList({
@@ -106,7 +103,6 @@ describe("updateList()", () => {
     ).toStrictEqual({
       ...initialList,
       name: "Foo Foo List",
-      from: "Foo Foo <foo@foo.bar>",
       signupRedirectUrl: "Update value",
       confirmationRedirectUrl: "Update value",
       unsubscribeRedirectUrl: "Update value",

@@ -56,7 +56,6 @@ vi.mock("@/modules/templates", () => {
 })
 
 const uuidRegex = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
-const from = "foo@bar.baz"
 const toSendAfter = new Date()
 
 beforeEach(async () => {
@@ -68,7 +67,6 @@ describe("scheduleNewsletter()", () => {
     expect(await prisma.newsletter.findMany()).toStrictEqual([])
 
     await scheduleNewsletter({
-      from,
       listIdToInclude: "list-id-to-include",
       listIdsToExclude: JSON.stringify([
         "list-id-to-exclude-1",
@@ -81,7 +79,6 @@ describe("scheduleNewsletter()", () => {
       toSendAfter,
     })
     await scheduleNewsletter({
-      from,
       listIdToInclude: "list-id-to-include",
       listIdsToExclude: JSON.stringify([
         "list-id-to-exclude-1",
@@ -96,7 +93,6 @@ describe("scheduleNewsletter()", () => {
 
     expect(await prisma.newsletter.findMany()).toStrictEqual([
       {
-        from,
         id: expect.stringMatching(uuidRegex),
         listIdToInclude: "list-id-to-include",
         listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
@@ -107,7 +103,6 @@ describe("scheduleNewsletter()", () => {
         toSendAfter: expect.any(Date),
       },
       {
-        from,
         id: expect.stringMatching(uuidRegex),
         listIdToInclude: "list-id-to-include",
         listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
@@ -124,7 +119,6 @@ describe("scheduleNewsletter()", () => {
 describe("getNewsletters()", () => {
   test("should get all newsletters", async () => {
     await scheduleNewsletter({
-      from,
       listIdToInclude: "list-id-to-include-1",
       listIdsToExclude: JSON.stringify([
         "list-id-to-exclude-1",
@@ -137,7 +131,6 @@ describe("getNewsletters()", () => {
       toSendAfter,
     })
     await scheduleNewsletter({
-      from,
       listIdToInclude: "list-id-to-include-2",
       listIdsToExclude: JSON.stringify([
         "list-id-to-exclude-1",
@@ -155,7 +148,6 @@ describe("getNewsletters()", () => {
         id: expect.stringMatching(uuidRegex),
         listIdToInclude: "list-id-to-include-1",
         listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
-        from: "foo@bar.baz",
         templateId: "newsletter-template-id",
         toSendAfter: expect.any(Date),
         isSending: false,
@@ -166,7 +158,6 @@ describe("getNewsletters()", () => {
         id: expect.stringMatching(uuidRegex),
         listIdToInclude: "list-id-to-include-2",
         listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
-        from: "foo@bar.baz",
         templateId: "newsletter-template-id",
         toSendAfter: expect.any(Date),
         isSending: false,
@@ -180,7 +171,6 @@ describe("getNewsletters()", () => {
 describe("getNewsletter()", () => {
   test("should get all newsletters", async () => {
     const newsletter = await scheduleNewsletter({
-      from,
       listIdToInclude: "list-id-to-include-1",
       listIdsToExclude: JSON.stringify([
         "list-id-to-exclude-1",
@@ -200,7 +190,6 @@ describe("getNewsletter()", () => {
       id: expect.stringMatching(uuidRegex),
       listIdToInclude: "list-id-to-include-1",
       listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
-      from: "foo@bar.baz",
       templateId: "newsletter-template-id",
       toSendAfter: expect.any(Date),
       isSending: false,
@@ -214,7 +203,6 @@ describe("getNewsletter()", () => {
 describe("sendNewsletters()", () => {
   test("should not send newsletter when another one is being sent", async () => {
     const newsletter = await scheduleNewsletter({
-      from,
       listIdToInclude: "list-id-to-include",
       listIdsToExclude: JSON.stringify([
         "list-id-to-exclude-1",
@@ -249,7 +237,6 @@ describe("sendNewsletters()", () => {
 
   test("should call nodemailer sendMail() method", async () => {
     const newsletter = await scheduleNewsletter({
-      from,
       listIdToInclude: "list-id-to-include",
       listIdsToExclude: JSON.stringify([
         "list-id-to-exclude-1",
@@ -270,14 +257,12 @@ describe("sendNewsletters()", () => {
     await sendNewsletters()
 
     expect(sendEmail).toHaveBeenNthCalledWith(1, {
-      from: "foo@bar.baz",
       to: "foo-1@bar.baz",
       subject: "Dummy subject",
       html: "<p>Dummy html content</p>",
       text: "Dummy text content",
     })
     expect(sendEmail).toHaveBeenNthCalledWith(2, {
-      from: "foo@bar.baz",
       to: "foo-3@bar.baz",
       subject: "Dummy subject",
       html: "<p>Dummy html content</p>",

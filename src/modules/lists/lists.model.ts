@@ -3,14 +3,12 @@ import { Prisma } from "@prisma/client"
 
 export async function addList({
   name,
-  from,
   signupRedirectUrl,
   confirmationRedirectUrl,
   unsubscribeRedirectUrl,
   confirmationTemplateId,
 }: {
   name: string
-  from: string
   signupRedirectUrl: string
   confirmationRedirectUrl: string
   unsubscribeRedirectUrl: string
@@ -20,7 +18,6 @@ export async function addList({
     return await prisma.list.create({
       data: {
         name,
-        from,
         confirmationTemplateId,
         signupRedirectUrl,
         confirmationRedirectUrl,
@@ -69,14 +66,12 @@ export async function getLists() {
 export async function updateList({
   id,
   name,
-  from,
   signupRedirectUrl,
   confirmationRedirectUrl,
   unsubscribeRedirectUrl,
 }: {
   id: string
   name?: string
-  from?: string
   signupRedirectUrl?: string
   confirmationRedirectUrl?: string
   unsubscribeRedirectUrl?: string
@@ -88,7 +83,6 @@ export async function updateList({
       },
       data: {
         name,
-        from,
         signupRedirectUrl,
         confirmationRedirectUrl,
         unsubscribeRedirectUrl,

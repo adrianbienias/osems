@@ -96,7 +96,6 @@ async function sendNewsletter({
       ["{{unsubscribe}}", unsubscribeUrl],
     ])
     const message = {
-      from: newsletter.from,
       to: email,
       ...parseTemplateVariables({
         message: template,

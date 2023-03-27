@@ -76,14 +76,14 @@ export default function Newsletter() {
       <main>
         <div className="mt-8 flex flex-col md:flex-row gap-8 justify-between">
           <section className="grow-[0.25]">
-            <h2>New newsletter</h2>
+            <h2>Newsletter details</h2>
 
             <form onSubmit={handleFormSubmit} ref={formRef}>
               <h3>List to send to</h3>
 
               <ul className="list-none p-0">
-                {lists.map((list, index: number) => (
-                  <li key={index}>
+                {lists.map((list) => (
+                  <li key={list.id}>
                     <input
                       id={`list-to-include-${list.id}`}
                       type="radio"
@@ -102,8 +102,8 @@ export default function Newsletter() {
               <h3>Lists to exclude</h3>
 
               <ul className="list-none p-0">
-                {lists.map((list, index: number) => (
-                  <li key={index}>
+                {lists.map((list) => (
+                  <li key={list.id}>
                     <input
                       id={`list-to-exclude-${list.id}`}
                       type="checkbox"
@@ -128,16 +128,16 @@ export default function Newsletter() {
                 className="inline-block w-full placeholder:text-slate-400/60 border-solid border bg-slate-50/50 border-slate-300 px-3 py-1.5 rounded"
               />
 
-              <h3>Message details</h3>
+              <h2>Newsletter template</h2>
 
               <Input
-                label="Sender (from) set in .env"
+                label="Sender (set in .env)"
                 id="input-from"
                 name="from"
                 type="text"
                 defaultValue={config.sender}
                 className="text-slate-400"
-                readOnly={true}
+                disabled
               />
               <Input
                 label="Subject"
@@ -165,7 +165,7 @@ export default function Newsletter() {
           </section>
 
           <section className="grow-[0.75]">
-            <h2>Email preview</h2>
+            <h2>Newsletter template preview</h2>
 
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"

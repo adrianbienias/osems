@@ -54,10 +54,9 @@ export default function Lists() {
       <main>
         <div className="mt-8 flex flex-col md:flex-row gap-8 justify-between">
           <section className="grow-[0.25]">
-            <h2>List details</h2>
-
             <form onSubmit={handleFormSubmit} ref={formRef}>
               <div>
+                <h2>List details</h2>
                 <Input
                   label="List name"
                   id="input-list-name"
@@ -66,16 +65,6 @@ export default function Lists() {
                   defaultValue="The Best Newsletter"
                   placeholder="The Best Newsletter"
                 />
-                <Input
-                  label="Sender (from) set in .env"
-                  id="input-from"
-                  name="from"
-                  type="text"
-                  defaultValue={config.sender}
-                  className="text-slate-400"
-                  readOnly={true}
-                />
-
                 <Input
                   label="Signup redirect URL"
                   id="input-signup-redirect-url"
@@ -100,7 +89,20 @@ export default function Lists() {
                   defaultValue={`${config.baseUrl}/public/unsubscribed`}
                   placeholder={`${config.baseUrl}/public/unsubscribed`}
                 />
+              </div>
 
+              <h2>Confirmation template</h2>
+
+              <div>
+                <Input
+                  label="Sender (set in .env)"
+                  id="input-from"
+                  name="from"
+                  type="text"
+                  defaultValue={config.sender}
+                  className="text-slate-400"
+                  disabled
+                />
                 <Input
                   label="Confirmation email subject"
                   id="input-subject"
@@ -128,7 +130,7 @@ export default function Lists() {
           </section>
 
           <section className="grow-[0.75]">
-            <h2>Confirmation email preview</h2>
+            <h2>Confirmation template preview</h2>
 
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
