@@ -90,7 +90,7 @@ export async function contactsPostHandler(
     ["{{confirmation}}", confirmationUrl],
   ])
   const message = {
-    from: list.from,
+    from: config.sender,
     to: email,
     ...parseTemplateVariables({
       message: template,

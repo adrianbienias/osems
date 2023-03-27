@@ -119,9 +119,9 @@ Example Gmail SMTP settings:
 
 ```
 EMAIL_SERVER_HOST=smtp.gmail.com
+EMAIL_SERVER_PORT=587
 EMAIL_SERVER_USER=your-name@gmail.com
 EMAIL_SERVER_PASSWORD=google-generated-app-password
-EMAIL_SERVER_PORT=587
 NEXT_PUBLIC_EMAIL_FROM=Your Name <your-name@gmail.com>
 ```
 
@@ -232,7 +232,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 - [ ] Separate templates page\
        - Separate templates API endpoints from newsletters\
        - Assign templates to lists (confirmation templates) and newsletters\
-- [ ] Use [zod](https://github.com/colinhacks/zod) for validating env variables
 - [ ] Test the UI with Playwright
 - [ ] Dockerize the app
 - [ ] Record demo video showing how to use OSEMS

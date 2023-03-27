@@ -1,3 +1,5 @@
+import { config } from "@/app-config"
+
 export function createConfirmationUrl({
   email,
   listId,
@@ -11,7 +13,7 @@ export function createConfirmationUrl({
     ["action", "confirm"],
   ])
   const confirmationUrl = `${
-    process.env.NEXT_PUBLIC_BASE_URL
+    config.baseUrl
   }/api/v1/public/contacts?${searchParams.toString()}`
 
   return confirmationUrl
@@ -30,7 +32,7 @@ export function createUnsubscribeUrl({
     ["action", "unsubscribe"],
   ])
   const unsubscribeUrl = `${
-    process.env.NEXT_PUBLIC_BASE_URL
+    config.baseUrl
   }/api/v1/public/contacts?${searchParams.toString()}`
 
   return unsubscribeUrl

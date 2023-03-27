@@ -1,3 +1,4 @@
+import { config } from "@/app-config"
 import { List, Template } from "@prisma/client"
 import { useRef, useState } from "react"
 import { ErrorMsg } from "../alert"
@@ -65,7 +66,7 @@ export default function Details({ list, confirmationTemplate, mutate }: Props) {
               id="input-from"
               name="from"
               type="text"
-              defaultValue={process.env.NEXT_PUBLIC_EMAIL_FROM}
+              defaultValue={config.sender}
               className="text-slate-400"
               readOnly={true}
             />

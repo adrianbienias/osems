@@ -1,3 +1,4 @@
+import { config } from "@/app-config"
 import { prisma } from "@/libs/prisma"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import type { NextAuthOptions, User } from "next-auth"
@@ -16,15 +17,8 @@ export const authOptions: NextAuthOptions = {
   providers: [
     // https://github.com/nextauthjs/next-auth/blob/main/packages/next-auth/src/providers/email.ts
     EmailProvider({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: Number(process.env.EMAIL_SERVER_PORT),
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
-      },
-      from: process.env.NEXT_PUBLIC_EMAIL_FROM,
+      server: config.smtp,
+      from: config.sender,
     }),
   ],
 

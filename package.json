@@ -18,7 +18,7 @@
     "db:seed": "dotenv -- ts-node ./__tests__/seed-db.ts",
     "db:reset": "prisma migrate reset",
     "dev": "(npm run lint) && (prisma db push) ; (npm run cron) & (next dev)",
-    "test": "(npm run lint) && (DATABASE_URL='file:./test.sqlite' prisma db push) && (DATABASE_URL='file:./test.sqlite' NODE_ENV=test vitest --coverage)",
+    "test": "(npm run lint) && (dotenv -e .env.test -- prisma db push) && (dotenv -e .env.test vitest --coverage)",
     "lint": "next lint",
     "build": "(prisma migrate deploy) ; (next build)",
     "start": "(npm run cron) & (next start)"

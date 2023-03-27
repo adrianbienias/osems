@@ -1,3 +1,4 @@
+import { config } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
@@ -34,18 +35,15 @@ export default function Newsletter() {
       (formData.get("toSendAfter") as string) || getLocalDateTime()
     ).toISOString()
     const listIdsToExclude = formData.getAll("listIdsToExclude")
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/newsletters`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...Object.fromEntries(formData.entries()),
-          toSendAfter,
-          listIdsToExclude,
-        }),
-      }
-    )
+    const response = await fetch(`${config.baseUrl}/api/v1/newsletters`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...Object.fromEntries(formData.entries()),
+        toSendAfter,
+        listIdsToExclude,
+      }),
+    })
     const { newsletter, error } = (await response.json()) as {
       error?: string
       success?: string
@@ -137,7 +135,7 @@ export default function Newsletter() {
                 id="input-from"
                 name="from"
                 type="text"
-                defaultValue={process.env.NEXT_PUBLIC_EMAIL_FROM}
+                defaultValue={config.sender}
                 className="text-slate-400"
                 readOnly={true}
               />

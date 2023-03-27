@@ -1,3 +1,4 @@
+import { config } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
@@ -70,7 +71,7 @@ export default function Lists() {
                   id="input-from"
                   name="from"
                   type="text"
-                  defaultValue={process.env.NEXT_PUBLIC_EMAIL_FROM}
+                  defaultValue={config.sender}
                   className="text-slate-400"
                   readOnly={true}
                 />
@@ -80,24 +81,24 @@ export default function Lists() {
                   id="input-signup-redirect-url"
                   name="signupRedirectUrl"
                   type="text"
-                  defaultValue={`${process.env.NEXT_PUBLIC_BASE_URL}/public/confirmation-required`}
-                  placeholder={`${process.env.NEXT_PUBLIC_BASE_URL}/public/confirmation-required`}
+                  defaultValue={`${config.baseUrl}/public/confirmation-required`}
+                  placeholder={`${config.baseUrl}/public/confirmation-required`}
                 />
                 <Input
                   label="Confirmation redirect URL"
                   id="input-confirmation-redirect-url"
                   name="confirmationRedirectUrl"
                   type="text"
-                  defaultValue={`${process.env.NEXT_PUBLIC_BASE_URL}/public/subscribed-successfully`}
-                  placeholder={`${process.env.NEXT_PUBLIC_BASE_URL}/public/subscribed-successfully`}
+                  defaultValue={`${config.baseUrl}/public/subscribed-successfully`}
+                  placeholder={`${config.baseUrl}/public/subscribed-successfully`}
                 />
                 <Input
                   label="Unsubscribe redirect URL"
                   id="input-unsubscribe-redirect-url"
                   name="unsubscribeRedirectUrl"
                   type="text"
-                  defaultValue={`${process.env.NEXT_PUBLIC_BASE_URL}/public/unsubscribed`}
-                  placeholder={`${process.env.NEXT_PUBLIC_BASE_URL}/public/unsubscribed`}
+                  defaultValue={`${config.baseUrl}/public/unsubscribed`}
+                  placeholder={`${config.baseUrl}/public/unsubscribed`}
                 />
 
                 <Input

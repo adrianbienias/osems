@@ -1,11 +1,8 @@
-import { schedule } from "node-cron"
+import { config } from "@/app-config"
 import { sendNewsletters } from "@/modules/newsletters"
+import { schedule } from "node-cron"
 
-console.info("✔ Node cron jobs activated")
-
-if (!process.env.NODE_ENV) {
-  throw new Error("Undefined NODE_ENV")
-}
+console.info("\n✔ Node cron jobs activated\n")
 
 const schedules = {
   everyDay: "0 0 * * *",
@@ -16,8 +13,6 @@ const schedules = {
 }
 
 schedule(
-  process.env.NODE_ENV === "production"
-    ? schedules.everyTenSeconds
-    : schedules.everySecond,
+  config.isProduction ? schedules.everyTenSeconds : schedules.everySecond,
   async () => await sendNewsletters()
 )

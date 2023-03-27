@@ -1,19 +1,13 @@
+import { config } from "@/app-config"
 import nodemailer from "nodemailer"
 
 async function createNodemailerTransporter() {
   let transporter
 
-  if (process.env.NODE_ENV === "test") {
+  if (config.isTest) {
     transporter = nodemailer.createTransport({ jsonTransport: true })
   } else {
-    transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_SERVER_HOST,
-      port: Number(process.env.EMAIL_SERVER_PORT),
-      auth: {
-        user: process.env.EMAIL_SERVER_USER,
-        pass: process.env.EMAIL_SERVER_PASSWORD,
-      },
-    })
+    transporter = nodemailer.createTransport(config.smtp)
   }
 
   if (!transporter) {
@@ -49,7 +43,7 @@ export async function sendEmail({
 
   await transporter.sendMail(data)
 
-  if (process.env.NODE_ENV === "test") {
+  if (config.isTest) {
     const message = { from, to, subject, html, text }
     console.info(`Simulated email send`, message)
   }

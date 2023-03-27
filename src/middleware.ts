@@ -1,4 +1,5 @@
 import { withAuth } from "next-auth/middleware"
+import { config as appConfig } from "@/app-config"
 
 /**
  * Process NextAuth through Next.js middleware
@@ -7,7 +8,7 @@ import { withAuth } from "next-auth/middleware"
 export default withAuth({
   callbacks: {
     authorized: ({ token }) => {
-      if (process.env.NODE_ENV !== "production") {
+      if (!appConfig.isProduction) {
         // Be default authorization in non production environments is disabled.
         // If you want to test authorization in development environment, simply comment out the following line:
         return true

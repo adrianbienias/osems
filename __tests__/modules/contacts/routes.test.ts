@@ -84,7 +84,7 @@ describe("POST /api/v1/public/contacts", () => {
       },
     ])
     expect(sendEmail).toHaveBeenCalledWith({
-      from: "Foo Bar <foo@bar.baz>",
+      from: "John Doe <email@example.com>",
       to: "foo@bar.baz",
       subject: "Dummy subject",
       html: `<p>Dummy html content</p>`,
