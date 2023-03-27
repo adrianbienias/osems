@@ -8,6 +8,7 @@ dependency-graph.svg
 
 # testing
 /coverage
+/playwright-report
 
 # next.js
 /.next/
@@ -42,3 +43,6 @@ next-env.d.ts
 *.sqlite-journal
 *.db
 *.db-journal
+/test-results/
+/playwright-report/
+/playwright/.cache/

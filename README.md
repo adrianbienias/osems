@@ -232,7 +232,7 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 - [ ] Separate templates page\
        - Separate templates API endpoints from newsletters\
        - Assign templates to lists (confirmation templates) and newsletters\
-- [ ] Test the UI with Playwright
+- [ ] Handle autoresponders
 - [ ] Dockerize the app
 - [ ] Record demo video showing how to use OSEMS
 - [ ] Handle resubscribing (signup again after unsubscribing)\
@@ -241,4 +241,3 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 - [ ] Add fully fledged documentation\
        - [Docusaurus](https://docusaurus.io/)\
        - [Nextra](https://nextra.site/)
-- [ ] Handle autoresponders
