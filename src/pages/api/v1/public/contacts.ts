@@ -1,6 +1,6 @@
 import { contactsGetHandler, contactsPostHandler } from "@/modules/contacts"
 import Cors from "cors"
-import type { NextApiRequest, NextApiResponse } from "next"
+import { NextApiRequest, NextApiResponse } from "next"
 
 // https://github.com/vercel/next.js/blob/canary/examples/api-routes-cors/pages/api/cors.ts
 const cors = Cors({ methods: ["POST", "GET", "HEAD"] })

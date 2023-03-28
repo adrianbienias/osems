@@ -1,12 +1,9 @@
-import { ReactFCProps } from "@/libs/types"
-import Link from "next/link"
+import Link, { LinkProps } from "next/link"
+import { AnchorHTMLAttributes, FC } from "react"
 
-export const NavLink = ({
-  children,
-  className = "",
-  href,
-  ...rest
-}: ReactFCProps & { href: string }) => (
+export const NavLink: FC<
+  AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps
+> = ({ children, className = "", href, ...rest }) => (
   <Link href={href} legacyBehavior {...rest}>
     <a className={`${className}`}>{children}</a>
   </Link>

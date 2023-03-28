@@ -1,18 +1,8 @@
-import {
-  DetailedHTMLProps,
-  InputHTMLAttributes,
-  TextareaHTMLAttributes,
-} from "react"
+import { FC, InputHTMLAttributes, TextareaHTMLAttributes } from "react"
 
-export const Input = ({
-  id,
-  label,
-  className = "",
-  ...rest
-}: DetailedHTMLProps<
-  InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
-> & { label: string }) => (
+export const Input: FC<
+  InputHTMLAttributes<HTMLInputElement> & { label: string }
+> = ({ id, label, className = "", ...rest }) => (
   <div className="mb-2">
     <div className="mb-0.5">
       <label className="text-sm text-slate-600" htmlFor={id}>
@@ -28,15 +18,9 @@ export const Input = ({
   </div>
 )
 
-export const Textarea = ({
-  id,
-  label,
-  className = "",
-  ...rest
-}: DetailedHTMLProps<
-  TextareaHTMLAttributes<HTMLTextAreaElement>,
-  HTMLTextAreaElement
-> & { label: string }) => (
+export const Textarea: FC<
+  TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string }
+> = ({ id, label, className = "", ...rest }) => (
   <div className="mb-2">
     <div className="mb-0.5">
       <label className="text-sm text-slate-600" htmlFor={id}>

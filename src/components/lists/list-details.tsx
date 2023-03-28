@@ -1,17 +1,15 @@
 import { config } from "@/app-config"
-import { List, Template } from "@prisma/client"
+import { PropListWithConfirmationTemplate } from "@/libs/types"
 import { useRef, useState } from "react"
 import { ErrorMsg } from "../alert"
 import { Button } from "../button"
 import { Input, Textarea } from "../form"
 
-type Props = {
-  list: List
-  confirmationTemplate: Template
-  mutate: () => void
-}
-
-export default function Details({ list, confirmationTemplate, mutate }: Props) {
+export default function Details({
+  list,
+  confirmationTemplate,
+  mutate,
+}: PropListWithConfirmationTemplate & { mutate: () => void }) {
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
   const formRef = useRef(null)

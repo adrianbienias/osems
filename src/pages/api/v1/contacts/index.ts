@@ -1,16 +1,11 @@
+import { ApiResponse } from "@/libs/types"
 import { getContacts } from "@/modules/contacts"
 import { Contact } from "@prisma/client"
-import type { NextApiRequest, NextApiResponse } from "next"
-
-type Response = {
-  error?: string
-  success?: string
-  contacts?: Contact[]
-}
+import { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse>
 ) {
   switch (req.method) {
     case "GET": {
@@ -27,7 +22,7 @@ async function handleGetContacts({
   res,
 }: {
   req: NextApiRequest
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse & { contacts?: Contact[] }>
 }) {
   let listId = req.query.listId as string | undefined
   if (listId === "undefined" || listId === "") {

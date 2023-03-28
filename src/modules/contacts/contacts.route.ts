@@ -4,7 +4,7 @@ import { isEmail } from "@/libs/validators"
 import { getList } from "@/modules/lists"
 import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
-import type { NextApiRequest, NextApiResponse } from "next"
+import { NextApiRequest, NextApiResponse } from "next"
 import {
   addContact,
   confirmContact,

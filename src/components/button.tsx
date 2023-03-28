@@ -1,15 +1,11 @@
-import { ReactFCProps } from "@/libs/types"
-import Link from "next/link"
-import { ButtonHTMLAttributes, DetailedHTMLProps } from "react"
+import Link, { LinkProps } from "next/link"
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC } from "react"
 
-export const Button = ({
+export const Button: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({
   children,
   className = "",
   ...rest
-}: DetailedHTMLProps<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
->) => (
+}) => (
   <button
     className={`text-base bg-blue-500 hover:bg-blue-600 rounded text-white inline-block py-2 px-4 cursor-pointer no-underline hover:no-underline border-0 ${className}`}
     {...rest}
@@ -18,12 +14,9 @@ export const Button = ({
   </button>
 )
 
-export const LinkButton = ({
-  children,
-  className = "",
-  href,
-  ...rest
-}: ReactFCProps & { href: string }) => (
+export const LinkButton: FC<
+  AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps
+> = ({ children, className = "", href, ...rest }) => (
   <Link href={href} legacyBehavior {...rest}>
     <a
       className={`text-base bg-blue-500 hover:bg-blue-600 rounded text-white inline-block py-2 px-4 cursor-pointer no-underline hover:no-underline ${className}`}

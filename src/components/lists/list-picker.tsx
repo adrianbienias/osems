@@ -1,19 +1,17 @@
 import { fetcher } from "@/libs/fetcher"
-import { ListWithCount } from "@/libs/types"
+import { ListWithCount, ReactSelectOption } from "@/libs/types"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import Select from "react-select"
 import useSWR from "swr"
 
-type SelectOption = { value: string; label: string } | null
-
 export default function ListPicker() {
   const router = useRouter()
-  const [selectedOption, setSelectedOption] = useState<SelectOption>(null)
+  const [selectedOption, setSelectedOption] = useState<ReactSelectOption>(null)
   const { data, error, isLoading } = useSWR("/api/v1/lists", fetcher)
   const lists = data?.lists as ListWithCount[] | undefined
 
-  function handleChange(selectedOption: SelectOption) {
+  function handleChange(selectedOption: ReactSelectOption) {
     setSelectedOption(selectedOption)
     router.push({ query: { listId: selectedOption?.value } })
   }

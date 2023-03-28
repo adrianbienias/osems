@@ -7,7 +7,7 @@ import { Contact, List, Template } from "@prisma/client"
 import { useRouter } from "next/router"
 import useSWR from "swr"
 
-export default function ListWithContacts() {
+export default function ShowList() {
   const router = useRouter()
   const { listId } = router.query
 

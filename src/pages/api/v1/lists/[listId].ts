@@ -1,19 +1,12 @@
+import { ApiResponse } from "@/libs/types"
 import { getList, updateList } from "@/modules/lists"
 import { getTemplate, updateTemplate } from "@/modules/templates"
 import { List, Template } from "@prisma/client"
-import type { NextApiRequest, NextApiResponse } from "next"
-
-type Response = {
-  error?: string
-  success?: string
-  list?: List
-  confirmationTemplate?: Template
-  lists?: List[]
-}
+import { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse>
 ) {
   switch (req.method) {
     case "PATCH": {
@@ -33,7 +26,7 @@ async function handleUpdateList({
   res,
 }: {
   req: NextApiRequest
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse & { list?: List }>
 }) {
   let {
     name,
@@ -118,7 +111,9 @@ async function handleGetList({
   res,
 }: {
   req: NextApiRequest
-  res: NextApiResponse<Response>
+  res: NextApiResponse<
+    ApiResponse & { list?: List; confirmationTemplate?: Template }
+  >
 }) {
   const listId = req.query.listId
 

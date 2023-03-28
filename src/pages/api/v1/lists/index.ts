@@ -1,19 +1,12 @@
+import { ApiResponse } from "@/libs/types"
 import { addList, getLists } from "@/modules/lists"
 import { addTemplate } from "@/modules/templates"
-import { List, Template } from "@prisma/client"
-import type { NextApiRequest, NextApiResponse } from "next"
-
-type Response = {
-  error?: string
-  success?: string
-  list?: List
-  confirmationTemplate?: Template
-  lists?: List[]
-}
+import { List } from "@prisma/client"
+import { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse>
 ) {
   switch (req.method) {
     case "POST": {
@@ -33,7 +26,7 @@ async function handleAddList({
   res,
 }: {
   req: NextApiRequest
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse & { list?: List }>
 }) {
   let {
     name,
@@ -101,7 +94,7 @@ async function handleGetLists({
   res,
 }: {
   req: NextApiRequest
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse & { lists?: List[] }>
 }) {
   const lists = await getLists()
   if (lists instanceof Error) {

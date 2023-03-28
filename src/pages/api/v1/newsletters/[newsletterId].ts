@@ -1,18 +1,12 @@
+import { ApiResponse } from "@/libs/types"
 import { getNewsletter } from "@/modules/newsletters"
 import { getTemplate } from "@/modules/templates"
 import { Newsletter, Template } from "@prisma/client"
-import type { NextApiRequest, NextApiResponse } from "next"
-
-type Response = {
-  error?: string
-  success?: string
-  newsletter?: Newsletter
-  template?: Template
-}
+import { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse>
 ) {
   switch (req.method) {
     case "GET": {
@@ -29,7 +23,9 @@ async function handleGetNewsletter({
   res,
 }: {
   req: NextApiRequest
-  res: NextApiResponse<Response>
+  res: NextApiResponse<
+    ApiResponse & { newsletter?: Newsletter; template?: Template }
+  >
 }) {
   const newsletterId = req.query.newsletterId
   if (typeof newsletterId !== "string") {

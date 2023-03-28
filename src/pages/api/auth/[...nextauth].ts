@@ -1,7 +1,7 @@
 import { config } from "@/app-config"
 import { prisma } from "@/libs/prisma"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import type { NextAuthOptions, User } from "next-auth"
+import { NextAuthOptions, User } from "next-auth"
 import NextAuth from "next-auth"
 import EmailProvider from "next-auth/providers/email"
 

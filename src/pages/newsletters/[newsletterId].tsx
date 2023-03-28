@@ -7,7 +7,7 @@ import { useRouter } from "next/router"
 import { useRef } from "react"
 import useSWR from "swr"
 
-export default function ListWithContacts() {
+export default function ShowNewsletter() {
   const router = useRouter()
   const refreshInterval = useRef(1000)
 

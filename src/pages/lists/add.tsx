@@ -10,7 +10,7 @@ import { useRef, useState } from "react"
 
 const templateHtmlExample = `<p><a href="{{confirmation}}">Click here to confirm signup &raquo;</a></p>`
 
-export default function Lists() {
+export default function AddList() {
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
   const formRef = useRef(null)

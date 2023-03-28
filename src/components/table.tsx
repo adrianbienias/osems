@@ -1,6 +1,12 @@
-import { ReactFCProps } from "@/libs/types"
+import {
+  FC,
+  HTMLAttributes,
+  TableHTMLAttributes,
+  TdHTMLAttributes,
+  ThHTMLAttributes,
+} from "react"
 
-export const Table: React.FC<ReactFCProps> = ({
+export const Table: FC<TableHTMLAttributes<HTMLTableElement>> = ({
   children,
   className = "",
   ...rest
@@ -15,7 +21,7 @@ export const Table: React.FC<ReactFCProps> = ({
   </div>
 )
 
-export const Thead: React.FC<ReactFCProps> = ({
+export const Thead: FC<HTMLAttributes<HTMLTableSectionElement>> = ({
   children,
   className = "",
   ...rest
@@ -28,7 +34,7 @@ export const Thead: React.FC<ReactFCProps> = ({
   </thead>
 )
 
-export const Tbody: React.FC<ReactFCProps> = ({
+export const Tbody: FC<HTMLAttributes<HTMLTableSectionElement>> = ({
   children,
   className = "",
   ...rest
@@ -38,7 +44,7 @@ export const Tbody: React.FC<ReactFCProps> = ({
   </tbody>
 )
 
-export const Th: React.FC<ReactFCProps> = ({
+export const Th: FC<ThHTMLAttributes<HTMLTableCellElement>> = ({
   children,
   className = "",
   ...rest
@@ -48,7 +54,7 @@ export const Th: React.FC<ReactFCProps> = ({
   </th>
 )
 
-export const Tr: React.FC<ReactFCProps> = ({
+export const Tr: FC<HTMLAttributes<HTMLTableRowElement>> = ({
   children,
   className = "",
   ...rest
@@ -61,7 +67,7 @@ export const Tr: React.FC<ReactFCProps> = ({
   </tr>
 )
 
-export const Td: React.FC<ReactFCProps & { colSpan?: number }> = ({
+export const Td: FC<TdHTMLAttributes<HTMLTableCellElement>> = ({
   children,
   className = "",
   ...rest

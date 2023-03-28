@@ -6,7 +6,7 @@ import { Navbar } from "@/components/navbar"
 import { getLocalDateTime } from "@/libs/datetime"
 import { fetcher } from "@/libs/fetcher"
 import { StringValues } from "@/libs/types"
-import type { List, Newsletter } from "@prisma/client"
+import { List, Newsletter } from "@prisma/client"
 import { useRouter } from "next/router"
 import { useRef, useState } from "react"
 import useSWR from "swr"
@@ -14,7 +14,7 @@ import useSWR from "swr"
 const templateHtmlExample = `<p>Test message</p>
 <p><a href="{{unsubscribe}}">Unsubscribe</a></p>`
 
-export default function Newsletter() {
+export default function AddNewsletter() {
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
   const formRef = useRef(null)

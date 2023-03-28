@@ -8,7 +8,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import useSWR from "swr"
 
-export default function Lists() {
+export default function Newsletters() {
   const router = useRouter()
   const { data, error, isLoading } = useSWR("/api/v1/newsletters", fetcher)
 

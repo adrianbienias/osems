@@ -1,22 +1,13 @@
-import { NewsletterWithTemplate } from "@/libs/types"
+import { ApiResponse, NewsletterWithTemplate } from "@/libs/types"
 import { getList } from "@/modules/lists"
 import { getNewsletters, scheduleNewsletter } from "@/modules/newsletters"
 import { getTemplate } from "@/modules/templates"
 import { Newsletter } from "@prisma/client"
-import type { NextApiRequest, NextApiResponse } from "next"
-
-type Response = {
-  error?: string
-  success?: string
-  newsletter?: Newsletter
-  // newsletters?: Newsletter[]
-  fieldName?: string
-  newslettersWithTemplate?: NewsletterWithTemplate[]
-}
+import { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse>
 ) {
   switch (req.method) {
     case "POST": {
@@ -36,7 +27,7 @@ async function handleScheduleNewsletter({
   res,
 }: {
   req: NextApiRequest
-  res: NextApiResponse<Response>
+  res: NextApiResponse<ApiResponse & { newsletter?: Newsletter }>
 }) {
   let { subject, html, listIdToInclude, listIdsToExclude, toSendAfter } =
     req.body as {
@@ -111,7 +102,9 @@ async function handleGetNewsletters({
   res,
 }: {
   req: NextApiRequest
-  res: NextApiResponse<Response>
+  res: NextApiResponse<
+    ApiResponse & { newslettersWithTemplate?: NewsletterWithTemplate[] }
+  >
 }) {
   const newsletters = await getNewsletters()
   if (newsletters instanceof Error) {
