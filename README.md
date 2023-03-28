@@ -80,7 +80,7 @@ Emails are sent with [Nodemailer](https://nodemailer.com/about/).
 
 ## Going to production
 
-First of all, set `NODE_ENV=production` in `.env` file.
+First of all, set `APP_ENV=production` in `.env` file.
 
 In development environment, authorization to access dashboard panel is turned off.
 
