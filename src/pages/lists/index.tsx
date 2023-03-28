@@ -53,7 +53,7 @@ export default function Lists() {
               ))
             ) : (
               <Tr>
-                <Td colspan={3} className="text-center">
+                <Td colSpan={3} className="text-center">
                   No data
                 </Td>
               </Tr>

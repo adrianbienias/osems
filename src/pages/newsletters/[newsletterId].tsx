@@ -62,7 +62,7 @@ export default function ListWithContacts() {
                   ))
                 ) : (
                   <Tr>
-                    <Td colspan={2} className="text-center">
+                    <Td colSpan={2} className="text-center">
                       No data
                     </Td>
                   </Tr>

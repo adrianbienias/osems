@@ -224,11 +224,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Separate contacts page\
-       - Separate contacts API endpoints from lists\
-       - Add filtering by list\
-       - Provide contacts tagging (also, via public API endpoint)\
-       - Allow to create lists based on tags (segmented lists)
 - [ ] Separate templates page\
        - Separate templates API endpoints from newsletters\
        - Assign templates to lists (confirmation templates) and newsletters\

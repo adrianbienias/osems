@@ -110,3 +110,24 @@ export async function unsubscribeContact({
     return Error("Internal Server Error")
   }
 }
+
+export async function getContacts({
+  take,
+  listId,
+}: {
+  take?: number
+  listId?: string
+}) {
+  try {
+    return await prisma.contact.findMany({
+      take,
+      where: { listId },
+      orderBy: { createdAt: "desc" },
+      include: { list: true },
+    })
+  } catch (error) {
+    console.error(error)
+
+    return Error("Internal Server Error")
+  }
+}

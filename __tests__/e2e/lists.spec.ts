@@ -51,9 +51,6 @@ test("should add a new list", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: /^List signup form$/ })
   ).not.toBeVisible()
-  await expect(
-    page.getByRole("heading", { name: /^Contacts$/ })
-  ).not.toBeVisible()
 
   await page.getByLabel("List name").fill("Test list")
   await page.getByRole("button", { name: /^Add new list$/ }).click()
@@ -62,5 +59,4 @@ test("should add a new list", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: /^List signup form$/ })
   ).toBeVisible()
-  await expect(page.getByRole("heading", { name: /^Contacts$/ })).toBeVisible()
 })

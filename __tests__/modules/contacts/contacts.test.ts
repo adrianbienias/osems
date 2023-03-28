@@ -1,9 +1,11 @@
+import { getContacts } from "@/modules/contacts"
 import {
   getContactsToExclude,
   getContactsToSend,
 } from "@/modules/contacts/contacts.service"
 import { getList } from "@/modules/lists"
 import { describe, expect, test, vi } from "vitest"
+import { seedListsWithContacts } from "__tests__/seeding-db"
 
 vi.mock("@/modules/lists/lists.model", () => {
   const mockedListWithContactsToInclude = {
@@ -92,5 +94,25 @@ describe("getContactsToSend()", () => {
         unsubscribedAt: null,
       },
     ])
+  })
+})
+
+describe("getContacts()", async () => {
+  test("should return a given number of contacts", async () => {
+    const seedData = await seedListsWithContacts({
+      numberOfLists: 3,
+      maxContactsPerList: 10,
+    })
+    const numberOfContacts = seedData.reduce(
+      (accumulator, item) => accumulator + item.numberOfContacts,
+      0
+    )
+
+    const contacts = await getContacts({ take: numberOfContacts })
+    if (contacts instanceof Error) {
+      return expect(contacts).not.toBeInstanceOf(Error)
+    }
+
+    expect(contacts.length).toStrictEqual(numberOfContacts)
   })
 })

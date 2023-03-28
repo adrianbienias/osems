@@ -61,7 +61,7 @@ export const Tr: React.FC<ReactFCProps> = ({
   </tr>
 )
 
-export const Td: React.FC<ReactFCProps & { colspan?: number }> = ({
+export const Td: React.FC<ReactFCProps & { colSpan?: number }> = ({
   children,
   className = "",
   ...rest

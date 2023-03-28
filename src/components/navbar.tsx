@@ -24,6 +24,7 @@ export const Navbar = () => (
         </NavLink>
         <nav className="py-2 flex gap-6">
           <NavLink href="/lists">Lists</NavLink>
+          <NavLink href="/contacts">Contacts</NavLink>
           <NavLink href="/newsletters">Newsletters</NavLink>
         </nav>
       </div>

@@ -1,5 +1,4 @@
-import Contacts from "@/components/lists/contacts"
-import Details from "@/components/lists/details"
+import Details from "@/components/lists/list-details"
 import ListSignup from "@/components/lists/list-signup"
 import { Navbar } from "@/components/navbar"
 import { fetcher } from "@/libs/fetcher"
@@ -42,10 +41,6 @@ export default function ListWithContacts() {
 
         <div className="my-16">
           <ListSignup list={list} />
-        </div>
-
-        <div className="my-16">
-          <Contacts list={list} />
         </div>
       </main>
     </>
