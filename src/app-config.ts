@@ -48,6 +48,9 @@ if (isServer) {
   if (!process.env.EMAIL_SERVER_PASSWORD) {
     throw new Error("Missing env EMAIL_SERVER_PASSWORD")
   }
+  if (!process.env.MAX_SEND_RATE_PER_SECOND) {
+    throw new Error("Missing env MAX_SEND_RATE_PER_SECOND")
+  }
 }
 
 export const config = {
@@ -68,4 +71,5 @@ export const config = {
       pass: process.env.EMAIL_SERVER_PASSWORD,
     },
   },
+  maxSendRatePerSecond: Number(process.env.MAX_SEND_RATE_PER_SECOND),
 }

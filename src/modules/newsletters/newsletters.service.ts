@@ -1,3 +1,4 @@
+import { config } from "@/app-config"
 import { wait } from "@/libs/datetime"
 import { prisma } from "@/libs/prisma"
 import { createUnsubscribeUrl } from "@/libs/urls"
@@ -7,11 +8,6 @@ import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
 import { Contact, Newsletter } from "@prisma/client"
 import { getScheduledNewsletters } from "./newsletters.model"
-
-// If SMTP server allows to send e.g. 14 emails per second, set it to a lower value
-// to leave some room for the autoresponder (that can use the spare value)
-// e.g. if newsletter sending rate is set to 10 emails per sec, it will give a room to autoresponder to use the spare 4 emails per sec
-const sendingRatePerSecond = 10
 
 export async function sendNewsletters() {
   const newsletters = await getScheduledNewsletters()
@@ -118,7 +114,7 @@ async function sendNewsletter({
       console.error(error)
     }
 
-    await wait(1000 / sendingRatePerSecond)
+    await wait(1000 / config.maxSendRatePerSecond)
   }
 
   await prisma.newsletter.update({
