@@ -224,15 +224,27 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Separate templates page\
-       - Separate templates API endpoints from newsletters\
-       - Assign templates to lists (confirmation templates) and newsletters\
+- [ ] Separate templates page
+  - Separate templates API endpoints from newsletters
+  - Assign templates to lists (confirmation templates) and newsletters
 - [ ] Handle autoresponders
 - [ ] Dockerize the app
 - [ ] Record demo video showing how to use OSEMS
-- [ ] Handle resubscribing (signup again after unsubscribing)\
-       - Place resubscribe button on the unsubscribe page
+- [ ] Handle resubscribing (signup again after unsubscribing)
+  - Place resubscribe button on the unsubscribe page
 - [ ] Create a landing page with waiting list for a cloud version
-- [ ] Add fully fledged documentation\
-       - [Docusaurus](https://docusaurus.io/)\
-       - [Nextra](https://nextra.site/)
+- [ ] Add fully fledged documentation
+  - [Docusaurus](https://docusaurus.io/)
+  - [Nextra](https://nextra.site/)
+
+## Coding guidelines
+
+- Get ready for changes (e.g. swapping Prisma to TypeORM)
+  - Make the code agnostic, use adapters for ORMs or any other libraries
+- Separate domain logic code from other libraries
+  - Prevent leaking external libraries into domain logic
+- Provide a single point of communication with modules
+  - Export clear API methods (I/O)
+    - Document those API methods (what they expect to receive, what they return)
+  - Treat the communication similarly to a government bureaucracy
+    - Provide forms for applicants and validate those forms (within API methods)
