@@ -2,8 +2,7 @@ import { config } from "@/app-config"
 import { wait } from "@/libs/datetime"
 import { prisma } from "@/libs/prisma"
 import { createUnsubscribeUrl } from "@/libs/urls"
-import { getContactsToExclude, getContactsToSend } from "@/modules/contacts"
-import { getList } from "@/modules/lists"
+import { getContactsToSend } from "@/modules/contacts"
 import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
 import { Contact, Newsletter } from "@prisma/client"
@@ -23,28 +22,9 @@ export async function sendNewsletters() {
   }
 
   for (const newsletter of newsletters) {
-    const list = await getList({ id: newsletter.listIdToInclude })
-
-    if (list instanceof Error) {
-      return console.error(list.message)
-    }
-    if (list === null) {
-      return console.error("List to send newsletter does not exist")
-    }
-    if (list.contacts.length < 1) {
-      return console.error("No contacts on the list to send newsletter")
-    }
-
-    const listIdsToExclude = JSON.parse(newsletter.listIdsToExclude)
-    const contactsToInclude = list.contacts
-    const contactsToExclude = await getContactsToExclude({ listIdsToExclude })
-    if (contactsToExclude instanceof Error) {
-      return console.error(contactsToExclude.message)
-    }
-
-    const contactsToSend = getContactsToSend({
-      contactsToInclude,
-      contactsToExclude,
+    const contactsToSend = await getContactsToSend({
+      listIdToInclude: newsletter.listIdToInclude,
+      listIdsToExclude: JSON.parse(newsletter.listIdsToExclude),
     })
 
     if (contactsToSend.length < 1) {
@@ -55,6 +35,7 @@ export async function sendNewsletters() {
 
       return console.error("No active contacts on the list to send newsletter")
     }
+
     await sendNewsletter({ newsletter, contacts: contactsToSend })
   }
 }

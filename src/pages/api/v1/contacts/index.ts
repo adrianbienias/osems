@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/libs/types"
-import { getContacts } from "@/modules/contacts"
+import { filterContacts } from "@/modules/contacts"
 import { Contact } from "@prisma/client"
 import { NextApiRequest, NextApiResponse } from "next"
 
@@ -29,7 +29,7 @@ async function handleGetContacts({
     listId = undefined
   }
 
-  const contacts = await getContacts({ listId })
+  const contacts = await filterContacts({ listId })
   if (contacts instanceof Error) {
     return res.status(400).json({ error: contacts.message })
   }

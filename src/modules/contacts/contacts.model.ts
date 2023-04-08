@@ -111,7 +111,7 @@ export async function unsubscribeContact({
   }
 }
 
-export async function getContacts({
+export async function filterContacts({
   take,
   listId,
 }: {
@@ -125,6 +125,16 @@ export async function getContacts({
       orderBy: { createdAt: "desc" },
       include: { list: true },
     })
+  } catch (error) {
+    console.error(error)
+
+    return Error("Internal Server Error")
+  }
+}
+
+export async function getContacts({ listId }: { listId?: string }) {
+  try {
+    return await prisma.contact.findMany({ where: { listId } })
   } catch (error) {
     console.error(error)
 

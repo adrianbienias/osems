@@ -1,24 +1,21 @@
-import { getList } from "@/modules/lists"
-import { Contact } from "@prisma/client"
+import { getContacts } from "./contacts.model"
 
-export async function getContactsToExclude({
+async function getContactsToExclude({
   listIdsToExclude,
 }: {
   listIdsToExclude?: string[]
 }) {
   let contactsToExclude = []
-
   if (listIdsToExclude) {
     for (const listIdToExclude of listIdsToExclude) {
-      const list = await getList({ id: listIdToExclude })
-      if (list instanceof Error) {
-        return Error(list.message)
-      }
-      if (list === null) {
-        continue
+      const contacts = await getContacts({ listId: listIdToExclude })
+      if (contacts instanceof Error) {
+        return Error(contacts.message)
       }
 
-      const emails = list.contacts.map((contact) => ({ email: contact.email }))
+      const emails = contacts.map((contact) => ({
+        email: contact.email,
+      }))
       contactsToExclude.push(...emails)
     }
   }
@@ -26,18 +23,28 @@ export async function getContactsToExclude({
   return contactsToExclude
 }
 
-export function getContactsToSend({
-  contactsToInclude,
-  contactsToExclude,
+export async function getContactsToSend({
+  listIdToInclude,
+  listIdsToExclude,
 }: {
-  contactsToInclude: Contact[]
-  contactsToExclude: { email: string }[]
+  listIdToInclude: string
+  listIdsToExclude: string[]
 }) {
-  if (!contactsToInclude) {
+  const contactsToInclude = await getContacts({ listId: listIdToInclude })
+  if (contactsToInclude instanceof Error) {
+    console.error(contactsToInclude.message)
+
     return []
   }
 
-  return contactsToInclude.filter((contactToInclude) => {
+  const contactsToExclude = await getContactsToExclude({ listIdsToExclude })
+  if (contactsToExclude instanceof Error) {
+    console.error(contactsToExclude.message)
+
+    return []
+  }
+
+  const contactsToSend = contactsToInclude.filter((contactToInclude) => {
     if (!contactToInclude.confirmedAt || contactToInclude.unsubscribedAt) {
       return false
     }
@@ -51,4 +58,6 @@ export function getContactsToSend({
 
     return true
   })
+
+  return contactsToSend
 }

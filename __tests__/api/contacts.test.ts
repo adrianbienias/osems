@@ -9,7 +9,7 @@ vi.mock("@/modules/contacts", () => {
   ]
 
   return {
-    getContacts: vi.fn().mockResolvedValue(mockedContacts),
+    filterContacts: vi.fn().mockResolvedValue(mockedContacts),
   }
 })
 

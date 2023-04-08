@@ -11,36 +11,13 @@ import { cleanDatabase } from "../../before-each"
 
 vi.mock("@/libs/datetime", () => ({ wait: vi.fn() }))
 vi.mock("@/modules/sendings", () => ({ sendEmail: vi.fn() }))
-vi.mock("@/modules/lists", () => {
-  return {
-    getList: vi.fn().mockImplementation(({ id }) => {
-      if (id === "list-id-to-include") {
-        return Promise.resolve({
-          contacts: [
-            { email: "foo-1@bar.baz", confirmedAt: new Date() },
-            { email: "foo-2@bar.baz", confirmedAt: new Date() },
-            { email: "foo-3@bar.baz", confirmedAt: new Date() },
-            { email: "foo-4@bar.baz", confirmedAt: new Date() },
-            { email: "foo-5@bar.baz", confirmedAt: new Date() },
-          ],
-        })
-      }
-      if (id === "list-id-to-exclude-1") {
-        return Promise.resolve({
-          contacts: [
-            { email: "foo-2@bar.baz", confirmedAt: new Date() },
-            { email: "foo-4@bar.baz", confirmedAt: new Date() },
-          ],
-        })
-      }
-      if (id === "list-id-to-exclude-2") {
-        return Promise.resolve({
-          contacts: [{ email: "foo-5@bar.baz", confirmedAt: new Date() }],
-        })
-      }
-    }),
-  }
-})
+vi.mock("@/modules/contacts", () => ({
+  getContactsToSend: vi.fn().mockResolvedValue([
+    { email: "foo-1@bar.baz", confirmedAt: new Date() },
+    { email: "foo-2@bar.baz", confirmedAt: new Date() },
+    { email: "foo-3@bar.baz", confirmedAt: new Date() },
+  ]),
+}))
 vi.mock("@/modules/templates", () => {
   const templateMock = {
     subject: "Dummy subject",
@@ -263,6 +240,12 @@ describe("sendNewsletters()", () => {
       text: "Dummy text content",
     })
     expect(sendEmail).toHaveBeenNthCalledWith(2, {
+      to: "foo-2@bar.baz",
+      subject: "Dummy subject",
+      html: "<p>Dummy html content</p>",
+      text: "Dummy text content",
+    })
+    expect(sendEmail).toHaveBeenNthCalledWith(3, {
       to: "foo-3@bar.baz",
       subject: "Dummy subject",
       html: "<p>Dummy html content</p>",
@@ -272,6 +255,12 @@ describe("sendNewsletters()", () => {
     expect(await prisma.sending.findMany()).toStrictEqual([
       {
         email: "foo-1@bar.baz",
+        newsletterId: expect.stringMatching(uuidRegex),
+        sentAt: expect.any(Date),
+        createdAt: expect.any(Date),
+      },
+      {
+        email: "foo-2@bar.baz",
         newsletterId: expect.stringMatching(uuidRegex),
         sentAt: expect.any(Date),
         createdAt: expect.any(Date),
