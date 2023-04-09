@@ -11,14 +11,9 @@ import useSWR from "swr"
 export default function Newsletters() {
   const router = useRouter()
   const { data, error, isLoading } = useSWR("/api/v1/newsletters", fetcher)
-
   const newsletters = data?.newslettersWithTemplate as StringValues<
-    NewsletterWithTemplate[]
+    NewsletterWithTemplate[] | undefined
   >
-
-  if (error) return <div>Failed to load</div>
-  if (isLoading) return <div>Loading...</div>
-  if (!newsletters) return <div>No data</div>
 
   return (
     <>
@@ -43,7 +38,7 @@ export default function Newsletters() {
             </Tr>
           </Thead>
           <Tbody>
-            {newsletters.length > 0 ? (
+            {newsletters && newsletters.length > 0 ? (
               newsletters.map((newsletter) => (
                 <Tr key={newsletter.id}>
                   <Td>
@@ -76,7 +71,9 @@ export default function Newsletters() {
             ) : (
               <Tr>
                 <Td colSpan={4} className="text-center">
-                  No data
+                  {isLoading && <span>Loading...</span>}
+                  {error && <span>Failed to load</span>}
+                  {newsletters?.length === 0 && <span>No data</span>}
                 </Td>
               </Tr>
             )}

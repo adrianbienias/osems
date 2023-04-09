@@ -10,19 +10,17 @@ import useSWR from "swr"
 export default function ShowList() {
   const router = useRouter()
   const { listId } = router.query
-
   const { data, error, isLoading, mutate } = useSWR(
     `/api/v1/lists/${listId}`,
     fetcher
   )
-
   const list = data?.list as
     | (List & { contacts: StringValues<Contact[]> })
     | undefined
 
   if (error) return <div>Failed to load</div>
   if (isLoading) return <div>Loading...</div>
-  if (!list) return <div>No data</div>
+  if (!list) return null
 
   const confirmationTemplate = data?.confirmationTemplate as Template
 

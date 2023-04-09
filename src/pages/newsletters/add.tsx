@@ -65,10 +65,6 @@ export default function AddNewsletter() {
   const { data, error, isLoading } = useSWR("/api/v1/lists", fetcher)
   const lists = data?.lists as StringValues<List[]> | undefined
 
-  if (error) return <div>Failed to load</div>
-  if (isLoading) return <div>Loading...</div>
-  if (!lists) return <div>No data</div>
-
   return (
     <>
       <Navbar />
@@ -79,45 +75,55 @@ export default function AddNewsletter() {
             <h2>Newsletter details</h2>
 
             <form onSubmit={handleFormSubmit} ref={formRef}>
-              <h3>List to send to</h3>
+              {lists && lists.length > 0 ? (
+                <>
+                  <h3>List to send to</h3>
 
-              <ul className="list-none p-0">
-                {lists.map((list) => (
-                  <li key={list.id}>
-                    <input
-                      id={`list-to-include-${list.id}`}
-                      type="radio"
-                      name="listIdToInclude"
-                      value={list.id}
-                      className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded-full text-blue-500 focus:ring-blue-500"
-                    />
-                    <label htmlFor={`list-to-include-${list.id}`}>
-                      {list.name}
-                    </label>
-                    <span> </span>
-                  </li>
-                ))}
-              </ul>
+                  <ul className="list-none p-0">
+                    {lists.map((list) => (
+                      <li key={list.id}>
+                        <input
+                          id={`list-to-include-${list.id}`}
+                          type="radio"
+                          name="listIdToInclude"
+                          value={list.id}
+                          className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded-full text-blue-500 focus:ring-blue-500"
+                        />
+                        <label htmlFor={`list-to-include-${list.id}`}>
+                          {list.name}
+                        </label>
+                        <span> </span>
+                      </li>
+                    ))}
+                  </ul>
 
-              <h3>Lists to exclude</h3>
+                  <h3>Lists to exclude</h3>
 
-              <ul className="list-none p-0">
-                {lists.map((list) => (
-                  <li key={list.id}>
-                    <input
-                      id={`list-to-exclude-${list.id}`}
-                      type="checkbox"
-                      name="listIdsToExclude"
-                      value={list.id}
-                      className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded text-blue-500 focus:ring-blue-500"
-                    />
-                    <label htmlFor={`list-to-exclude-${list.id}`}>
-                      {list.name}
-                    </label>
-                    <span> </span>
-                  </li>
-                ))}
-              </ul>
+                  <ul className="list-none p-0">
+                    {lists.map((list) => (
+                      <li key={list.id}>
+                        <input
+                          id={`list-to-exclude-${list.id}`}
+                          type="checkbox"
+                          name="listIdsToExclude"
+                          value={list.id}
+                          className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded text-blue-500 focus:ring-blue-500"
+                        />
+                        <label htmlFor={`list-to-exclude-${list.id}`}>
+                          {list.name}
+                        </label>
+                        <span> </span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <>
+                  {isLoading && <span>Loading...</span>}
+                  {error && <span>Failed to load</span>}
+                  {lists?.length === 0 && <span>No data</span>}
+                </>
+              )}
 
               <h3 id="input-datetime">Scheduled date</h3>
 

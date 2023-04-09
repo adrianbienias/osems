@@ -10,7 +10,6 @@ import useSWR from "swr"
 export default function ShowNewsletter() {
   const router = useRouter()
   const refreshInterval = useRef(1000)
-
   const { newsletterId } = router.query
   const { data, error, isLoading } = useSWR(
     `/api/v1/newsletters/${newsletterId}`,
@@ -19,7 +18,6 @@ export default function ShowNewsletter() {
       refreshInterval: refreshInterval.current,
     }
   )
-
   const newsletter = data?.newsletter as
     | (Newsletter & { sendings: Sending[] })
     | undefined
@@ -31,8 +29,7 @@ export default function ShowNewsletter() {
 
   if (error) return <div>Failed to load</div>
   if (isLoading) return <div>Loading...</div>
-  if (!newsletter) return <div>No data</div>
-  if (!template) return <div>No data</div>
+  if (!newsletter || !template) return null
 
   return (
     <>

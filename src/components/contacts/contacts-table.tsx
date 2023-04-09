@@ -54,6 +54,7 @@ export default function ContactsTable() {
               <Td colSpan={6} className="text-center">
                 {error && <span>Failed to load</span>}
                 {isLoading && <span>Loading...</span>}
+                {contacts?.length === 0 && <span>No data</span>}
               </Td>
             </Tr>
           )}

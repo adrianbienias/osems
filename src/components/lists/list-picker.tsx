@@ -16,31 +16,39 @@ export default function ListPicker() {
     router.push({ query: { listId: selectedOption?.value } })
   }
 
-  if (error) return <div>Failed to load list picker</div>
+  if (error) {
+    return (
+      <div className="inline-block text-red-600 bg-red-50 border-solid border border-red-100 rounded py-2 px-3 mb-4">
+        Failed to load list picker
+      </div>
+    )
+  }
 
   return (
     <>
-      <div className="mb-0.5">
-        <label htmlFor="list-select" className="text-sm text-slate-600">
-          List:
-        </label>
-      </div>
+      <div className="mb-4">
+        <div className="mb-0.5">
+          <label htmlFor="list-select" className="text-sm text-slate-600">
+            List:
+          </label>
+        </div>
 
-      <Select
-        instanceId="list-select"
-        className="max-w-xs mb-4"
-        isLoading={isLoading}
-        isClearable={true}
-        value={selectedOption}
-        onChange={handleChange}
-        options={
-          lists &&
-          lists.map((list) => ({
-            value: list.id,
-            label: `${list.name} (${list._count.contacts})`,
-          }))
-        }
-      />
+        <Select
+          instanceId="list-select"
+          className="max-w-xs"
+          isLoading={isLoading}
+          isClearable={true}
+          value={selectedOption}
+          onChange={handleChange}
+          options={
+            lists &&
+            lists.map((list) => ({
+              value: list.id,
+              label: `${list.name} (${list._count.contacts})`,
+            }))
+          }
+        />
+      </div>
     </>
   )
 }

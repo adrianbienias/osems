@@ -11,12 +11,7 @@ import useSWR from "swr"
 export default function Lists() {
   const router = useRouter()
   const { data, error, isLoading } = useSWR("/api/v1/lists", fetcher)
-
   const lists = data?.lists as StringValues<ListWithCount[]> | undefined
-
-  if (error) return <div>Failed to load</div>
-  if (isLoading) return <div>Loading...</div>
-  if (!lists) return <div>No data</div>
 
   return (
     <>
@@ -37,7 +32,7 @@ export default function Lists() {
             </Tr>
           </Thead>
           <Tbody>
-            {lists.length > 0 ? (
+            {lists && lists.length > 0 ? (
               lists.map((list) => (
                 <Tr key={list.id}>
                   <Td>
@@ -54,7 +49,9 @@ export default function Lists() {
             ) : (
               <Tr>
                 <Td colSpan={3} className="text-center">
-                  No data
+                  {isLoading && <span>Loading...</span>}
+                  {error && <span>Failed to load</span>}
+                  {lists?.length === 0 && <span>No data</span>}
                 </Td>
               </Tr>
             )}
