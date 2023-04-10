@@ -26,11 +26,8 @@ export default function Details({
     const formData = new FormData(event.target as HTMLFormElement)
     const response = await fetch(`/api/v1/lists/${list.id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      // Workaround with data type set to `any` https://github.com/microsoft/TypeScript/issues/30584#issuecomment-523207192
-      body: new URLSearchParams(formData as any).toString(),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(Object.fromEntries(formData.entries())),
     })
 
     const { error } = (await response.json()) as { error?: string }
