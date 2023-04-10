@@ -82,7 +82,7 @@ async function handleUpdateList({
   }
 
   const template = await updateTemplate({
-    confirmationTemplateId: list.confirmationTemplateId,
+    id: list.confirmationTemplateId,
     subject,
     html,
   })

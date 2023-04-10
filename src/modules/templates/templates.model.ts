@@ -29,7 +29,7 @@ export async function addTemplate({
 
 export async function getTemplates() {
   try {
-    return await prisma.template.findMany()
+    return await prisma.template.findMany({ orderBy: { createdAt: "desc" } })
   } catch (error) {
     console.error(error)
 
@@ -38,11 +38,11 @@ export async function getTemplates() {
 }
 
 export async function updateTemplate({
-  confirmationTemplateId,
+  id,
   subject,
   html,
 }: {
-  confirmationTemplateId: string
+  id: string
   subject?: string
   html?: string
 }) {
@@ -61,9 +61,7 @@ export async function updateTemplate({
 
   try {
     return await prisma.template.update({
-      where: {
-        id: confirmationTemplateId,
-      },
+      where: { id },
       data: { subject, html, text },
     })
   } catch (error) {

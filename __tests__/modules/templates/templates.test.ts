@@ -66,9 +66,9 @@ describe("getTemplates()", () => {
     expect(await getTemplates()).toStrictEqual([
       {
         id: expect.stringMatching(uuidRegex),
-        subject: "Dummy template #1",
-        html: "Dummy content of the email template #1",
-        text: "Dummy content of the email template #1",
+        subject: "Dummy template #3",
+        html: "Dummy content of the email template #3",
+        text: "Dummy content of the email template #3",
         createdAt: expect.any(Date),
       },
       {
@@ -80,9 +80,9 @@ describe("getTemplates()", () => {
       },
       {
         id: expect.stringMatching(uuidRegex),
-        subject: "Dummy template #3",
-        html: "Dummy content of the email template #3",
-        text: "Dummy content of the email template #3",
+        subject: "Dummy template #1",
+        html: "Dummy content of the email template #1",
+        text: "Dummy content of the email template #1",
         createdAt: expect.any(Date),
       },
     ])
@@ -108,7 +108,7 @@ describe("updateTemplate()", () => {
     })
 
     await updateTemplate({
-      confirmationTemplateId: template.id,
+      id: template.id,
       subject: "Updated template",
       html: "<p>Updated content of the email template</p>",
     })
