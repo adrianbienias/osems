@@ -77,9 +77,7 @@ export default function ShowNewsletter() {
             </p>
             <div
               className="reset mt-4 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
-              dangerouslySetInnerHTML={{
-                __html: template.html,
-              }}
+              dangerouslySetInnerHTML={{ __html: template.html }}
             />
           </section>
         </div>

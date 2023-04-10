@@ -8,7 +8,7 @@ import { fetcher } from "@/libs/fetcher"
 import { StringValues } from "@/libs/types"
 import { List, Newsletter } from "@prisma/client"
 import { useRouter } from "next/router"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import useSWR from "swr"
 
 const templateHtmlExample = `<p>Test message</p>
@@ -17,7 +17,6 @@ const templateHtmlExample = `<p>Test message</p>
 export default function AddNewsletter() {
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
-  const formRef = useRef(null)
   const router = useRouter()
 
   function handleHtmlChange(event: React.SyntheticEvent) {
@@ -74,7 +73,7 @@ export default function AddNewsletter() {
           <section className="grow-[0.25]">
             <h2>Newsletter details</h2>
 
-            <form onSubmit={handleFormSubmit} ref={formRef}>
+            <form onSubmit={handleFormSubmit}>
               {lists && lists.length > 0 ? (
                 <>
                   <h3>List to send to</h3>
@@ -175,9 +174,7 @@ export default function AddNewsletter() {
 
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
-              dangerouslySetInnerHTML={{
-                __html: html || templateHtmlExample,
-              }}
+              dangerouslySetInnerHTML={{ __html: html || templateHtmlExample }}
             />
           </section>
         </div>

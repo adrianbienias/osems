@@ -1,6 +1,6 @@
 import { config } from "@/app-config"
 import { PropListWithConfirmationTemplate } from "@/libs/types"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { ErrorMsg } from "../alert"
 import { Button } from "../button"
 import { Input, Textarea } from "../form"
@@ -12,7 +12,6 @@ export default function Details({
 }: PropListWithConfirmationTemplate & { mutate: () => void }) {
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
-  const formRef = useRef(null)
 
   function handleHtmlChange(event: React.SyntheticEvent) {
     const target = event.target as HTMLTextAreaElement
@@ -49,7 +48,7 @@ export default function Details({
       <section className="grow-[0.25]">
         <h2>List details</h2>
 
-        <form onSubmit={handleFormSubmit} ref={formRef}>
+        <form onSubmit={handleFormSubmit}>
           <div>
             <Input
               label="List name"

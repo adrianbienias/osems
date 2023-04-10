@@ -6,14 +6,13 @@ import { Navbar } from "@/components/navbar"
 import { StringValues } from "@/libs/types"
 import { List } from "@prisma/client"
 import { useRouter } from "next/router"
-import { useRef, useState } from "react"
+import { useState } from "react"
 
 const templateHtmlExample = `<p><a href="{{confirmation}}">Click here to confirm signup &raquo;</a></p>`
 
 export default function AddList() {
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
-  const formRef = useRef(null)
   const router = useRouter()
 
   async function handleFormSubmit(event: React.SyntheticEvent) {
@@ -54,7 +53,7 @@ export default function AddList() {
       <main>
         <div className="mt-8 flex flex-col md:flex-row gap-8 justify-between">
           <section className="grow-[0.25]">
-            <form onSubmit={handleFormSubmit} ref={formRef}>
+            <form onSubmit={handleFormSubmit}>
               <div>
                 <h2>List details</h2>
                 <Input
@@ -134,9 +133,7 @@ export default function AddList() {
 
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
-              dangerouslySetInnerHTML={{
-                __html: html || templateHtmlExample,
-              }}
+              dangerouslySetInnerHTML={{ __html: html || templateHtmlExample }}
             />
           </section>
         </div>
