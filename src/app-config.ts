@@ -48,8 +48,11 @@ if (isServer) {
   if (!process.env.EMAIL_SERVER_PASSWORD) {
     throw new Error("Missing env EMAIL_SERVER_PASSWORD")
   }
-  if (!process.env.MAX_SEND_RATE_PER_SECOND) {
-    throw new Error("Missing env MAX_SEND_RATE_PER_SECOND")
+  if (!process.env.MAX_SEND_RATE_PER_SECOND_NEWSLETTER) {
+    throw new Error("Missing env MAX_SEND_RATE_PER_SECOND_NEWSLETTER")
+  }
+  if (!process.env.MAX_SEND_RATE_PER_SECOND_AUTORESPONDER) {
+    throw new Error("Missing env MAX_SEND_RATE_PER_SECOND_AUTORESPONDER")
   }
 }
 
@@ -71,5 +74,10 @@ export const config = {
       pass: process.env.EMAIL_SERVER_PASSWORD,
     },
   },
-  maxSendRatePerSecond: Number(process.env.MAX_SEND_RATE_PER_SECOND),
+  maxSendRatePerSecondNewsletter: Number(
+    process.env.MAX_SEND_RATE_PER_SECOND_NEWSLETTER
+  ),
+  maxSendRatePerSecondAutoresponder: Number(
+    process.env.MAX_SEND_RATE_PER_SECOND_AUTORESPONDER
+  ),
 }

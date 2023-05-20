@@ -7,13 +7,13 @@ import {
   parseTemplateVariables,
   updateTemplate,
 } from "@/modules/templates"
+import { copyFileSync } from "fs"
 import { beforeEach, describe, expect, test } from "vitest"
-import { cleanDatabase } from "../../before-each"
 
 const uuidRegex = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
 
-beforeEach(async () => {
-  await cleanDatabase()
+beforeEach(() => {
+  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
 })
 
 describe("addTemplate()", () => {

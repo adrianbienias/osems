@@ -123,7 +123,7 @@ export async function filterContacts({
       take,
       where: { listId },
       orderBy: { createdAt: "desc" },
-      include: { list: true },
+      include: { list: { select: { name: true, id: true } } },
     })
   } catch (error) {
     console.error(error)

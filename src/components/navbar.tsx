@@ -23,6 +23,7 @@ export const Navbar = () => (
           <NavLink href="/lists">Lists</NavLink>
           <NavLink href="/contacts">Contacts</NavLink>
           <NavLink href="/newsletters">Newsletters</NavLink>
+          <NavLink href="/autoresponders">Autoresponders</NavLink>
         </nav>
       </div>
     </div>

@@ -9,6 +9,11 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Settings {
+    key   String @id
+    value String
+}
+
 model Contact {
     email          String
     listId         String
@@ -21,14 +26,15 @@ model Contact {
 }
 
 model List {
-    id                      String    @id @default(uuid())
-    name                    String    @unique
+    id                      String          @id @default(uuid())
+    name                    String          @unique
     confirmationTemplateId  String
     signupRedirectUrl       String
     confirmationRedirectUrl String
     unsubscribeRedirectUrl  String
     contacts                Contact[]
-    createdAt               DateTime  @default(now())
+    autoresponders          Autoresponder[]
+    createdAt               DateTime        @default(now())
 }
 
 model Newsletter {
@@ -51,6 +57,26 @@ model Sending {
     createdAt    DateTime   @default(now())
 
     @@id([email, newsletterId])
+}
+
+model Autoresponder {
+    id         String              @id @default(uuid())
+    listId     String
+    list       List                @relation(fields: [listId], references: [id])
+    templateId String
+    delayDays  Int
+    logs       AutoresponderLogs[]
+    createdAt  DateTime            @default(now())
+}
+
+model AutoresponderLogs {
+    email           String
+    sentAt          DateTime?
+    createdAt       DateTime      @default(now())
+    autoresponder   Autoresponder @relation(fields: [autoresponderId], references: [id])
+    autoresponderId String
+
+    @@id([email, autoresponderId])
 }
 
 model Template {

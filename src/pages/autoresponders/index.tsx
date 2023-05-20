@@ -1,10 +1,11 @@
-import ContactsTable from "@/components/contacts/contacts-table"
+import AutorespondersTable from "@/components/autoresponders/autoresponders-table"
+import { LinkButton } from "@/components/button"
 import ListPicker from "@/components/lists/list-picker"
 import { Navbar } from "@/components/navbar"
 import { ReactSelectOption } from "@/libs/types"
 import { useRouter } from "next/router"
 
-export default function Contacts() {
+export default function Autoresponders() {
   const router = useRouter()
 
   function onChange(selectedOption: ReactSelectOption) {
@@ -20,10 +21,15 @@ export default function Contacts() {
       <Navbar />
 
       <main>
-        <h2 className="mb-4">Contacts</h2>
+        <h2 className="mb-4">Autoresponders</h2>
+        <p>
+          <LinkButton href="/autoresponders/add">
+            Add new autoresponder
+          </LinkButton>
+        </p>
 
         <ListPicker onChange={onChange} />
-        <ContactsTable />
+        <AutorespondersTable />
       </main>
     </>
   )

@@ -46,3 +46,7 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# don't ignore
+!empty-db.sqlite
+!seeded-db.sqlite

@@ -14,13 +14,13 @@ describe("wait()", () => {
     vi.stubGlobal("setTimeout", vi.fn())
     vi.useFakeTimers()
 
-    const setTimeoutSpy = vi.spyOn(global, "setTimeout")
+    vi.spyOn(global, "setTimeout")
     const waitFn = wait(1500)
 
     vi.runAllTimers()
     await waitFn
 
-    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1500)
+    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 1500)
 
     vi.useRealTimers()
     vi.unstubAllGlobals()

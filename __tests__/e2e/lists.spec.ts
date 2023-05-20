@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test"
-import { cleanDatabase } from "../before-each"
+import { expect, test } from "@playwright/test"
+import { copyFileSync } from "fs"
 
 test.beforeEach(async () => {
-  await cleanDatabase()
+  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
 })
 
 test("should navigate to lists page", async ({ page }) => {

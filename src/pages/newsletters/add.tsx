@@ -5,7 +5,7 @@ import { Input, Textarea } from "@/components/form"
 import { Navbar } from "@/components/navbar"
 import { getLocalDateTime } from "@/libs/datetime"
 import { fetcher } from "@/libs/fetcher"
-import { StringValues } from "@/libs/types"
+import { ApiResponse, StringValues } from "@/libs/types"
 import { List, Newsletter } from "@prisma/client"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -34,7 +34,7 @@ export default function AddNewsletter() {
       (formData.get("toSendAfter") as string) || getLocalDateTime()
     ).toISOString()
     const listIdsToExclude = formData.getAll("listIdsToExclude")
-    const response = await fetch(`${config.baseUrl}/api/v1/newsletters`, {
+    const response = await fetch(`/api/v1/newsletters`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -43,9 +43,7 @@ export default function AddNewsletter() {
         listIdsToExclude,
       }),
     })
-    const { newsletter, error } = (await response.json()) as {
-      error?: string
-      success?: string
+    const { newsletter, error } = (await response.json()) as ApiResponse & {
       newsletter?: StringValues<Newsletter>
     }
 

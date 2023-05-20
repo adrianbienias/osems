@@ -1,19 +1,49 @@
 import { fetcher } from "@/libs/fetcher"
-import { ListWithCount, ReactSelectOption } from "@/libs/types"
+import { ReactSelectOption } from "@/libs/types"
+import { List } from "@prisma/client"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Select from "react-select"
 import useSWR from "swr"
 
-export default function ListPicker() {
+export default function ListPicker({
+  currentId,
+  onChange,
+}: {
+  currentId?: string
+  onChange?: (selectedOption: ReactSelectOption) => void
+}) {
   const router = useRouter()
   const [selectedOption, setSelectedOption] = useState<ReactSelectOption>(null)
   const { data, error, isLoading } = useSWR("/api/v1/lists", fetcher)
-  const lists = data?.lists as ListWithCount[] | undefined
+  const lists = data?.lists as List[] | undefined
+  const listOptions = useMemo(
+    () =>
+      lists?.map((list) => ({
+        value: list.id,
+        label: `${list.name}`,
+      })),
+    [lists]
+  )
+
+  useEffect(() => {
+    if (!listOptions) return
+    const setValue = listOptions.find(
+      (item) => item.value === router.query.listId || item.value === currentId
+    )
+    if (!setValue) {
+      setSelectedOption(null)
+    } else {
+      setSelectedOption(setValue)
+    }
+  }, [listOptions, router.query.listId, currentId])
 
   function handleChange(selectedOption: ReactSelectOption) {
     setSelectedOption(selectedOption)
-    router.push({ query: { listId: selectedOption?.value } })
+
+    if (onChange) {
+      onChange(selectedOption)
+    }
   }
 
   if (error) {
@@ -28,25 +58,19 @@ export default function ListPicker() {
     <>
       <div className="mb-4">
         <div className="mb-0.5">
-          <label htmlFor="list-select" className="text-sm text-slate-600">
+          <label htmlFor="list-picker" className="text-sm text-slate-600">
             List:
           </label>
         </div>
 
         <Select
-          instanceId="list-select"
-          className="max-w-xs"
+          name="listId"
+          instanceId="list-picker"
           isLoading={isLoading}
           isClearable={true}
           value={selectedOption}
           onChange={handleChange}
-          options={
-            lists &&
-            lists.map((list) => ({
-              value: list.id,
-              label: `${list.name} (${list._count.contacts})`,
-            }))
-          }
+          options={listOptions}
         />
       </div>
     </>

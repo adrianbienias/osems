@@ -6,8 +6,8 @@ import {
   sendNewsletters,
 } from "@/modules/newsletters"
 import { sendEmail } from "@/modules/sendings"
+import { copyFileSync } from "fs"
 import { beforeEach, describe, expect, test, vi } from "vitest"
-import { cleanDatabase } from "../../before-each"
 
 vi.mock("@/libs/datetime", () => ({ wait: vi.fn() }))
 vi.mock("@/modules/sendings", () => ({ sendEmail: vi.fn() }))
@@ -35,8 +35,8 @@ vi.mock("@/modules/templates", () => {
 const uuidRegex = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
 const toSendAfter = new Date()
 
-beforeEach(async () => {
-  await cleanDatabase()
+beforeEach(() => {
+  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
 })
 
 describe("scheduleNewsletter()", () => {

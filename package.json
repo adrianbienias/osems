@@ -16,19 +16,19 @@
     "prepare": "husky install",
     "postinstall": "(prisma generate) && (prisma migrate deploy) && (dotenv -- ts-node ./src/libs/admin.ts)",
     "cron": "dotenv -- ts-node ./src/libs/cron.ts",
-    "db:seed": "dotenv -- ts-node ./__tests__/seed-db.ts",
+    "db:seed": "dotenv -- ts-node -e \"import { seedDb } from './__tests__/seed-db'; seedDb('dev-db.sqlite')\"",
     "db:reset": "prisma migrate reset",
     "dev": "(npm run lint) && (prisma db push) ; (npm run cron) & (next dev)",
     "test": "(npm run lint) && (npm run test:unit) && (npm run test:e2e)",
-    "test:unit": "(dotenv -e .env.test -- prisma db push) && (dotenv -e .env.test -- vitest --run)",
-    "test:unit:watch": "(dotenv -e .env.test -- prisma db push) && (dotenv -e .env.test -- vitest --coverage)",
+    "test:unit": "(dotenv -e .env.test -- prisma db push) && (dotenv -e .env.test -- vitest --run --coverage)",
+    "test:unit:watch": "(dotenv -e .env.test -- prisma db push) && (dotenv -e .env.test -- vitest)",
     "test:e2e": "(dotenv -e .env.test -- prisma db push) && (dotenv -e .env.test -- playwright test)",
     "lint": "next lint",
     "build": "(prisma migrate deploy) ; (next build)",
     "start": "(npm run cron) & (next start)"
   },
   "dependencies": {
-    "@faker-js/faker": "^7.6.0",
+    "@faker-js/faker": "^8.0.1",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@playwright/test": "^1.32.1",
     "@prisma/client": "^4.11.0",
@@ -42,7 +42,7 @@
     "@types/prettier": "^2.7.2",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
-    "@vitest/coverage-c8": "^0.29.2",
+    "@vitest/coverage-c8": "^0.31.2",
     "autoprefixer": "^10.4.14",
     "console-stamp": "^3.1.1",
     "cors": "^2.8.5",
@@ -70,6 +70,6 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
     "typescript": "4.9.5",
-    "vitest": "^0.29.2"
+    "vitest": "^0.31.2"
   }
 }

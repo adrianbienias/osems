@@ -1,7 +1,10 @@
 import { config } from "@/app-config"
+import { sendAutoresponders } from "@/modules/autoresponders"
 import { sendNewsletters } from "@/modules/newsletters"
+import consoleStamp from "console-stamp"
 import { schedule } from "node-cron"
 
+consoleStamp(console, { format: ":date(yyyy-mm-dd HH:MM:ss) :label" })
 console.info("\n✔ Node cron jobs activated\n")
 
 const schedules = {
@@ -15,4 +18,9 @@ const schedules = {
 schedule(
   config.isProduction ? schedules.everyTenSeconds : schedules.everySecond,
   async () => await sendNewsletters()
+)
+
+schedule(
+  config.isProduction ? schedules.everyTenSeconds : schedules.everySecond,
+  async () => await sendAutoresponders()
 )

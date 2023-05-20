@@ -10,5 +10,10 @@
     "subject": "Foo subject",
     "html": "<p>Foo <a href=\"{{confirmation}}\">Confirmation</a></p>",
     "text": "Foo Confirmation [{{confirmation}}]"
+  },
+  "autoresponderTemplate": {
+    "subject": "Dummy autoresponder subject",
+    "html": "<p>Dummy autoresponder content. <a href=\"{{unsubscribe}}\">Unsubscribe</a></p>",
+    "text": "Dummy autoresponder content. Unsubscribe [{{unsubscribe}}]"
   }
 }

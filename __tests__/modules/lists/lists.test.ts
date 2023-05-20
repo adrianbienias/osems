@@ -1,8 +1,8 @@
 import { prisma } from "@/libs/prisma"
 import { addContact } from "@/modules/contacts/contacts.model"
 import { addList, getList, getLists, updateList } from "@/modules/lists"
+import { copyFileSync } from "fs"
 import { beforeEach, describe, expect, test, vi } from "vitest"
-import { cleanDatabase } from "../../before-each"
 import testData from "../../test-data.json"
 
 const uuidRegex = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
@@ -11,8 +11,8 @@ vi.mock("@/modules/templates", () => ({
   getTemplate: vi.fn(),
 }))
 
-beforeEach(async () => {
-  await cleanDatabase()
+beforeEach(() => {
+  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
 })
 
 describe("addList()", () => {

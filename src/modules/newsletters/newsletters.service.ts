@@ -21,6 +21,8 @@ export async function sendNewsletters() {
     return console.info("Busy... sending newsletter in progress")
   }
 
+  // TODO: Set sending status as in progress
+
   for (const newsletter of newsletters) {
     const contactsToSend = await getContactsToSend({
       listIdToInclude: newsletter.listIdToInclude,
@@ -38,6 +40,8 @@ export async function sendNewsletters() {
 
     await sendNewsletter({ newsletter, contacts: contactsToSend })
   }
+
+  // TODO: Clear sending status
 }
 
 async function sendNewsletter({
@@ -95,7 +99,7 @@ async function sendNewsletter({
       console.error(error)
     }
 
-    await wait(1000 / config.maxSendRatePerSecond)
+    await wait(1000 / config.maxSendRatePerSecondNewsletter)
   }
 
   await prisma.newsletter.update({

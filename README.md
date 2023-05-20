@@ -224,18 +224,23 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Separate templates page
-  - Separate templates API endpoints from newsletters
-  - Assign templates to lists (confirmation templates) and newsletters
-- [ ] Handle autoresponders
+- [ ] Move API handlers from Next.js api/ to modules' routes
+- [ ] Move unit tests next to files they concern
+- [ ] Remove `isSending` column in `Newsletters` and use `sending_status` similar to autoresponders
+- [ ] Rename `Sending` table to `NewsletterLogs`
+- [ ] Use list pickers for selecting lists on Newsletter creation page
+- [ ] Improve UI layout (currently columns' width is too fluid)
+- [ ] Add toast for quick notifications e.g. after saving edited changes
 - [ ] Dockerize the app
-- [ ] Record demo video showing how to use OSEMS
-- [ ] Handle resubscribing (signup again after unsubscribing)
-  - Place resubscribe button on the unsubscribe page
-- [ ] Create a landing page with waiting list for a cloud version
+- [ ] Measure performance depending on the dataset size
+- [ ] Create a landing page with waiting list for a video course on building the app
 - [ ] Add fully fledged documentation
   - [Docusaurus](https://docusaurus.io/)
   - [Nextra](https://nextra.site/)
+- [ ] Record demo video showing how OSEMS works and how to use it
+- [ ] Handle resubscribing (signup again after unsubscribing)
+  - Place resubscribe button on the unsubscribe page
+- [ ] Create a landing page with waiting list for a cloud version
 
 ## Coding guidelines
 

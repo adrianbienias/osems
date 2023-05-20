@@ -1,7 +1,7 @@
 import { filterContacts, getContactsToSend } from "@/modules/contacts"
 import * as contactsModel from "@/modules/contacts/contacts.model"
 import { getContacts } from "@/modules/contacts/contacts.model"
-import { seedListsWithContacts } from "__tests__/seeding-db"
+import { copyFileSync } from "fs"
 import { describe, expect, test, vi } from "vitest"
 
 describe("getContactsToSend()", () => {
@@ -55,32 +55,35 @@ describe("getContactsToSend()", () => {
 
 describe("filterContacts()", async () => {
   test("should return a given number of contacts", async () => {
-    const seedData = await seedListsWithContacts({
-      numberOfLists: 3,
-      maxContacts: 10,
-    })
-    const numberOfContacts = seedData.reduce(
-      (accumulator, item) => accumulator + item.contacts.length,
-      0
-    )
+    copyFileSync("./prisma/seeded-db.sqlite", "./prisma/test-db.sqlite")
 
-    const contacts = await filterContacts({ take: numberOfContacts })
+    const expectedNumberOfFilteredAutoresponders = 25
+
+    const contacts = await filterContacts({
+      take: expectedNumberOfFilteredAutoresponders,
+    })
     if (contacts instanceof Error) {
       return expect(contacts).not.toBeInstanceOf(Error)
     }
 
-    expect(contacts.length).toStrictEqual(numberOfContacts)
+    expect(contacts.length).toStrictEqual(
+      expectedNumberOfFilteredAutoresponders
+    )
   })
 })
 
 describe("getContacts()", () => {
   test("should get contacts from database", async () => {
-    const seedData = await seedListsWithContacts({
-      numberOfLists: 1,
-      maxContacts: 20,
-    })
-    const contacts = await getContacts({ listId: seedData[0].listId })
+    copyFileSync("./prisma/seeded-db.sqlite", "./prisma/test-db.sqlite")
 
-    expect(contacts).toStrictEqual(seedData[0].contacts)
+    const contacts = await getContacts({
+      listId: "2e4b0581-0bdc-4a54-bc05-8877b8808a40",
+    })
+    if (contacts instanceof Error) {
+      return expect(contacts).not.toBeInstanceOf(Error)
+    }
+    const expectedNumberOfContacts = 21
+
+    expect(contacts.length).toStrictEqual(expectedNumberOfContacts)
   })
 })

@@ -1,9 +1,9 @@
 import { prisma } from "@/libs/prisma"
 import { contactsGetHandler, contactsPostHandler } from "@/modules/contacts"
 import { sendEmail } from "@/modules/sendings"
+import { copyFileSync } from "fs"
 import { createMocks } from "node-mocks-http"
 import { beforeEach, describe, expect, test, vi } from "vitest"
-import { cleanDatabase } from "../../before-each"
 import testData from "../../test-data.json"
 
 vi.mock("@/modules/sendings", () => {
@@ -27,8 +27,8 @@ vi.mock("@/modules/templates", () => {
 
 const uuidRegex = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
 
-beforeEach(async () => {
-  await cleanDatabase()
+beforeEach(() => {
+  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
 })
 
 describe("POST /api/v1/public/contacts", () => {

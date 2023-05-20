@@ -1,19 +1,21 @@
 import { DatetimeUtc } from "@/components/datetime-utc"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
-import { ContactWithList, StringValues } from "@/libs/types"
+import { AutoresponderWithListAndTemplates, StringValues } from "@/libs/types"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import useSWR from "swr"
 
-export default function ContactsTable() {
+export default function AutorespondersTable() {
   const router = useRouter()
   const listId = router.query.listId
   const { data, error, isLoading } = useSWR(
-    `/api/v1/contacts?listId=${listId}`,
+    `/api/v1/autoresponders?listId=${listId}`,
     fetcher
   )
-  const contacts = data?.contacts as StringValues<ContactWithList[]> | undefined
+  const autoresponders = data?.autoresponders as
+    | StringValues<AutoresponderWithListAndTemplates[]>
+    | undefined
 
   return (
     <>
@@ -21,32 +23,30 @@ export default function ContactsTable() {
         <Thead>
           <Tr>
             <Th>No.</Th>
-            <Th>Email</Th>
+            <Th>Subject</Th>
+            <Th>Delay days</Th>
             <Th>List</Th>
             <Th>Created at</Th>
-            <Th>Confirmed at</Th>
-            <Th>Unsubscribed at</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {contacts && contacts.length > 0 ? (
-            contacts.map((contact, index) => (
-              <Tr key={`${contact.email}-${contact.listId}`}>
+          {autoresponders && autoresponders.length > 0 ? (
+            autoresponders.map((autoresponder, index) => (
+              <Tr key={`${autoresponder.list.id}`}>
                 <Td>{index + 1}</Td>
-                <Td>{contact.email}</Td>
                 <Td>
-                  <Link href={`lists/${contact.list.id}`}>
-                    {contact.list.name}
+                  <Link href={`autoresponders/${autoresponder.id}`}>
+                    {autoresponder.template.subject}
+                  </Link>
+                </Td>
+                <Td>{autoresponder.delayDays}</Td>
+                <Td>
+                  <Link href={`lists/${autoresponder.listId}`}>
+                    {autoresponder.list.name}
                   </Link>
                 </Td>
                 <Td>
-                  <DatetimeUtc datetime={contact.createdAt} />
-                </Td>
-                <Td>
-                  <DatetimeUtc datetime={contact.confirmedAt} />
-                </Td>
-                <Td>
-                  <DatetimeUtc datetime={contact.unsubscribedAt} />
+                  <DatetimeUtc datetime={autoresponder.createdAt} />
                 </Td>
               </Tr>
             ))
@@ -55,7 +55,7 @@ export default function ContactsTable() {
               <Td colSpan={6} className="text-center">
                 {error && <span>Failed to load</span>}
                 {isLoading && <span>Loading...</span>}
-                {contacts?.length === 0 && <span>No data</span>}
+                {autoresponders?.length === 0 && <span>No data</span>}
               </Td>
             </Tr>
           )}
