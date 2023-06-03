@@ -3,7 +3,7 @@ import { getTemplate } from "@/modules/templates"
 import apiListsHandler from "@/pages/api/v1/lists/"
 import apiListHandler from "@/pages/api/v1/lists/[listId]"
 import { describe, expect, test, vi } from "vitest"
-import { mockRequestResponse } from "./../api-mocks"
+import { mockRequestResponse } from "../../../mocks/api-mocks"
 
 vi.mock("@/modules/lists", () => {
   const mockedList = { name: "Dummy mocked list" }

@@ -207,7 +207,7 @@ It can be helpful from the architectural point of view to see how parts of the s
 Example usage:
 
 ```
-npx depcruise .  --ts-config --exclude "(node_modules|\.next|__tests__)" --output-type dot | dot -T svg > dependency-graph.svg
+npx depcruise .  --ts-config --exclude "(node_modules|\.next|\.test)" --output-type dot | dot -T svg > dependency-graph.svg
 ```
 
 ## FAQ
@@ -225,12 +225,13 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 ## TODOs
 
 - [ ] Move API handlers from Next.js api/ to modules' routes
-- [ ] Move unit tests next to files they concern
 - [ ] Remove `isSending` column in `Newsletters` and use `sending_status` similar to autoresponders
 - [ ] Rename `Sending` table to `NewsletterLogs`
+- [ ] Move all prisma calls to model files
 - [ ] Use list pickers for selecting lists on Newsletter creation page
 - [ ] Improve UI layout (currently columns' width is too fluid)
 - [ ] Add toast for quick notifications e.g. after saving edited changes
+- [ ] Provide GUI instalator (move some settings from .env to database, append others to .env file automatically)
 - [ ] Dockerize the app
 - [ ] Measure performance depending on the dataset size
 - [ ] Create a landing page with waiting list for a video course on building the app

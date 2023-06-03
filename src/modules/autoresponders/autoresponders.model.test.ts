@@ -8,7 +8,7 @@ import {
 } from "@/modules/autoresponders/autoresponders.model"
 import { copyFileSync } from "fs"
 import { beforeEach, describe, expect, test } from "vitest"
-import testData from "../../test-data.json"
+import testData from "../../../mocks/test-data.json"
 
 const uuidRegex = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
 

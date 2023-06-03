@@ -1,6 +1,6 @@
 import apiContactsHandler from "@/pages/api/v1/contacts/"
 import { describe, expect, test, vi } from "vitest"
-import { mockRequestResponse } from "__tests__/api-mocks"
+import { mockRequestResponse } from "../../../mocks/api-mocks"
 
 vi.mock("@/modules/contacts", () => {
   const mockedContacts = [
@@ -13,7 +13,7 @@ vi.mock("@/modules/contacts", () => {
   }
 })
 
-describe("/api/lists", () => {
+describe("GET /api/contacts", () => {
   test("should return contacts array", async () => {
     const { req, res } = mockRequestResponse({ method: "GET" })
 

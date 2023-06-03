@@ -7,7 +7,7 @@ import { getTemplate } from "@/modules/templates"
 import apiNewslettersHandler from "@/pages/api/v1/newsletters"
 import apiNewsletterHandler from "@/pages/api/v1/newsletters/[newsletterId]"
 import { describe, expect, test, vi } from "vitest"
-import { mockRequestResponse } from "./../api-mocks"
+import { mockRequestResponse } from "../../../mocks/api-mocks"
 
 vi.mock("@/modules/lists", () => {
   const mockedListWithContactsToInclude = {

@@ -4,7 +4,7 @@ import { sendEmail } from "@/modules/sendings"
 import { copyFileSync } from "fs"
 import { createMocks } from "node-mocks-http"
 import { beforeEach, describe, expect, test, vi } from "vitest"
-import testData from "../../test-data.json"
+import testData from "../../../../mocks/test-data.json"
 
 vi.mock("@/modules/sendings", () => {
   return {

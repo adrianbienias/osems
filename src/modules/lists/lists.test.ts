@@ -3,7 +3,7 @@ import { addContact } from "@/modules/contacts/contacts.model"
 import { addList, getList, getLists, updateList } from "@/modules/lists"
 import { copyFileSync } from "fs"
 import { beforeEach, describe, expect, test, vi } from "vitest"
-import testData from "../../test-data.json"
+import testData from "../../../mocks/test-data.json"
 
 const uuidRegex = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
 

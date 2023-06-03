@@ -1,8 +1,8 @@
 import { prisma } from "@/libs/prisma"
 import { addTemplate } from "@/modules/templates"
 import { faker } from "@faker-js/faker"
-import testData from "./test-data.json"
 import { copyFileSync } from "fs"
+import testData from "./test-data.json"
 
 export async function seedDb(destDbFilename: string) {
   copyFileSync("./prisma/empty-db.sqlite", `./prisma/${destDbFilename}`)
@@ -70,25 +70,6 @@ async function seedList() {
   })
 
   return list
-}
-
-async function seedListsWithContacts({
-  numberOfLists,
-  maxContactsPerList,
-}: {
-  numberOfLists: number
-  maxContactsPerList: number
-}) {
-  const seededData = []
-  for (let i = 0; i < numberOfLists; i++) {
-    const { name: listName, id: listId } = await seedList()
-    const numberOfContacts = Math.ceil(Math.random() * maxContactsPerList)
-    const contacts = await seedContacts({ listId, numberOfContacts })
-
-    seededData.push({ listId, listName, contacts })
-  }
-
-  return seededData
 }
 
 async function seedListsWithContactsAndAutoresponders({
