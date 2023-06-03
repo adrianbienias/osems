@@ -1,3 +1,4 @@
+import { ApiResponse } from "@/libs/types"
 import { contactsGetHandler, contactsPostHandler } from "@/modules/contacts"
 import Cors from "cors"
 import { NextApiRequest, NextApiResponse } from "next"
@@ -23,16 +24,16 @@ function runMiddleware(
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<ApiResponse>
 ) {
   await runMiddleware(req, res, cors)
 
   switch (req.method) {
     case "POST": {
-      return contactsPostHandler(req, res)
+      return contactsPostHandler({ req, res })
     }
     case "GET": {
-      return contactsGetHandler(req, res)
+      return contactsGetHandler({ req, res })
     }
     default: {
       return res.status(405).json({ error: "Method not allowed" })

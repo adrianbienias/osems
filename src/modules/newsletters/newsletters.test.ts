@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma"
+import { uuidRegex } from "@/libs/validators"
 import {
   getNewsletter,
   getNewsletters,
@@ -8,6 +9,8 @@ import {
 import { sendEmail } from "@/modules/sendings"
 import { copyFileSync } from "fs"
 import { beforeEach, describe, expect, test, vi } from "vitest"
+
+const toSendAfter = new Date()
 
 vi.mock("@/libs/datetime", () => ({ wait: vi.fn() }))
 vi.mock("@/modules/sendings", () => ({ sendEmail: vi.fn() }))
@@ -31,9 +34,6 @@ vi.mock("@/modules/templates", () => {
     parseTemplateVariables: vi.fn().mockReturnValue(templateMock),
   }
 })
-
-const uuidRegex = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
-const toSendAfter = new Date()
 
 beforeEach(() => {
   copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")

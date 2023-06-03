@@ -1,6 +1,7 @@
 import { sendEmail } from "@/modules/sendings"
 import nodemailer from "nodemailer"
 import { describe, expect, test, vi } from "vitest"
+import testData from "../../../mocks/test-data.json"
 
 vi.mock("nodemailer", async () => ({
   default: {
@@ -11,16 +12,9 @@ vi.mock("nodemailer", async () => ({
   },
 }))
 
-const emailData = {
-  to: "to-foo@bar.baz",
-  subject: "Dummy subject",
-  html: "<p>Dummy html message</p>",
-  text: "Dummy text message",
-}
-
 describe("sendEmail()", () => {
   test("should call nodemailer sendMail() method", async () => {
-    await sendEmail(emailData)
+    await sendEmail(testData.email)
 
     expect(nodemailer.createTransport).toHaveBeenCalledWith({
       jsonTransport: true,

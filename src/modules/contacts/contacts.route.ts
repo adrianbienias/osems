@@ -1,20 +1,26 @@
 import { config, SIGNUP_FORM_ACTIONS } from "@/app-config"
+import { ApiResponse } from "@/libs/types"
 import { createConfirmationUrl } from "@/libs/urls"
 import { isEmail } from "@/libs/validators"
 import { getList } from "@/modules/lists"
 import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
+import { Contact } from "@prisma/client"
 import { NextApiRequest, NextApiResponse } from "next"
 import {
   addContact,
   confirmContact,
+  filterContacts,
   unsubscribeContact,
 } from "./contacts.model"
 
-export async function contactsPostHandler(
-  req: NextApiRequest,
+export async function contactsPostHandler({
+  req,
+  res,
+}: {
+  req: NextApiRequest
   res: NextApiResponse
-) {
+}) {
   const { email, listId } = req.body as { email?: string; listId?: string }
 
   if (!listId) {
@@ -116,10 +122,13 @@ export async function contactsPostHandler(
   }
 }
 
-export async function contactsGetHandler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function contactsGetHandler({
+  req,
+  res,
+}: {
+  req: NextApiRequest
+  res: NextApiResponse<ApiResponse>
+}) {
   let { email, listId, action } = req.query as {
     email?: string
     listId?: string
@@ -179,4 +188,24 @@ export async function contactsGetHandler(
       return res.status(400).json({ error: "Invalid action parameter" })
     }
   }
+}
+
+export async function handleGetContacts({
+  req,
+  res,
+}: {
+  req: NextApiRequest
+  res: NextApiResponse<ApiResponse & { contacts?: Contact[] }>
+}) {
+  let listId = req.query.listId as string | undefined
+  if (listId === "undefined" || listId === "") {
+    listId = undefined
+  }
+
+  const contacts = await filterContacts({ listId })
+  if (contacts instanceof Error) {
+    return res.status(400).json({ error: contacts.message })
+  }
+
+  return res.status(200).json({ success: "Ok", contacts })
 }

@@ -31,13 +31,10 @@ vi.mock("@/modules/autoresponders/autoresponders.model", () => {
     updateAutoresponder: vi.fn().mockResolvedValue(mockedAutoresponders[0]),
   }
 })
-
-vi.mock("@/modules/templates", () => {
-  return {
-    getTemplate: vi.fn().mockResolvedValue({}),
-    updateTemplate: vi.fn(),
-  }
-})
+vi.mock("@/modules/templates", () => ({
+  getTemplate: vi.fn().mockResolvedValue({}),
+  updateTemplate: vi.fn(),
+}))
 
 beforeEach(() => {
   copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")

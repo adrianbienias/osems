@@ -4,16 +4,8 @@ import { sendEmail } from "@/modules/sendings"
 import { copyFileSync } from "fs"
 import { beforeEach, describe, expect, test, vi } from "vitest"
 
-vi.mock("@/modules/sendings", () => {
-  return {
-    sendEmail: vi.fn(),
-  }
-})
-vi.mock("@/libs/datetime", () => {
-  return {
-    wait: vi.fn(),
-  }
-})
+vi.mock("@/modules/sendings", () => ({ sendEmail: vi.fn() }))
+vi.mock("@/libs/datetime", () => ({ wait: vi.fn() }))
 
 beforeEach(() => {
   copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")

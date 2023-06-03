@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma"
+import { uuidRegex } from "@/libs/validators"
 import {
   addTemplate,
   convertTemplateHtmlToText,
@@ -9,8 +10,6 @@ import {
 } from "@/modules/templates"
 import { copyFileSync } from "fs"
 import { beforeEach, describe, expect, test } from "vitest"
-
-const uuidRegex = /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/
 
 beforeEach(() => {
   copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")

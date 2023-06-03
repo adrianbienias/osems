@@ -1,160 +1,68 @@
-import { addList, getList, getLists, updateList } from "@/modules/lists"
-import { getTemplate } from "@/modules/templates"
-import apiListsHandler from "@/pages/api/v1/lists/"
+import {
+  handleGetList,
+  handleGetLists,
+  handlePatchList,
+  handlePostList,
+} from "@/modules/lists"
+import apiListsHandler from "@/pages/api/v1/lists"
 import apiListHandler from "@/pages/api/v1/lists/[listId]"
 import { describe, expect, test, vi } from "vitest"
 import { mockRequestResponse } from "../../../mocks/api-mocks"
 
-vi.mock("@/modules/lists", () => {
-  const mockedList = { name: "Dummy mocked list" }
+vi.mock("@/modules/lists", () => ({
+  handlePostList: vi.fn(),
+  handleGetLists: vi.fn(),
+  handleGetList: vi.fn(),
+  handlePatchList: vi.fn(),
+}))
 
-  return {
-    addList: vi.fn().mockResolvedValue(mockedList),
-    getList: vi.fn().mockResolvedValue(mockedList),
-    updateList: vi.fn().mockResolvedValue(mockedList),
-    getLists: vi.fn().mockResolvedValue([mockedList, mockedList]),
-  }
-})
-
-vi.mock("@/modules/templates", () => {
-  return {
-    addTemplate: vi
-      .fn()
-      .mockResolvedValue({ id: "dummy-confirmation-template-id" }),
-    getTemplate: vi.fn(),
-    updateTemplate: vi.fn(),
-  }
-})
-
-describe("/api/lists", () => {
-  test("should return an error message for not allowed method", async () => {
-    const { req, res } = mockRequestResponse({ method: "DELETE" })
-
-    await apiListsHandler(req, res)
-
-    expect(res._getJSONData()).toStrictEqual({ error: "Method not allowed" })
-    expect(res._getStatusCode()).toStrictEqual(405)
-  })
-
-  test("should return an error message for missing list name", async () => {
-    const { req, res } = mockRequestResponse({ method: "POST" })
-
-    await apiListsHandler(req, res)
-
-    expect(res._getJSONData()).toStrictEqual({ error: "Missing list name" })
-    expect(res._getStatusCode()).toStrictEqual(400)
-
-    expect(addList).not.toHaveBeenCalled()
-  })
-
-  test("should return an error message for missing next field", async () => {
+describe("POST /api/v1/lists", () => {
+  test("should call handlePostList()", async () => {
     const { req, res } = mockRequestResponse({
       method: "POST",
-      body: { name: "Dummy list name" },
+      body: { foo: "bar" },
     })
-
     await apiListsHandler(req, res)
-
-    expect(res._getJSONData()).toStrictEqual({
-      error: "Missing signup redirect url",
-    })
-    expect(res._getStatusCode()).toStrictEqual(400)
-
-    expect(addList).not.toHaveBeenCalled()
+    expect(handlePostList).toHaveBeenCalledWith({ req, res })
   })
+})
 
-  test("should call addList()", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "POST",
-      body: {
-        name: "Foo Bar List",
-        signupRedirectUrl: "http://signupRedirectUrl",
-        confirmationRedirectUrl: "http://confirmationRedirectUrl",
-        unsubscribeRedirectUrl: "http://unsubscribeRedirectUrl",
-        subject: "Dummy subject",
-        html: `<p>Foo bar content</p><a href="{{confirmation}}">Confirm</a>`,
-      },
-    })
-
-    await apiListsHandler(req, res)
-
-    expect(res._getJSONData()).toStrictEqual({
-      success: "List added",
-      list: { name: "Dummy mocked list" },
-    })
-    expect(res._getStatusCode()).toStrictEqual(200)
-
-    expect(addList).toHaveBeenCalledWith({
-      name: "Foo Bar List",
-      signupRedirectUrl: "http://signupRedirectUrl",
-      confirmationRedirectUrl: "http://confirmationRedirectUrl",
-      unsubscribeRedirectUrl: "http://unsubscribeRedirectUrl",
-      confirmationTemplateId: "dummy-confirmation-template-id",
-    })
-  })
-
-  test("should call getLists()", async () => {
+describe("GET /api/v1/lists", () => {
+  test("should call handleGetLists()", async () => {
     const { req, res } = mockRequestResponse({ method: "GET" })
-
     await apiListsHandler(req, res)
-
-    expect(res._getJSONData()).toStrictEqual({
-      success: "Ok",
-      lists: [{ name: "Dummy mocked list" }, { name: "Dummy mocked list" }],
-    })
-    expect(res._getStatusCode()).toStrictEqual(200)
-
-    expect(getLists).toHaveBeenCalled()
+    expect(handleGetLists).toHaveBeenCalledWith({ req, res })
   })
 })
 
-describe("/api/list/:listId", () => {
-  test("should call getList()", async () => {
+describe("GET /api/v1/list/:listId", () => {
+  test("should call handleGetList()", async () => {
     const { req, res } = mockRequestResponse({
       method: "GET",
-      query: {
-        listId: "dummy-list-id",
-      },
+      query: { foo: "bar" },
     })
-
     await apiListHandler(req, res)
-
-    expect(res._getJSONData()).toStrictEqual({
-      success: "Ok",
-      list: { name: "Dummy mocked list" },
-    })
-    expect(res._getStatusCode()).toStrictEqual(200)
-
-    expect(getList).toHaveBeenCalled()
-    expect(getTemplate).toHaveBeenCalled()
-    expect(getLists).not.toHaveBeenCalled()
+    expect(handleGetList).toHaveBeenCalledWith({ req, res })
   })
+})
 
+describe("PATCH /api/v1/list/:listId", () => {
   test("should call updateList()", async () => {
     const { req, res } = mockRequestResponse({
       method: "PATCH",
-      query: {
-        listId: "dummy-list-id",
-      },
-      body: {
-        name: "Changed name",
-        html: `<p>Foo bar content</p><a href="{{confirmation}}">Confirm</a>`,
-      },
+      query: { foo: "bar" },
+      body: { foo: "bar" },
     })
-
     await apiListHandler(req, res)
+    expect(handlePatchList).toHaveBeenCalledWith({ req, res })
+  })
+})
 
-    expect(res._getJSONData()).toStrictEqual({
-      success: "List updated",
-      list: {
-        name: "Dummy mocked list",
-      },
-    })
-    expect(res._getStatusCode()).toStrictEqual(200)
-
-    expect(updateList).toHaveBeenCalledWith({
-      id: "dummy-list-id",
-      name: "Changed name",
-    })
+describe("DELETE /api/v1/lists", () => {
+  test("should return an error message for not allowed method", async () => {
+    const { req, res } = mockRequestResponse({ method: "DELETE" })
+    await apiListsHandler(req, res)
+    expect(res._getJSONData()).toStrictEqual({ error: "Method not allowed" })
+    expect(res._getStatusCode()).toStrictEqual(405)
   })
 })

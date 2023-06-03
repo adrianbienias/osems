@@ -224,10 +224,9 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Move API handlers from Next.js api/ to modules' routes
 - [ ] Remove `isSending` column in `Newsletters` and use `sending_status` similar to autoresponders
 - [ ] Rename `Sending` table to `NewsletterLogs`
-- [ ] Move all prisma calls to model files
+- [ ] Move all prisma calls to model files (including tests)
 - [ ] Use list pickers for selecting lists on Newsletter creation page
 - [ ] Improve UI layout (currently columns' width is too fluid)
 - [ ] Add toast for quick notifications e.g. after saving edited changes
