@@ -2,7 +2,7 @@ import { DatetimeUtc } from "@/components/datetime-utc"
 import { Navbar } from "@/components/navbar"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
-import { Newsletter, Sending, Template } from "@prisma/client"
+import { Newsletter, NewsletterLogs, Template } from "@prisma/client"
 import { useRouter } from "next/router"
 import { useRef } from "react"
 import useSWR from "swr"
@@ -19,7 +19,7 @@ export default function ShowNewsletter() {
     }
   )
   const newsletter = data?.newsletter as
-    | (Newsletter & { sendings: Sending[] })
+    | (Newsletter & { logs: NewsletterLogs[] })
     | undefined
   const template = data?.template as Template | undefined
 
@@ -38,7 +38,7 @@ export default function ShowNewsletter() {
       <main>
         <div className="mt-8 flex flex-col md:flex-row gap-8 justify-between">
           <section className="grow-[0.25] order-2 md:order-1">
-            <h2>Sendings</h2>
+            <h2>Logs</h2>
 
             <Table>
               <Thead>
@@ -48,12 +48,12 @@ export default function ShowNewsletter() {
                 </Tr>
               </Thead>
               <Tbody>
-                {newsletter.sendings.length > 0 ? (
-                  newsletter.sendings.map((sending) => (
-                    <Tr key={sending.email}>
-                      <Td>{sending.email}</Td>
+                {newsletter.logs.length > 0 ? (
+                  newsletter.logs.map((log) => (
+                    <Tr key={log.email}>
+                      <Td>{log.email}</Td>
                       <Td>
-                        <DatetimeUtc datetime={sending.sentAt} />
+                        <DatetimeUtc datetime={log.sentAt} />
                       </Td>
                     </Tr>
                   ))

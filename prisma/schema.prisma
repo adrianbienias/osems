@@ -38,17 +38,17 @@ model List {
 }
 
 model Newsletter {
-    id               String    @id @default(uuid())
+    id               String           @id @default(uuid())
     listIdToInclude  String
     listIdsToExclude String
     templateId       String
     toSendAfter      DateTime
     sentAt           DateTime?
-    sendings         Sending[]
-    createdAt        DateTime  @default(now())
+    logs             NewsletterLogs[]
+    createdAt        DateTime         @default(now())
 }
 
-model Sending {
+model NewsletterLogs {
     email        String
     newsletterId String
     newsletter   Newsletter @relation(fields: [newsletterId], references: [id])

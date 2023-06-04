@@ -64,7 +64,7 @@ export async function getNewsletter({ id }: { id: string }) {
   try {
     return await prisma.newsletter.findUnique({
       where: { id },
-      include: { sendings: true },
+      include: { logs: true },
     })
   } catch (error) {
     console.error(error)

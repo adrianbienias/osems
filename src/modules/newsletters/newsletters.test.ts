@@ -168,7 +168,7 @@ describe("getNewsletter()", () => {
       toSendAfter: expect.any(Date),
       sentAt: null,
       createdAt: expect.any(Date),
-      sendings: [],
+      logs: [],
     })
   })
 })
@@ -191,7 +191,7 @@ describe("sendNewsletters()", () => {
       return expect(newsletter).not.toBeInstanceOf(Error)
     }
 
-    expect(await prisma.sending.findMany()).toStrictEqual([])
+    expect(await prisma.newsletterLogs.findMany()).toStrictEqual([])
 
     await prisma.settings.upsert({
       where: { key: SETTINGS.newsletter_sending_status.key },
@@ -229,7 +229,7 @@ describe("sendNewsletters()", () => {
       return expect(newsletter).not.toBeInstanceOf(Error)
     }
 
-    expect(await prisma.sending.findMany()).toStrictEqual([])
+    expect(await prisma.newsletterLogs.findMany()).toStrictEqual([])
 
     await sendNewsletters()
 
@@ -252,7 +252,7 @@ describe("sendNewsletters()", () => {
       text: "Dummy text content",
     })
 
-    expect(await prisma.sending.findMany()).toStrictEqual([
+    expect(await prisma.newsletterLogs.findMany()).toStrictEqual([
       {
         email: "foo-1@bar.baz",
         newsletterId: expect.stringMatching(uuidRegex),

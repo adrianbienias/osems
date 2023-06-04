@@ -224,7 +224,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Rename `Sending` table to `NewsletterLogs`
 - [ ] Move all prisma calls to model files (including tests)
 - [ ] Use list pickers for selecting lists on Newsletter creation page
 - [ ] Improve UI layout (currently columns' width is too fluid)
