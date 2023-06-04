@@ -188,8 +188,8 @@ describe("handlePatchAutoresponder()", () => {
       body: {
         listId: "dummy-list-id",
         delayDays: 123,
-        subject: "dummy-subject",
-        html: "<p>dummy-html</p>",
+        subject: "Dummy autoresponder subject",
+        html: `<p>Dummy autoresponder content</p><p><a href="{{unsubscribe}}">Unsubscribe</a></p>`,
       },
     })
 

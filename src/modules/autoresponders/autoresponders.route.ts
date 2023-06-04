@@ -35,6 +35,11 @@ export async function handlePostAutoresponders({
   if (!html) {
     return res.status(400).json({ error: "Missing html content" })
   }
+  if (!html?.includes("{{unsubscribe}}")) {
+    return res
+      .status(400)
+      .json({ error: "Missing {{unsubscribe}} in html content" })
+  }
 
   const autoresponder = await addAutoresponder({
     autoresponderTemplate: {
@@ -163,6 +168,11 @@ export async function handlePatchAutoresponder({
   }
   if (!html) {
     return res.status(400).json({ error: "Missing html content" })
+  }
+  if (!html?.includes("{{unsubscribe}}")) {
+    return res
+      .status(400)
+      .json({ error: "Missing {{unsubscribe}} in html content" })
   }
 
   const autoresponder = await updateAutoresponder({

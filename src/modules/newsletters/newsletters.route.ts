@@ -46,12 +46,12 @@ export async function handlePostNewsletter({
     return res.status(400).json({ error: "Missing subject" })
   }
   if (!html) {
-    return res.status(400).json({ error: "Missing email template" })
+    return res.status(400).json({ error: "Missing html content" })
   }
   if (!html?.includes("{{unsubscribe}}")) {
     return res
       .status(400)
-      .json({ error: "Missing {{unsubscribe}} in email template" })
+      .json({ error: "Missing {{unsubscribe}} in html content" })
   }
 
   const list = await getListWithContacts({ id: listIdToInclude })
