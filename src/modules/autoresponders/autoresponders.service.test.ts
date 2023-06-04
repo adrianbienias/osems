@@ -45,7 +45,7 @@ describe("sendAutoresponders()", () => {
 
       await sendAutoresponders()
 
-      const logs = await prisma.autoresponderLogs.findMany()
+      const logs = await prisma.autoresponderLog.findMany()
       expect(logs.length).toStrictEqual(day.expectedNumberOfAutoresponders)
       expect(vi.mocked(sendEmail).mock.calls.length).toStrictEqual(
         day.expectedNumberOfAutoresponders

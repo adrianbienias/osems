@@ -83,7 +83,7 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
     // TODO: Rethink this
     // It's not efficient to query DB for each contact
     // Possible solution: exclude contacts by existing autoresponder logs before iterating all of them
-    const existingLog = await prisma.autoresponderLogs.findUnique({
+    const existingLog = await prisma.autoresponderLog.findUnique({
       where: { email_autoresponderId: { autoresponderId, email } },
     })
     if (existingLog) {
@@ -105,13 +105,13 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
     }
 
     try {
-      await prisma.autoresponderLogs.create({
+      await prisma.autoresponderLog.create({
         data: { email, autoresponderId },
       })
 
       await sendEmail(message)
 
-      await prisma.autoresponderLogs.update({
+      await prisma.autoresponderLog.update({
         where: { email_autoresponderId: { email, autoresponderId } },
         data: { sentAt: new Date() },
       })

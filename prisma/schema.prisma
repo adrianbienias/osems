@@ -59,21 +59,21 @@ model NewsletterLog {
 }
 
 model Autoresponder {
-    id         String              @id @default(uuid())
+    id         String             @id @default(uuid())
     listId     String
-    list       List                @relation(fields: [listId], references: [id])
+    list       List               @relation(fields: [listId], references: [id])
     templateId String
     delayDays  Int
-    logs       AutoresponderLogs[]
-    createdAt  DateTime            @default(now())
+    logs       AutoresponderLog[]
+    createdAt  DateTime           @default(now())
 }
 
-model AutoresponderLogs {
+model AutoresponderLog {
     email           String
+    autoresponderId String
+    autoresponder   Autoresponder @relation(fields: [autoresponderId], references: [id])
     sentAt          DateTime?
     createdAt       DateTime      @default(now())
-    autoresponder   Autoresponder @relation(fields: [autoresponderId], references: [id])
-    autoresponderId String
 
     @@id([email, autoresponderId])
 }
