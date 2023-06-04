@@ -17,7 +17,7 @@ export async function sendAutoresponders() {
     return // No autoresponders to send
   }
 
-  const sendingStatus = await prisma.settings.findUnique({
+  const sendingStatus = await prisma.setting.findUnique({
     where: { key: SETTINGS.autoresponder_sending_status.key },
   })
   if (
@@ -27,7 +27,7 @@ export async function sendAutoresponders() {
     return console.info("Busy... sending autoresponder in progress")
   }
 
-  await prisma.settings.upsert({
+  await prisma.setting.upsert({
     where: { key: SETTINGS.autoresponder_sending_status.key },
     update: { value: SETTINGS.autoresponder_sending_status.values.in_progress },
     create: {
@@ -40,7 +40,7 @@ export async function sendAutoresponders() {
     await sendAutoresponder(autoresponder)
   }
 
-  await prisma.settings.update({
+  await prisma.setting.update({
     where: { key: SETTINGS.autoresponder_sending_status.key },
     data: { value: SETTINGS.autoresponder_sending_status.values.idle },
   })

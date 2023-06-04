@@ -15,7 +15,7 @@ export async function sendNewsletters() {
     return console.error(newsletters.message)
   }
 
-  const sendingStatus = await prisma.settings.findUnique({
+  const sendingStatus = await prisma.setting.findUnique({
     where: { key: SETTINGS.newsletter_sending_status.key },
   })
   if (
@@ -25,7 +25,7 @@ export async function sendNewsletters() {
     return console.info("Busy... sending newsletter in progress")
   }
 
-  await prisma.settings.upsert({
+  await prisma.setting.upsert({
     where: { key: SETTINGS.newsletter_sending_status.key },
     update: { value: SETTINGS.newsletter_sending_status.values.in_progress },
     create: {
@@ -52,7 +52,7 @@ export async function sendNewsletters() {
     await sendNewsletter({ newsletter, contacts: contactsToSend })
   }
 
-  await prisma.settings.update({
+  await prisma.setting.update({
     where: { key: SETTINGS.newsletter_sending_status.key },
     data: { value: SETTINGS.newsletter_sending_status.values.idle },
   })

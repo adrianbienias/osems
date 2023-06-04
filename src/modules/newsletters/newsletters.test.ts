@@ -193,7 +193,7 @@ describe("sendNewsletters()", () => {
 
     expect(await prisma.newsletterLogs.findMany()).toStrictEqual([])
 
-    await prisma.settings.upsert({
+    await prisma.setting.upsert({
       where: { key: SETTINGS.newsletter_sending_status.key },
       update: { value: SETTINGS.newsletter_sending_status.values.in_progress },
       create: {

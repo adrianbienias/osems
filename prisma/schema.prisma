@@ -9,7 +9,7 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Settings {
+model Setting {
     key   String @id
     value String
 }

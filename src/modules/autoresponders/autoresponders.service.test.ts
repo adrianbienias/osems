@@ -28,7 +28,7 @@ describe("sendAutoresponders()", () => {
     ]
 
     expect(
-      await prisma.settings.findUnique({
+      await prisma.setting.findUnique({
         where: { key: "autoresponder_sending_status" },
       })
     ).toStrictEqual(null)
@@ -63,7 +63,7 @@ describe("sendAutoresponders()", () => {
 
       expect(
         (
-          await prisma.settings.findUnique({
+          await prisma.setting.findUnique({
             where: { key: "autoresponder_sending_status" },
           })
         )?.value
