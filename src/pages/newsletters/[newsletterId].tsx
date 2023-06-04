@@ -2,7 +2,7 @@ import { DatetimeUtc } from "@/components/datetime-utc"
 import { Navbar } from "@/components/navbar"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
-import { Newsletter, NewsletterLogs, Template } from "@prisma/client"
+import { Newsletter, NewsletterLog, Template } from "@prisma/client"
 import { useRouter } from "next/router"
 import { useRef } from "react"
 import useSWR from "swr"
@@ -19,7 +19,7 @@ export default function ShowNewsletter() {
     }
   )
   const newsletter = data?.newsletter as
-    | (Newsletter & { logs: NewsletterLogs[] })
+    | (Newsletter & { logs: NewsletterLog[] })
     | undefined
   const template = data?.template as Template | undefined
 

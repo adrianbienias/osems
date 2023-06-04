@@ -94,13 +94,13 @@ async function sendNewsletter({
     }
 
     try {
-      await prisma.newsletterLogs.create({
+      await prisma.newsletterLog.create({
         data: { email, newsletterId: newsletter.id },
       })
 
       await sendEmail(message)
 
-      await prisma.newsletterLogs.update({
+      await prisma.newsletterLog.update({
         where: { email_newsletterId: { email, newsletterId: newsletter.id } },
         data: { sentAt: new Date() },
       })
