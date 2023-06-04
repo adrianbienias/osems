@@ -21,22 +21,24 @@ export async function sendNewsletters() {
   if (newsletters instanceof Error) {
     return console.error(newsletters.message)
   }
+  if (newsletters.length < 1) {
+    return // No newsletters to send
+  }
 
-  const isNewsletterSending = await checkIfNewsletterIsSending()
-  if (isNewsletterSending) {
+  if (await checkIfNewsletterIsSending()) {
     return console.info("Busy... sending newsletter in progress")
   }
 
   await setNewsletterSendingInProgress()
 
   for (const newsletter of newsletters) {
-    await sendNewsletter({ newsletter })
+    await sendNewsletter(newsletter)
   }
 
   await setNewsletterSendingIdle()
 }
 
-async function sendNewsletter({ newsletter }: { newsletter: Newsletter }) {
+async function sendNewsletter(newsletter: Newsletter) {
   const contacts = await getContactsToSend({
     listIdToInclude: newsletter.listIdToInclude,
     listIdsToExclude: JSON.parse(newsletter.listIdsToExclude),
