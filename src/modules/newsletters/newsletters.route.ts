@@ -1,8 +1,9 @@
-import { ApiResponse, NewsletterWithTemplate } from "@/libs/types"
-import { getList } from "@/modules/lists"
+import type { ApiResponse } from "@/libs/types"
+import { getListWithContacts } from "@/modules/lists"
+import type { Template } from "@/modules/templates"
 import { getTemplate } from "@/modules/templates"
-import { Newsletter, Template } from "@prisma/client"
-import { NextApiRequest, NextApiResponse } from "next"
+import type { NextApiRequest, NextApiResponse } from "next"
+import type { Newsletter, NewsletterWithTemplate } from "./newsletters.model"
 import {
   getNewsletter,
   getNewsletters,
@@ -53,7 +54,7 @@ export async function handlePostNewsletter({
       .json({ error: "Missing {{unsubscribe}} in email template" })
   }
 
-  const list = await getList({ id: listIdToInclude })
+  const list = await getListWithContacts({ id: listIdToInclude })
   if (list instanceof Error) {
     return res.status(400).json({ error: list.message })
   }

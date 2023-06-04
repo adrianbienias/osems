@@ -3,6 +3,7 @@ export {
   getNewsletters,
   scheduleNewsletter,
 } from "./newsletters.model"
+export type { Newsletter, NewsletterWithTemplate } from "./newsletters.model"
 export {
   handleGetNewsletter,
   handleGetNewsletters,

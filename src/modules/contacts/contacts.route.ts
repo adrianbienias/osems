@@ -1,12 +1,12 @@
 import { config, SIGNUP_FORM_ACTIONS } from "@/app-config"
-import { ApiResponse } from "@/libs/types"
+import type { ApiResponse } from "@/libs/types"
 import { createConfirmationUrl } from "@/libs/urls"
 import { isEmail } from "@/libs/validators"
 import { getList } from "@/modules/lists"
 import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
-import { Contact } from "@prisma/client"
-import { NextApiRequest, NextApiResponse } from "next"
+import type { NextApiRequest, NextApiResponse } from "next"
+import type { Contact } from "./contacts.model"
 import {
   addContact,
   confirmContact,

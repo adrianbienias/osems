@@ -1,13 +1,20 @@
 import { config } from "@/app-config"
 import { wait } from "@/libs/datetime"
-import { prisma } from "@/libs/prisma"
 import { createUnsubscribeUrl } from "@/libs/urls"
+import type { Contact } from "@/modules/contacts"
 import { getContactsToSend } from "@/modules/contacts"
 import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
-import { SETTINGS } from "@/settings"
-import { Contact, Newsletter } from "@prisma/client"
-import { getScheduledNewsletters } from "./newsletters.model"
+import type { Newsletter } from "./newsletters.model"
+import {
+  checkIfNewsletterIsSending,
+  createNewsletterLog,
+  getScheduledNewsletters,
+  setNewsletterSendingIdle,
+  setNewsletterSendingInProgress,
+  updateNewsletter,
+  updateNewsletterLog,
+} from "./newsletters.model"
 
 export async function sendNewsletters() {
   const newsletters = await getScheduledNewsletters()
@@ -15,56 +22,32 @@ export async function sendNewsletters() {
     return console.error(newsletters.message)
   }
 
-  const sendingStatus = await prisma.setting.findUnique({
-    where: { key: SETTINGS.newsletter_sending_status.key },
-  })
-  if (
-    sendingStatus?.value ===
-    SETTINGS.newsletter_sending_status.values.in_progress
-  ) {
+  const isNewsletterSending = await checkIfNewsletterIsSending()
+  if (isNewsletterSending) {
     return console.info("Busy... sending newsletter in progress")
   }
 
-  await prisma.setting.upsert({
-    where: { key: SETTINGS.newsletter_sending_status.key },
-    update: { value: SETTINGS.newsletter_sending_status.values.in_progress },
-    create: {
-      key: SETTINGS.newsletter_sending_status.key,
-      value: SETTINGS.newsletter_sending_status.values.in_progress,
-    },
-  })
+  await setNewsletterSendingInProgress()
 
   for (const newsletter of newsletters) {
-    const contactsToSend = await getContactsToSend({
-      listIdToInclude: newsletter.listIdToInclude,
-      listIdsToExclude: JSON.parse(newsletter.listIdsToExclude),
-    })
-
-    if (contactsToSend.length < 1) {
-      await prisma.newsletter.update({
-        where: { id: newsletter.id },
-        data: { sentAt: new Date() },
-      })
-
-      return console.error("No active contacts on the list to send newsletter")
-    }
-
-    await sendNewsletter({ newsletter, contacts: contactsToSend })
+    await sendNewsletter({ newsletter })
   }
 
-  await prisma.setting.update({
-    where: { key: SETTINGS.newsletter_sending_status.key },
-    data: { value: SETTINGS.newsletter_sending_status.values.idle },
-  })
+  await setNewsletterSendingIdle()
 }
 
-async function sendNewsletter({
-  newsletter,
-  contacts,
-}: {
-  newsletter: Newsletter
-  contacts: Contact[]
-}) {
+async function sendNewsletter({ newsletter }: { newsletter: Newsletter }) {
+  const contacts = await getContactsToSend({
+    listIdToInclude: newsletter.listIdToInclude,
+    listIdsToExclude: JSON.parse(newsletter.listIdsToExclude),
+  })
+  if (contacts.length < 1) {
+    const newsletterId = newsletter.id
+    await updateNewsletter({ newsletterId, sentAt: new Date() })
+
+    return console.error("No active contacts on the list to send newsletter")
+  }
+
   const newsletterTemplate = await getTemplate({
     id: newsletter.templateId,
   })
@@ -75,6 +58,7 @@ async function sendNewsletter({
     return console.error("Missing newsletter template")
   }
   const { id, createdAt, ...template } = newsletterTemplate
+  const newsletterId = newsletter.id
 
   for (const contact of contacts) {
     const email = contact.email
@@ -94,16 +78,9 @@ async function sendNewsletter({
     }
 
     try {
-      await prisma.newsletterLog.create({
-        data: { email, newsletterId: newsletter.id },
-      })
-
+      await createNewsletterLog({ email, newsletterId })
       await sendEmail(message)
-
-      await prisma.newsletterLog.update({
-        where: { email_newsletterId: { email, newsletterId: newsletter.id } },
-        data: { sentAt: new Date() },
-      })
+      await updateNewsletterLog({ email, newsletterId, sentAt: new Date() })
     } catch (error) {
       console.error(error)
     }
@@ -111,8 +88,5 @@ async function sendNewsletter({
     await wait(1000 / config.maxSendRatePerSecondNewsletter)
   }
 
-  await prisma.newsletter.update({
-    where: { id: newsletter.id },
-    data: { sentAt: new Date() },
-  })
+  await updateNewsletter({ newsletterId, sentAt: new Date() })
 }

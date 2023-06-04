@@ -1,4 +1,9 @@
-export { filterContacts } from "./contacts.model"
+export {
+  filterContacts,
+  getContactsConfirmedBetweenDates,
+  getUnsubscribedContacts,
+} from "./contacts.model"
+export type { Contact, ContactWithList } from "./contacts.model"
 export {
   contactsGetHandler,
   contactsPostHandler,

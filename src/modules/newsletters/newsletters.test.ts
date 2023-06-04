@@ -1,15 +1,18 @@
 import { prisma } from "@/libs/prisma"
 import { uuidRegex } from "@/libs/validators"
-import {
-  getNewsletter,
-  getNewsletters,
-  scheduleNewsletter,
-  sendNewsletters,
-} from "@/modules/newsletters"
 import { sendEmail } from "@/modules/sendings"
 import { SETTINGS } from "@/settings"
-import { copyFileSync } from "fs"
+import { cleanTestDatabase } from "mocks/seed-db"
 import { beforeEach, describe, expect, test, vi } from "vitest"
+import {
+  getNewsletter,
+  getNewsletterLogs,
+  getNewsletters,
+  scheduleNewsletter,
+  setNewsletterSendingIdle,
+  setNewsletterSendingInProgress,
+} from "./newsletters.model"
+import { sendNewsletters } from "./newsletters.service"
 
 const toSendAfter = new Date()
 
@@ -36,13 +39,23 @@ vi.mock("@/modules/templates", () => {
   }
 })
 
+vi.mock("./newsletters.model", async () => {
+  return {
+    ...(await vi.importActual<typeof import("./newsletters.model")>(
+      "./newsletters.model"
+    )),
+    setNewsletterSendingInProgress: vi.fn(),
+    setNewsletterSendingIdle: vi.fn(),
+  }
+})
+
 beforeEach(() => {
-  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
+  cleanTestDatabase()
 })
 
 describe("scheduleNewsletter()", () => {
   test("should add scheduled newsletters to database", async () => {
-    expect(await prisma.newsletter.findMany()).toStrictEqual([])
+    expect(await getNewsletters()).toStrictEqual([])
 
     await scheduleNewsletter({
       listIdToInclude: "list-id-to-include",
@@ -69,7 +82,7 @@ describe("scheduleNewsletter()", () => {
       toSendAfter,
     })
 
-    expect(await prisma.newsletter.findMany()).toStrictEqual([
+    expect(await getNewsletters()).toStrictEqual([
       {
         id: expect.stringMatching(uuidRegex),
         listIdToInclude: "list-id-to-include",
@@ -191,25 +204,26 @@ describe("sendNewsletters()", () => {
       return expect(newsletter).not.toBeInstanceOf(Error)
     }
 
-    expect(await prisma.newsletterLog.findMany()).toStrictEqual([])
+    expect(await getNewsletterLogs()).toStrictEqual([])
 
-    await prisma.setting.upsert({
-      where: { key: SETTINGS.newsletter_sending_status.key },
-      update: { value: SETTINGS.newsletter_sending_status.values.in_progress },
-      create: {
-        key: SETTINGS.newsletter_sending_status.key,
-        value: SETTINGS.newsletter_sending_status.values.in_progress,
-      },
-    })
+    const newslettersModel = await vi.importActual<
+      typeof import("./newsletters.model")
+    >("./newsletters.model")
+    newslettersModel.setNewsletterSendingInProgress()
 
-    const consoleInfoSpy = vi.spyOn(console, "info")
+    const originalConsoleInfo = console.info
+    vi.spyOn(console, "info")
 
     await sendNewsletters()
 
-    expect(consoleInfoSpy).toHaveBeenCalledWith(
+    expect(console.info).toHaveBeenCalledWith(
       "Busy... sending newsletter in progress"
     )
+    console.info = originalConsoleInfo
+
     expect(sendEmail).not.toHaveBeenCalled()
+    expect(setNewsletterSendingInProgress).not.toHaveBeenCalled()
+    expect(setNewsletterSendingIdle).not.toHaveBeenCalled()
   })
 
   test("should call nodemailer sendMail() method", async () => {
@@ -229,9 +243,12 @@ describe("sendNewsletters()", () => {
       return expect(newsletter).not.toBeInstanceOf(Error)
     }
 
-    expect(await prisma.newsletterLog.findMany()).toStrictEqual([])
+    expect(await getNewsletterLogs()).toStrictEqual([])
 
     await sendNewsletters()
+
+    expect(setNewsletterSendingInProgress).toHaveBeenCalledTimes(1)
+    expect(setNewsletterSendingIdle).toHaveBeenCalledTimes(1)
 
     expect(sendEmail).toHaveBeenNthCalledWith(1, {
       to: "foo-1@bar.baz",
@@ -252,7 +269,7 @@ describe("sendNewsletters()", () => {
       text: "Dummy text content",
     })
 
-    expect(await prisma.newsletterLog.findMany()).toStrictEqual([
+    expect(await getNewsletterLogs()).toStrictEqual([
       {
         email: "foo-1@bar.baz",
         newsletterId: expect.stringMatching(uuidRegex),

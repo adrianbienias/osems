@@ -1,20 +1,20 @@
+import { cleanTestDatabase } from "mocks/seed-db"
+import { createMocks } from "node-mocks-http"
+import { beforeEach, describe, expect, test, vi } from "vitest"
 import {
   addAutoresponder,
   filterAutoresponders,
   getAutoresponder,
   updateAutoresponder,
-} from "@/modules/autoresponders/autoresponders.model"
+} from "./autoresponders.model"
 import {
   handleGetAutoresponder,
   handleGetAutoresponders,
   handlePatchAutoresponder,
   handlePostAutoresponders,
-} from "@/modules/autoresponders/autoresponders.route"
-import { copyFileSync } from "fs"
-import { createMocks } from "node-mocks-http"
-import { beforeEach, describe, expect, test, vi } from "vitest"
+} from "./autoresponders.route"
 
-vi.mock("@/modules/autoresponders/autoresponders.model", () => {
+vi.mock("./autoresponders.model", () => {
   const mockedAutoresponders = [
     { id: "dummy-autoresponder-id-1" },
     { id: "dummy-autoresponder-id-2" },
@@ -37,7 +37,7 @@ vi.mock("@/modules/templates", () => ({
 }))
 
 beforeEach(() => {
-  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
+  cleanTestDatabase()
 })
 
 describe("handlePostAutoresponders()", () => {

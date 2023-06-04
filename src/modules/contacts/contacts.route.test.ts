@@ -1,14 +1,14 @@
-import { prisma } from "@/libs/prisma"
-import { uuidRegex } from "@/libs/validators"
-import { contactsGetHandler, contactsPostHandler } from "@/modules/contacts"
 import { sendEmail } from "@/modules/sendings"
-import { copyFileSync } from "fs"
+import { cleanTestDatabase, seedTestDatabase } from "mocks/seed-db"
 import { createMocks } from "node-mocks-http"
 import { beforeEach, describe, expect, test, vi } from "vitest"
 import { mockRequestResponse } from "../../../mocks/api-mocks"
-import testData from "../../../mocks/test-data.json"
-import { filterContacts } from "./contacts.model"
-import { handleGetContacts } from "./contacts.route"
+import { filterContacts, getAllContacts, getContact } from "./contacts.model"
+import {
+  contactsGetHandler,
+  contactsPostHandler,
+  handleGetContacts,
+} from "./contacts.route"
 
 vi.mock("./contacts.model", async () => ({
   ...((await vi.importActual("./contacts.model")) as object),
@@ -29,7 +29,7 @@ vi.mock("@/modules/templates", () => {
 })
 
 beforeEach(() => {
-  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
+  cleanTestDatabase()
 })
 
 describe("GET /api/v1/contacts", () => {
@@ -60,8 +60,7 @@ describe("POST /api/v1/public/contacts", () => {
     expect(res._getJSONData()).toStrictEqual({ error: "Missing list id" })
     expect(res._getStatusCode()).toStrictEqual(400)
 
-    const contacts = await prisma.contact.findMany()
-    expect(contacts.length).toStrictEqual(0)
+    expect((await getAllContacts()).length).toStrictEqual(0)
 
     expect(sendEmail).not.toHaveBeenCalled()
   })
@@ -73,37 +72,38 @@ describe("POST /api/v1/public/contacts", () => {
     })
 
     await contactsPostHandler({ req, res })
-    const contacts = await prisma.contact.findMany()
 
     expect(res._getJSONData()).toStrictEqual({ error: "Missing list id" })
     expect(res._getStatusCode()).toStrictEqual(400)
 
-    expect(contacts.length).toStrictEqual(0)
+    expect((await getAllContacts()).length).toStrictEqual(0)
     expect(sendEmail).not.toHaveBeenCalled()
   })
 
   test("should signup contact and initiate sending confirmation email", async () => {
-    const createdList = await prisma.list.create({ data: testData.list })
+    seedTestDatabase()
+
+    const listId = "2e4b0581-0bdc-4a54-bc05-8877b8808a40"
+    const email = "foo@bar.baz"
+
     const { req, res } = createMocks({
       method: "POST",
-      body: { email: "foo@bar.baz", listId: createdList.id },
+      body: { email, listId },
     })
 
-    expect(await prisma.contact.findMany()).toStrictEqual([])
+    expect(await getContact({ listId, email })).toStrictEqual(null)
 
     await contactsPostHandler({ req, res })
 
-    expect(await prisma.contact.findMany()).toStrictEqual([
-      {
-        confirmedAt: null,
-        createdAt: expect.any(Date),
-        email: "foo@bar.baz",
-        listId: expect.stringMatching(uuidRegex),
-        unsubscribedAt: null,
-      },
-    ])
+    expect(await getContact({ listId, email })).toStrictEqual({
+      confirmedAt: null,
+      createdAt: expect.any(Date),
+      email,
+      listId,
+      unsubscribedAt: null,
+    })
     expect(sendEmail).toHaveBeenCalledWith({
-      to: "foo@bar.baz",
+      to: email,
       subject: "Dummy subject",
       html: `<p>Dummy html content</p>`,
       text: `Dummy text content`,
@@ -118,9 +118,7 @@ describe("POST /api/v1/public/contacts", () => {
 
 describe("GET /api/v1/public/contacts", () => {
   test("should return email validation error", async () => {
-    const { req, res } = createMocks({
-      method: "GET",
-    })
+    const { req, res } = createMocks({ method: "GET" })
 
     await contactsGetHandler({ req, res })
 
@@ -185,10 +183,14 @@ describe("GET /api/v1/public/contacts", () => {
   })
 
   test("should return contact validation error", async () => {
-    const addedList = await prisma.list.create({ data: testData.list })
+    seedTestDatabase()
+
+    const listId = "2e4b0581-0bdc-4a54-bc05-8877b8808a40"
+    const email = "foo@bar.baz"
+
     const { req, res } = createMocks({
       method: "GET",
-      query: { email: "foo@bar.baz", action: "confirm", listId: addedList.id },
+      query: { action: "confirm", email, listId },
     })
 
     await contactsGetHandler({ req, res })
@@ -200,36 +202,29 @@ describe("GET /api/v1/public/contacts", () => {
   })
 
   test("should confirm contact subscription", async () => {
-    const addedList = await prisma.list.create({ data: testData.list })
-    await prisma.contact.create({
-      data: { email: "foo@bar.baz", listId: addedList.id },
-    })
-    const { req, res } = createMocks({
-      method: "GET",
-      query: { email: "foo@bar.baz", action: "confirm", listId: addedList.id },
-    })
+    seedTestDatabase()
 
-    expect(
-      await prisma.contact.findUnique({
-        where: { email_listId: { email: "foo@bar.baz", listId: addedList.id } },
-      })
-    ).toStrictEqual({
-      listId: expect.stringMatching(uuidRegex),
-      email: "foo@bar.baz",
+    const listId = "2e4b0581-0bdc-4a54-bc05-8877b8808a40"
+    const email = "marvin.johns@hotmail.com"
+
+    expect(await getContact({ email, listId })).toStrictEqual({
+      listId,
+      email,
       confirmedAt: null,
       unsubscribedAt: null,
       createdAt: expect.any(Date),
     })
 
+    const { req, res } = createMocks({
+      method: "GET",
+      query: { action: "confirm", email, listId },
+    })
+
     await contactsGetHandler({ req, res })
 
-    expect(
-      await prisma.contact.findUnique({
-        where: { email_listId: { email: "foo@bar.baz", listId: addedList.id } },
-      })
-    ).toStrictEqual({
-      listId: expect.stringMatching(uuidRegex),
-      email: "foo@bar.baz",
+    expect(await getContact({ email, listId })).toStrictEqual({
+      listId,
+      email,
       confirmedAt: expect.any(Date),
       unsubscribedAt: null,
       createdAt: expect.any(Date),
@@ -242,45 +237,30 @@ describe("GET /api/v1/public/contacts", () => {
   })
 
   test("should confirm contact unsubscribe", async () => {
-    const createdList = await prisma.list.create({ data: testData.list })
-    await prisma.contact.create({
-      data: { email: "foo@bar.baz", listId: createdList.id },
-    })
+    seedTestDatabase()
+
+    const listId = "2e4b0581-0bdc-4a54-bc05-8877b8808a40"
+    const email = "milo_schiller@yahoo.com"
+
     const { req, res } = createMocks({
       method: "GET",
-      query: {
-        email: "foo@bar.baz",
-        action: "unsubscribe",
-        listId: createdList.id,
-      },
+      query: { action: "unsubscribe", email, listId },
     })
 
-    expect(
-      await prisma.contact.findUnique({
-        where: {
-          email_listId: { email: "foo@bar.baz", listId: createdList.id },
-        },
-      })
-    ).toStrictEqual({
-      listId: expect.stringMatching(uuidRegex),
-      email: "foo@bar.baz",
-      confirmedAt: null,
+    expect(await getContact({ email, listId })).toStrictEqual({
+      listId,
+      email,
+      confirmedAt: expect.any(Date),
       unsubscribedAt: null,
       createdAt: expect.any(Date),
     })
 
     await contactsGetHandler({ req, res })
 
-    expect(
-      await prisma.contact.findUnique({
-        where: {
-          email_listId: { email: "foo@bar.baz", listId: createdList.id },
-        },
-      })
-    ).toStrictEqual({
-      listId: expect.stringMatching(uuidRegex),
-      email: "foo@bar.baz",
-      confirmedAt: null,
+    expect(await getContact({ email, listId })).toStrictEqual({
+      listId,
+      email,
+      confirmedAt: expect.any(Date),
       unsubscribedAt: expect.any(Date),
       createdAt: expect.any(Date),
     })

@@ -1,44 +1,44 @@
-import { prisma } from "@/libs/prisma"
 import { uuidRegex } from "@/libs/validators"
+import { cleanTestDatabase, seedTestDatabase } from "mocks/seed-db"
+import { beforeEach, describe, expect, test } from "vitest"
 import {
   addAutoresponder,
   filterAutoresponders,
   getAutoresponder,
   getAutoresponders,
   updateAutoresponder,
-} from "@/modules/autoresponders/autoresponders.model"
-import { copyFileSync } from "fs"
-import { beforeEach, describe, expect, test } from "vitest"
-import testData from "../../../mocks/test-data.json"
+} from "./autoresponders.model"
 
 beforeEach(() => {
-  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
+  cleanTestDatabase()
 })
 
 describe("addAutoresponder()", () => {
   test("should add autoresponder to database", async () => {
-    expect(await prisma.autoresponder.findMany()).toStrictEqual([])
+    seedTestDatabase()
 
-    const list = await prisma.list.create({ data: testData.list })
+    const listId = "2e4b0581-0bdc-4a54-bc05-8877b8808a40"
+    const delayDays = 9
 
-    await addAutoresponder({
+    const autoresponder = await addAutoresponder({
       autoresponderTemplate: {
         html: "<p>Autoresponder dummy content</p>",
         subject: "Autoresponder dummy subject",
       },
-      delayDays: 0,
-      listId: list.id,
+      delayDays,
+      listId,
     })
+    if (autoresponder instanceof Error) {
+      return expect(autoresponder).not.toBeInstanceOf(Error)
+    }
 
-    expect(await prisma.autoresponder.findMany()).toStrictEqual([
-      {
-        id: expect.stringMatching(uuidRegex),
-        listId: expect.stringMatching(uuidRegex),
-        templateId: expect.stringMatching(uuidRegex),
-        delayDays: 0,
-        createdAt: expect.any(Date),
-      },
-    ])
+    expect(await getAutoresponder({ id: autoresponder.id })).toStrictEqual({
+      id: expect.stringMatching(uuidRegex),
+      listId,
+      templateId: expect.stringMatching(uuidRegex),
+      delayDays,
+      createdAt: expect.any(Date),
+    })
   })
 })
 
@@ -46,7 +46,7 @@ describe("filterAutoresponders()", async () => {
   test("should return a given number of autoresponders", async () => {
     expect(await filterAutoresponders({})).toStrictEqual([])
 
-    copyFileSync("./prisma/seeded-db.sqlite", "./prisma/test-db.sqlite")
+    seedTestDatabase()
 
     const expectedNumberOfFilteredAutoresponders = 7
 
@@ -65,14 +65,18 @@ describe("filterAutoresponders()", async () => {
 
 describe("getAutoresponder()", async () => {
   test("should return an autoresponder", async () => {
-    const list = await prisma.list.create({ data: testData.list })
+    seedTestDatabase()
+
+    const listId = "2e4b0581-0bdc-4a54-bc05-8877b8808a40"
+    const delayDays = 4
+
     const autoresponder = await addAutoresponder({
       autoresponderTemplate: {
         html: "<p>Autoresponder dummy content</p>",
         subject: "Autoresponder dummy subject",
       },
-      delayDays: 0,
-      listId: list.id,
+      delayDays,
+      listId,
     })
     if (autoresponder instanceof Error) {
       return expect(autoresponder).not.toBeInstanceOf(Error)
@@ -80,7 +84,7 @@ describe("getAutoresponder()", async () => {
 
     expect(await getAutoresponder({ id: autoresponder.id })).toStrictEqual({
       createdAt: expect.any(Date),
-      delayDays: 0,
+      delayDays,
       id: autoresponder.id,
       listId: expect.stringMatching(uuidRegex),
       templateId: expect.stringMatching(uuidRegex),
@@ -90,7 +94,7 @@ describe("getAutoresponder()", async () => {
 
 describe("getAutoresponders()", async () => {
   test("should return all autoresponders", async () => {
-    copyFileSync("./prisma/seeded-db.sqlite", "./prisma/test-db.sqlite")
+    seedTestDatabase()
 
     const expectedNumberOfAutoresponders = 82
 
@@ -115,39 +119,38 @@ describe("getAutoresponders()", async () => {
 
 describe("updateAutoresponder()", async () => {
   test("should update autoresponder", async () => {
-    const list1 = await prisma.list.create({
-      data: { ...testData.list, name: "Foo Bar List #1" },
-    })
-    const list2 = await prisma.list.create({
-      data: { ...testData.list, name: "Foo Bar List #2" },
-    })
-    const autoresponder = await addAutoresponder({
-      autoresponderTemplate: {
-        html: "<p>Autoresponder dummy content</p>",
-        subject: "Autoresponder dummy subject",
-      },
-      delayDays: 0,
-      listId: list1.id,
-    })
+    seedTestDatabase()
+
+    const autoresponderId = "a77344bb-ba25-4112-8402-32b932b5b0d6"
+    const expectedDelayDays = 369
+    const expectedListId = "2e4b0581-0bdc-4a54-bc05-8877b8808a40"
+
+    const updatedListId = "048df004-02a0-4b26-b77a-0d6f713fac4c"
+    const updatedDelayDays = 0
+
+    const autoresponder = await getAutoresponder({ id: autoresponderId })
     if (autoresponder instanceof Error) {
       return expect(autoresponder).not.toBeInstanceOf(Error)
     }
+    if (!autoresponder) {
+      return expect(autoresponder).not.toBeNull()
+    }
+
+    expect(autoresponder.delayDays).toStrictEqual(expectedDelayDays)
+    expect(autoresponder.listId).toStrictEqual(expectedListId)
 
     await updateAutoresponder({
-      id: autoresponder.id,
-      delayDays: 8,
-      listId: list2.id,
+      id: autoresponderId,
+      listId: updatedListId,
+      delayDays: updatedDelayDays,
     })
 
-    const updatedAutoresponder = await prisma.autoresponder.findUnique({
-      where: { id: autoresponder.id },
-    })
-
+    const updatedAutoresponder = await getAutoresponder({ id: autoresponderId })
     expect(updatedAutoresponder).toStrictEqual({
       createdAt: expect.any(Date),
-      delayDays: 8,
-      id: autoresponder.id,
-      listId: expect.stringMatching(uuidRegex),
+      delayDays: updatedDelayDays,
+      id: autoresponderId,
+      listId: updatedListId,
       templateId: expect.stringMatching(uuidRegex),
     })
   })

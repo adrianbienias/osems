@@ -1,6 +1,11 @@
 import { prisma } from "@/libs/prisma"
 import { isEmail } from "@/libs/validators"
+import type { List } from "@/modules/lists"
+import type { Contact } from "@prisma/client"
 import { Prisma } from "@prisma/client"
+
+export type { Contact } from "@prisma/client"
+export type ContactWithList = Contact & { list: List }
 
 export async function addContact({
   email,
@@ -111,6 +116,18 @@ export async function unsubscribeContact({
   }
 }
 
+export async function getContact({
+  email,
+  listId,
+}: {
+  email: string
+  listId: string
+}) {
+  return await prisma.contact.findUnique({
+    where: { email_listId: { email, listId } },
+  })
+}
+
 export async function filterContacts({
   take,
   listId,
@@ -140,4 +157,32 @@ export async function getContacts({ listId }: { listId?: string }) {
 
     return Error("Internal Server Error")
   }
+}
+
+export async function getAllContacts() {
+  return await prisma.contact.findMany()
+}
+
+export async function getContactsConfirmedBetweenDates({
+  listId,
+  confirmedAfter,
+  confirmedBefore,
+}: {
+  listId: string
+  confirmedAfter: Date
+  confirmedBefore: Date
+}) {
+  return await prisma.contact.findMany({
+    where: {
+      listId,
+      confirmedAt: { gte: confirmedAfter, lte: confirmedBefore },
+      unsubscribedAt: null,
+    },
+  })
+}
+
+export async function getUnsubscribedContacts() {
+  return await prisma.contact.findMany({
+    where: { unsubscribedAt: { not: null } },
+  })
 }

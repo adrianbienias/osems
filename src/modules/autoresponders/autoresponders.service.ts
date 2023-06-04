@@ -1,12 +1,19 @@
 import { config } from "@/app-config"
 import { wait } from "@/libs/datetime"
-import { prisma } from "@/libs/prisma"
 import { createUnsubscribeUrl } from "@/libs/urls"
+import { getContactsConfirmedBetweenDates } from "@/modules/contacts"
 import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
-import { SETTINGS } from "@/settings"
-import { Autoresponder } from "@prisma/client"
-import { getAutoresponders } from "./autoresponders.model"
+import {
+  Autoresponder,
+  checkIfAutoresponderIsSending,
+  createAutoresponderLog,
+  getAutoresponderLog,
+  getAutoresponders,
+  setAutoresponderSendingIdle,
+  setAutoresponderSendingInProgress,
+  updateAutoresponderLog,
+} from "./autoresponders.model"
 
 export async function sendAutoresponders() {
   const autoresponders = await getAutoresponders()
@@ -17,51 +24,32 @@ export async function sendAutoresponders() {
     return // No autoresponders to send
   }
 
-  const sendingStatus = await prisma.setting.findUnique({
-    where: { key: SETTINGS.autoresponder_sending_status.key },
-  })
-  if (
-    sendingStatus?.value ===
-    SETTINGS.autoresponder_sending_status.values.in_progress
-  ) {
+  if (await checkIfAutoresponderIsSending()) {
     return console.info("Busy... sending autoresponder in progress")
   }
 
-  await prisma.setting.upsert({
-    where: { key: SETTINGS.autoresponder_sending_status.key },
-    update: { value: SETTINGS.autoresponder_sending_status.values.in_progress },
-    create: {
-      key: SETTINGS.autoresponder_sending_status.key,
-      value: SETTINGS.autoresponder_sending_status.values.in_progress,
-    },
-  })
+  await setAutoresponderSendingInProgress()
 
   for (const autoresponder of autoresponders) {
     await sendAutoresponder(autoresponder)
   }
 
-  await prisma.setting.update({
-    where: { key: SETTINGS.autoresponder_sending_status.key },
-    data: { value: SETTINGS.autoresponder_sending_status.values.idle },
-  })
+  await setAutoresponderSendingIdle()
 }
 
 export async function sendAutoresponder(autoresponder: Autoresponder) {
-  const maxDaysDelay = 1 // Prevents sending messages to contacts that had signed up earlier than 1 day before the autoresponder delay value
   const now = new Date()
-  const dateToSendBefore = new Date()
-  const dateToSendAfter = new Date()
-  dateToSendBefore.setDate(now.getDate() - autoresponder.delayDays)
-  dateToSendAfter.setDate(
-    now.getDate() - autoresponder.delayDays - maxDaysDelay
-  )
+  const maxDaysDelay = 1 // Prevents sending messages to contacts that had signed up earlier than 1 day before the autoresponder delay value
+  const confirmedBefore = new Date()
+  const confirmedAfter = new Date()
+  confirmedBefore.setDate(now.getDate() - autoresponder.delayDays)
+  confirmedAfter.setDate(now.getDate() - autoresponder.delayDays - maxDaysDelay)
 
-  const contacts = await prisma.contact.findMany({
-    where: {
-      listId: autoresponder.listId,
-      confirmedAt: { gte: dateToSendAfter, lte: dateToSendBefore },
-      unsubscribedAt: null,
-    },
+  const listId = autoresponder.listId
+  const contacts = await getContactsConfirmedBetweenDates({
+    listId,
+    confirmedAfter,
+    confirmedBefore,
   })
 
   const autoresponderTemplate = await getTemplate({
@@ -80,13 +68,8 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
     const email = contact.email
     const listId = autoresponder.listId
 
-    // TODO: Rethink this
-    // It's not efficient to query DB for each contact
-    // Possible solution: exclude contacts by existing autoresponder logs before iterating all of them
-    const existingLog = await prisma.autoresponderLog.findUnique({
-      where: { email_autoresponderId: { autoresponderId, email } },
-    })
-    if (existingLog) {
+    // TODO: Exclude contacts by existing autoresponder logs before iterating them
+    if (await getAutoresponderLog({ autoresponderId, email })) {
       continue // Autoresponder has been already sent to this contact
     }
 
@@ -105,15 +88,12 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
     }
 
     try {
-      await prisma.autoresponderLog.create({
-        data: { email, autoresponderId },
-      })
-
+      await createAutoresponderLog({ autoresponderId, email })
       await sendEmail(message)
-
-      await prisma.autoresponderLog.update({
-        where: { email_autoresponderId: { email, autoresponderId } },
-        data: { sentAt: new Date() },
+      await updateAutoresponderLog({
+        autoresponderId,
+        email,
+        sentAt: new Date(),
       })
     } catch (error) {
       console.error(error)

@@ -2,6 +2,8 @@ import { prisma } from "@/libs/prisma"
 import { HtmlValidate } from "html-validate"
 import { convertTemplateHtmlToText } from "./templates.service"
 
+export type { Template } from "@prisma/client"
+
 export async function addTemplate({
   subject,
   html,

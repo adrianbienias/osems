@@ -1,4 +1,4 @@
-import { sendEmail } from "@/modules/sendings"
+import { sendEmail } from "./sendings.service"
 import nodemailer from "nodemailer"
 import { describe, expect, test, vi } from "vitest"
 import testData from "../../../mocks/test-data.json"

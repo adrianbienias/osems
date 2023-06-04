@@ -1,8 +1,8 @@
-import { filterContacts, getContactsToSend } from "@/modules/contacts"
-import * as contactsModel from "@/modules/contacts/contacts.model"
-import { getContacts } from "@/modules/contacts/contacts.model"
-import { copyFileSync } from "fs"
+import { seedTestDatabase } from "mocks/seed-db"
 import { describe, expect, test, vi } from "vitest"
+import * as contactsModel from "./contacts.model"
+import { filterContacts, getContacts } from "./contacts.model"
+import { getContactsToSend } from "./contacts.service"
 
 describe("getContactsToSend()", () => {
   test("should prepare contacts to send to, respecting exclusions", async () => {
@@ -55,7 +55,7 @@ describe("getContactsToSend()", () => {
 
 describe("filterContacts()", async () => {
   test("should return a given number of contacts", async () => {
-    copyFileSync("./prisma/seeded-db.sqlite", "./prisma/test-db.sqlite")
+    seedTestDatabase()
 
     const expectedNumberOfFilteredAutoresponders = 25
 
@@ -74,7 +74,7 @@ describe("filterContacts()", async () => {
 
 describe("getContacts()", () => {
   test("should get contacts from database", async () => {
-    copyFileSync("./prisma/seeded-db.sqlite", "./prisma/test-db.sqlite")
+    seedTestDatabase()
 
     const contacts = await getContacts({
       listId: "2e4b0581-0bdc-4a54-bc05-8877b8808a40",

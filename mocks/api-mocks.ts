@@ -1,10 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next"
-import {
-  createMocks,
-  createRequest,
-  createResponse,
-  RequestOptions,
-} from "node-mocks-http"
+import type { NextApiRequest, NextApiResponse } from "next"
+import type { RequestOptions } from "node-mocks-http"
+import { createMocks, createRequest, createResponse } from "node-mocks-http"
 
 export function mockRequestResponse(reqOptions: RequestOptions) {
   const {

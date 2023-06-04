@@ -1,18 +1,19 @@
-import { prisma } from "@/libs/prisma"
 import { uuidRegex } from "@/libs/validators"
+import { cleanTestDatabase } from "mocks/seed-db"
+import { beforeEach, describe, expect, test } from "vitest"
 import {
   addTemplate,
-  convertTemplateHtmlToText,
   getTemplate,
   getTemplates,
-  parseTemplateVariables,
   updateTemplate,
-} from "@/modules/templates"
-import { copyFileSync } from "fs"
-import { beforeEach, describe, expect, test } from "vitest"
+} from "./templates.model"
+import {
+  convertTemplateHtmlToText,
+  parseTemplateVariables,
+} from "./templates.service"
 
 beforeEach(() => {
-  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
+  cleanTestDatabase()
 })
 
 describe("addTemplate()", () => {
@@ -28,14 +29,14 @@ describe("addTemplate()", () => {
   })
 
   test("should add a new template", async () => {
-    expect(await prisma.template.findMany()).toStrictEqual([])
+    expect(await getTemplates()).toStrictEqual([])
 
     await addTemplate({
       subject: "Dummy template",
       html: "<p>Dummy content of the email template</p>",
     })
 
-    expect(await prisma.template.findMany()).toStrictEqual([
+    expect(await getTemplates()).toStrictEqual([
       {
         id: expect.stringMatching(uuidRegex),
         subject: "Dummy template",

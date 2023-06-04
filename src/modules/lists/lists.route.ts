@@ -1,7 +1,8 @@
 import { ApiResponse } from "@/libs/types"
+import type { Template } from "@/modules/templates"
 import { addTemplate, getTemplate, updateTemplate } from "@/modules/templates"
-import { List, Template } from "@prisma/client"
-import { NextApiRequest, NextApiResponse } from "next"
+import type { NextApiRequest, NextApiResponse } from "next"
+import type { List } from "./lists.model"
 import { addList, getList, getLists, updateList } from "./lists.model"
 
 export async function handlePostList({
@@ -103,7 +104,6 @@ export async function handleGetList({
   }
 
   const list = await getList({ id: listId })
-
   if (list instanceof Error) {
     return res.status(400).json({ error: list.message })
   }
@@ -114,7 +114,6 @@ export async function handleGetList({
   const confirmationTemplate = await getTemplate({
     id: list.confirmationTemplateId,
   })
-
   if (confirmationTemplate instanceof Error) {
     return res.status(400).json({ error: confirmationTemplate.message })
   }

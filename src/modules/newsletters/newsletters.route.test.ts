@@ -13,7 +13,9 @@ import {
 } from "./newsletters.route"
 
 vi.mock("@/modules/lists", () => ({
-  getList: vi.fn().mockResolvedValue({ contacts: [{ dummy: "contact" }] }),
+  getListWithContacts: vi
+    .fn()
+    .mockResolvedValue({ contacts: [{ dummy: "contact" }] }),
 }))
 vi.mock("./newsletters.model", () => ({
   scheduleNewsletter: vi.fn().mockResolvedValue({ dummy: "newsletter" }),

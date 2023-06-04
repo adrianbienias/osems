@@ -1,9 +1,9 @@
-import { ApiResponse } from "@/libs/types"
+import type { ApiResponse } from "@/libs/types"
 import {
   handleGetNewsletters,
   handlePostNewsletter,
 } from "@/modules/newsletters"
-import { NextApiRequest, NextApiResponse } from "next"
+import type { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
   req: NextApiRequest,

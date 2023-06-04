@@ -1,5 +1,9 @@
 import { prisma } from "@/libs/prisma"
+import type { List } from "@prisma/client"
 import { Prisma } from "@prisma/client"
+
+export type { List } from "@prisma/client"
+export type ListWithCount = List & { _count: { contacts: number } }
 
 export async function addList({
   name,
@@ -39,6 +43,16 @@ export async function addList({
 
 export async function getList({ id }: { id: string }) {
   try {
+    return await prisma.list.findUnique({ where: { id } })
+  } catch (error) {
+    console.error(error)
+
+    return Error("Internal Server Error")
+  }
+}
+
+export async function getListWithContacts({ id }: { id: string }) {
+  try {
     return await prisma.list.findUnique({
       where: { id },
       include: { contacts: true },
@@ -61,6 +75,10 @@ export async function getLists() {
 
     return Error("Internal Server Error")
   }
+}
+
+export async function getAllLists() {
+  return await prisma.list.findMany()
 }
 
 export async function updateList({

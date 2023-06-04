@@ -224,18 +224,19 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Move all prisma calls to model files (including tests)
-- [ ] Use list pickers for selecting lists on Newsletter creation page
-- [ ] Improve UI layout (currently columns' width is too fluid)
-- [ ] Add toast for quick notifications e.g. after saving edited changes
 - [ ] Provide GUI instalator (move some settings from .env to database, append others to .env file automatically)
 - [ ] Dockerize the app
-- [ ] Measure performance depending on the dataset size
-- [ ] Create a landing page with waiting list for a video course on building the app
+- [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
+- [ ] Create a landing page with waiting list for a video course about building this app
+- [ ] Add toast for quick notifications e.g. after saving edited changes
+- [ ] Improve UI layout (currently columns' width is too fluid)
+- [ ] Use list pickers for selecting lists on Newsletter creation page
+- [ ] Distill routes in modules to distinct files
 - [ ] Add fully fledged documentation
   - [Docusaurus](https://docusaurus.io/)
   - [Nextra](https://nextra.site/)
-- [ ] Record demo video showing how OSEMS works and how to use it
+- [ ] Measure performance depending on the dataset size
+- [ ] Exclude contacts by existing autoresponder logs before iterating them (inline TODO)
 - [ ] Handle resubscribing (signup again after unsubscribing)
   - Place resubscribe button on the unsubscribe page
 - [ ] Create a landing page with waiting list for a cloud version

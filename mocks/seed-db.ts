@@ -4,6 +4,14 @@ import { faker } from "@faker-js/faker"
 import { copyFileSync } from "fs"
 import testData from "./test-data.json"
 
+export function cleanTestDatabase() {
+  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
+}
+
+export function seedTestDatabase() {
+  copyFileSync("./prisma/seeded-db.sqlite", "./prisma/test-db.sqlite")
+}
+
 export async function seedDb(destDbFilename: string) {
   copyFileSync("./prisma/empty-db.sqlite", `./prisma/${destDbFilename}`)
 

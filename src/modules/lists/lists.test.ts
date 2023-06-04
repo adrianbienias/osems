@@ -1,42 +1,42 @@
-import { prisma } from "@/libs/prisma"
 import { uuidRegex } from "@/libs/validators"
 import { addContact } from "@/modules/contacts/contacts.model"
-import { addList, getList, getLists, updateList } from "@/modules/lists"
-import { copyFileSync } from "fs"
+import { cleanTestDatabase } from "mocks/seed-db"
 import { beforeEach, describe, expect, test, vi } from "vitest"
 import testData from "../../../mocks/test-data.json"
+import {
+  addList,
+  getAllLists,
+  getList,
+  getLists,
+  updateList,
+} from "./lists.model"
 
 vi.mock("@/modules/templates", () => ({ getTemplate: vi.fn() }))
 
 beforeEach(() => {
-  copyFileSync("./prisma/empty-db.sqlite", "./prisma/test-db.sqlite")
+  cleanTestDatabase()
 })
 
 describe("addList()", () => {
   test("should create a new list", async () => {
-    expect(await prisma.list.findUnique({ where: { id: "1" } })).toStrictEqual(
-      null
-    )
+    expect(await getAllLists()).toStrictEqual([])
 
     const addedList = await addList(testData.list)
-
     if (addedList instanceof Error) {
       return expect(addedList).not.toBeInstanceOf(Error)
     }
 
-    expect(
-      await prisma.list.findUnique({
-        where: { id: addedList.id },
-      })
-    ).toStrictEqual({
-      id: expect.stringMatching(uuidRegex),
-      name: "Foo Bar List",
-      confirmationTemplateId: "dummy-confirmation-template-id",
-      signupRedirectUrl: "http://example.com/redirect/signup",
-      confirmationRedirectUrl: "http://example.com/redirect/confirmation",
-      unsubscribeRedirectUrl: "http://example.com/redirect/unsubscribe",
-      createdAt: expect.any(Date),
-    })
+    expect(await getAllLists()).toStrictEqual([
+      {
+        id: expect.stringMatching(uuidRegex),
+        name: "Foo Bar List",
+        confirmationTemplateId: "dummy-confirmation-template-id",
+        signupRedirectUrl: "http://example.com/redirect/signup",
+        confirmationRedirectUrl: "http://example.com/redirect/confirmation",
+        unsubscribeRedirectUrl: "http://example.com/redirect/unsubscribe",
+        createdAt: expect.any(Date),
+      },
+    ])
   })
 
   test("should reject creating list with the same name", async () => {
@@ -69,21 +69,16 @@ describe("updateList()", () => {
       createdAt: expect.any(Date),
     }
 
-    expect(
-      await prisma.list.findUnique({ where: { id: addedList.id } })
-    ).toStrictEqual(initialList)
+    expect(await getList({ id: addedList.id })).toStrictEqual(initialList)
 
     await updateList({ id: addedList.id, name: "Foo Foo List" })
-
-    expect(
-      await prisma.list.findUnique({ where: { id: addedList.id } })
-    ).toStrictEqual({ ...initialList, name: "Foo Foo List" })
+    expect(await getList({ id: addedList.id })).toStrictEqual({
+      ...initialList,
+      name: "Foo Foo List",
+    })
 
     await updateList({ id: addedList.id })
-
-    expect(
-      await prisma.list.findUnique({ where: { id: addedList.id } })
-    ).toStrictEqual({
+    expect(await getList({ id: addedList.id })).toStrictEqual({
       ...initialList,
       name: "Foo Foo List",
     })
@@ -94,10 +89,7 @@ describe("updateList()", () => {
       confirmationRedirectUrl: "Update value",
       unsubscribeRedirectUrl: "Update value",
     })
-
-    expect(
-      await prisma.list.findUnique({ where: { id: addedList.id } })
-    ).toStrictEqual({
+    expect(await getList({ id: addedList.id })).toStrictEqual({
       ...initialList,
       name: "Foo Foo List",
       signupRedirectUrl: "Update value",
@@ -112,7 +104,6 @@ describe("updateList()", () => {
       id: expect.stringMatching(uuidRegex),
       createdAt: expect.any(Date),
     })
-
     expect(await addList(testData.list)).toStrictEqual(
       Error("List with provided name already exists")
     )
@@ -161,7 +152,6 @@ describe("getList()", () => {
       ...testData.list,
       id: expect.stringMatching(uuidRegex),
       createdAt: expect.any(Date),
-      contacts: [],
     })
   })
 })

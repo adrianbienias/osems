@@ -1,14 +1,10 @@
-import { List } from "@prisma/client"
+import type { List } from "@/modules/lists"
 import htmlParser from "prettier/parser-html"
 import prettier from "prettier/standalone"
 import { renderToStaticMarkup } from "react-dom/server"
 import { SignupForm } from "../signup-form"
 
-type Props = {
-  list: List
-}
-
-export default function ListSignup({ list }: Props) {
+export default function ListSignup({ list }: { list: List }) {
   return (
     <>
       <section>
