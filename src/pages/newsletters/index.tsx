@@ -59,13 +59,7 @@ export default function Newsletters() {
                       "N/A"
                     )}
                   </Td>
-                  <Td>
-                    {newsletter.isSending
-                      ? "Sending..."
-                      : newsletter.sentAt
-                      ? "Sent"
-                      : "Scheduled"}
-                  </Td>
+                  <Td>{newsletter.sentAt ? "Sent" : "Scheduled"}</Td>
                 </Tr>
               ))
             ) : (

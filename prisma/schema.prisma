@@ -43,7 +43,6 @@ model Newsletter {
     listIdsToExclude String
     templateId       String
     toSendAfter      DateTime
-    isSending        Boolean   @default(false)
     sentAt           DateTime?
     sendings         Sending[]
     createdAt        DateTime  @default(now())

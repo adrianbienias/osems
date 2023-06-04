@@ -224,7 +224,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Remove `isSending` column in `Newsletters` and use `sending_status` similar to autoresponders
 - [ ] Rename `Sending` table to `NewsletterLogs`
 - [ ] Move all prisma calls to model files (including tests)
 - [ ] Use list pickers for selecting lists on Newsletter creation page

@@ -7,6 +7,7 @@ import {
   sendNewsletters,
 } from "@/modules/newsletters"
 import { sendEmail } from "@/modules/sendings"
+import { SETTINGS } from "@/settings"
 import { copyFileSync } from "fs"
 import { beforeEach, describe, expect, test, vi } from "vitest"
 
@@ -74,7 +75,6 @@ describe("scheduleNewsletter()", () => {
         listIdToInclude: "list-id-to-include",
         listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
         templateId: "newsletter-template-id",
-        isSending: false,
         sentAt: null,
         createdAt: expect.any(Date),
         toSendAfter: expect.any(Date),
@@ -84,7 +84,6 @@ describe("scheduleNewsletter()", () => {
         listIdToInclude: "list-id-to-include",
         listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
         templateId: "newsletter-template-id",
-        isSending: false,
         sentAt: null,
         createdAt: expect.any(Date),
         toSendAfter: expect.any(Date),
@@ -127,7 +126,6 @@ describe("getNewsletters()", () => {
         listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
         templateId: "newsletter-template-id",
         toSendAfter: expect.any(Date),
-        isSending: false,
         sentAt: null,
         createdAt: expect.any(Date),
       },
@@ -137,7 +135,6 @@ describe("getNewsletters()", () => {
         listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
         templateId: "newsletter-template-id",
         toSendAfter: expect.any(Date),
-        isSending: false,
         sentAt: null,
         createdAt: expect.any(Date),
       },
@@ -169,7 +166,6 @@ describe("getNewsletter()", () => {
       listIdsToExclude: '["list-id-to-exclude-1","list-id-to-exclude-2"]',
       templateId: "newsletter-template-id",
       toSendAfter: expect.any(Date),
-      isSending: false,
       sentAt: null,
       createdAt: expect.any(Date),
       sendings: [],
@@ -197,9 +193,13 @@ describe("sendNewsletters()", () => {
 
     expect(await prisma.sending.findMany()).toStrictEqual([])
 
-    await prisma.newsletter.update({
-      where: { id: newsletter.id },
-      data: { isSending: true },
+    await prisma.settings.upsert({
+      where: { key: SETTINGS.newsletter_sending_status.key },
+      update: { value: SETTINGS.newsletter_sending_status.values.in_progress },
+      create: {
+        key: SETTINGS.newsletter_sending_status.key,
+        value: SETTINGS.newsletter_sending_status.values.in_progress,
+      },
     })
 
     const consoleInfoSpy = vi.spyOn(console, "info")

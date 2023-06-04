@@ -5,6 +5,7 @@ import { createUnsubscribeUrl } from "@/libs/urls"
 import { getContactsToSend } from "@/modules/contacts"
 import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
+import { SETTINGS } from "@/settings"
 import { Contact, Newsletter } from "@prisma/client"
 import { getScheduledNewsletters } from "./newsletters.model"
 
@@ -14,14 +15,24 @@ export async function sendNewsletters() {
     return console.error(newsletters.message)
   }
 
-  const sendingInProgress = newsletters.find(
-    (newsletter) => newsletter.isSending === true
-  )
-  if (sendingInProgress) {
+  const sendingStatus = await prisma.settings.findUnique({
+    where: { key: SETTINGS.newsletter_sending_status.key },
+  })
+  if (
+    sendingStatus?.value ===
+    SETTINGS.newsletter_sending_status.values.in_progress
+  ) {
     return console.info("Busy... sending newsletter in progress")
   }
 
-  // TODO: Set sending status as in progress
+  await prisma.settings.upsert({
+    where: { key: SETTINGS.newsletter_sending_status.key },
+    update: { value: SETTINGS.newsletter_sending_status.values.in_progress },
+    create: {
+      key: SETTINGS.newsletter_sending_status.key,
+      value: SETTINGS.newsletter_sending_status.values.in_progress,
+    },
+  })
 
   for (const newsletter of newsletters) {
     const contactsToSend = await getContactsToSend({
@@ -41,7 +52,10 @@ export async function sendNewsletters() {
     await sendNewsletter({ newsletter, contacts: contactsToSend })
   }
 
-  // TODO: Clear sending status
+  await prisma.settings.update({
+    where: { key: SETTINGS.newsletter_sending_status.key },
+    data: { value: SETTINGS.newsletter_sending_status.values.idle },
+  })
 }
 
 async function sendNewsletter({
@@ -51,11 +65,6 @@ async function sendNewsletter({
   newsletter: Newsletter
   contacts: Contact[]
 }) {
-  await prisma.newsletter.update({
-    where: { id: newsletter.id },
-    data: { isSending: true },
-  })
-
   const newsletterTemplate = await getTemplate({
     id: newsletter.templateId,
   })
@@ -104,6 +113,6 @@ async function sendNewsletter({
 
   await prisma.newsletter.update({
     where: { id: newsletter.id },
-    data: { sentAt: new Date(), isSending: false },
+    data: { sentAt: new Date() },
   })
 }

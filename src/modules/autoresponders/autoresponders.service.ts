@@ -18,18 +18,21 @@ export async function sendAutoresponders() {
   }
 
   const sendingStatus = await prisma.settings.findUnique({
-    where: { key: SETTINGS.sending_status.key },
+    where: { key: SETTINGS.autoresponder_sending_status.key },
   })
-  if (sendingStatus?.value === SETTINGS.sending_status.values.in_progress) {
+  if (
+    sendingStatus?.value ===
+    SETTINGS.autoresponder_sending_status.values.in_progress
+  ) {
     return console.info("Busy... sending autoresponder in progress")
   }
 
   await prisma.settings.upsert({
-    where: { key: SETTINGS.sending_status.key },
-    update: { value: SETTINGS.sending_status.values.in_progress },
+    where: { key: SETTINGS.autoresponder_sending_status.key },
+    update: { value: SETTINGS.autoresponder_sending_status.values.in_progress },
     create: {
-      key: SETTINGS.sending_status.key,
-      value: SETTINGS.sending_status.values.in_progress,
+      key: SETTINGS.autoresponder_sending_status.key,
+      value: SETTINGS.autoresponder_sending_status.values.in_progress,
     },
   })
 
@@ -38,8 +41,8 @@ export async function sendAutoresponders() {
   }
 
   await prisma.settings.update({
-    where: { key: SETTINGS.sending_status.key },
-    data: { value: SETTINGS.sending_status.values.idle },
+    where: { key: SETTINGS.autoresponder_sending_status.key },
+    data: { value: SETTINGS.autoresponder_sending_status.values.idle },
   })
 }
 

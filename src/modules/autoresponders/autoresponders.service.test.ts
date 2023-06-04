@@ -28,7 +28,9 @@ describe("sendAutoresponders()", () => {
     ]
 
     expect(
-      await prisma.settings.findUnique({ where: { key: "sending_status" } })
+      await prisma.settings.findUnique({
+        where: { key: "autoresponder_sending_status" },
+      })
     ).toStrictEqual(null)
 
     for (const day of days) {
@@ -62,7 +64,7 @@ describe("sendAutoresponders()", () => {
       expect(
         (
           await prisma.settings.findUnique({
-            where: { key: "sending_status" },
+            where: { key: "autoresponder_sending_status" },
           })
         )?.value
       ).toStrictEqual("idle")
