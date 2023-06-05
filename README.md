@@ -66,8 +66,6 @@ For database operations it uses [Prisma](https://www.prisma.io/), that allows yo
 - CockroachDB
 - Microsoft SQL Server
 
-For authentication (to log in to the dashboard) [NextAuth.js](https://next-auth.js.org/) has been used.
-
 For visual styling, [Tailwind CSS](https://tailwindcss.com/).
 
 Automated tests have been written in [Vitest](https://vitest.dev/) (as a more performant alternative to [Jest](https://jestjs.io/)).
@@ -225,16 +223,19 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 ## TODOs
 
 - [ ] Provide GUI instalator (move some settings from .env to database, append others to .env file automatically)
+- [ ] Test auth module
 - [ ] Dockerize the app
 - [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] Create a landing page with waiting list for a video course about building this app
 - [ ] Add toast for quick notifications e.g. after saving edited changes
 - [ ] Improve UI layout (currently columns' width is too fluid)
+- [ ] Add results pagination
 - [ ] Use list pickers for selecting lists on Newsletter creation page
 - [ ] Distill routes in modules to distinct files
 - [ ] Add fully fledged documentation
   - [Docusaurus](https://docusaurus.io/)
   - [Nextra](https://nextra.site/)
+- [ ] Rename config to appConfig to provide consistent name in all components
 - [ ] Measure performance depending on the dataset size
 - [ ] Exclude contacts by existing autoresponder logs before iterating them (inline TODO)
 - [ ] Handle resubscribing (signup again after unsubscribing)

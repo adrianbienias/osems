@@ -21,6 +21,9 @@ if (!process.env.NEXT_PUBLIC_EMAIL_FROM) {
 }
 
 if (isServer) {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("Missing env JWT_SECRET")
+  }
   if (!process.env.APP_ENV) {
     throw new Error("Missing env APP_ENV")
   }
@@ -61,17 +64,17 @@ export const config = {
   isDevelopment: process.env.APP_ENV === APP_ENVS.development,
   isTest: process.env.APP_ENV === APP_ENVS.test,
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  adminEmail: process.env.ADMIN_EMAIL,
+  adminEmail: process.env.ADMIN_EMAIL!,
   signupFormAction: process.env.SIGNUP_FORM_ACTION as FormActions,
   signupFormSubmitUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/public/contacts`,
   signupFormErrorUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/public/signup-form-error`,
   sender: process.env.NEXT_PUBLIC_EMAIL_FROM,
   smtp: {
-    host: process.env.EMAIL_SERVER_HOST,
+    host: process.env.EMAIL_SERVER_HOST!,
     port: Number(process.env.EMAIL_SERVER_PORT),
     auth: {
-      user: process.env.EMAIL_SERVER_USER,
-      pass: process.env.EMAIL_SERVER_PASSWORD,
+      user: process.env.EMAIL_SERVER_USER!,
+      pass: process.env.EMAIL_SERVER_PASSWORD!,
     },
   },
   maxSendRatePerSecondNewsletter: Number(
@@ -80,4 +83,8 @@ export const config = {
   maxSendRatePerSecondAutoresponder: Number(
     process.env.MAX_SEND_RATE_PER_SECOND_AUTORESPONDER
   ),
+  jwtSecret: process.env.JWT_SECRET!,
+  jwtCookieMaxAge: 60 * 60 * 24 * 31, // 31 days
+  adminJwtCookieName: "adminJWT",
+  loginPagePath: "/public/login",
 }

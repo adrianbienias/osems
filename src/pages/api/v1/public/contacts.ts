@@ -30,10 +30,10 @@ export default async function handler(
 
   switch (req.method) {
     case "POST": {
-      return contactsPostHandler({ req, res })
+      return await contactsPostHandler({ req, res })
     }
     case "GET": {
-      return contactsGetHandler({ req, res })
+      return await contactsGetHandler({ req, res })
     }
     default: {
       return res.status(405).json({ error: "Method not allowed" })
