@@ -222,12 +222,16 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Test auth module
+- [ ] Add toast for quick notifications e.g. after saving edited changes
+- [ ] Improve UI layout (currently columns' width is too fluid)
 - [ ] Dockerize the app
 - [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] Create a landing page with waiting list for a video course about building this app
-- [ ] Add toast for quick notifications e.g. after saving edited changes
-- [ ] Improve UI layout (currently columns' width is too fluid)
+- [ ] Add missing tests
+  - `src/pages/api/v1/autoresponders/`
+  - `src/middleware.ts`
+  - `src/libs/cron.ts`
+  - `src/libs/fetcher.ts`
 - [ ] Add results pagination
 - [ ] Use list pickers for selecting lists on Newsletter creation page
 - [ ] Distill routes in modules to distinct files

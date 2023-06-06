@@ -21,5 +21,11 @@
     "subject": "Dummy subject",
     "html": "<p>Dummy html message</p>",
     "text": "Dummy text message"
+  },
+  "jwt": {
+    "secret": "dummy-string",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZvb0BiYXIuYmF6IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0Ijo5NDY2ODQ4MDB9.xgF9gH7obFwQ6b7JocQi6cvM2sGpjo_NS-69rM30pSM",
+    "payload": { "email": "foo@bar.baz", "isAdmin": true },
+    "iat": 946684800
   }
 }
