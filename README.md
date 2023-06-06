@@ -86,7 +86,7 @@ In production environment it's automatically activated.
 
 You can also turn it on for development by editing `src/middleware.ts` (more info in that file).
 
-Set `ADMIN_EMAIL` in `.env` file. That email is used to authorize access to the dashboard.
+Set `INITIAL_ADMIN_EMAIL` in `.env` file. That email is used to authorize access to the dashboard.
 
 Also, you need to set `EMAIL_SERVER_*` variables in `.env`, providing credentials of SMTP server, that you're going to use to handle sending of your emails.
 
@@ -222,7 +222,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Provide GUI instalator (move some settings from .env to database, append others to .env file automatically)
 - [ ] Test auth module
 - [ ] Dockerize the app
 - [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
