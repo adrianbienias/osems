@@ -16,10 +16,7 @@ vi.mock("@/modules/newsletters", () => ({
 
 describe("POST /api/v1/newsletters", () => {
   test("should call handlePostNewsletter()", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "POST",
-      body: { foo: "bar" },
-    })
+    const { req, res } = mockRequestResponse({ method: "POST" })
     await apiNewslettersHandler(req, res)
     expect(handlePostNewsletter).toHaveBeenCalledWith({ req, res })
   })
@@ -27,9 +24,7 @@ describe("POST /api/v1/newsletters", () => {
 
 describe("GET /api/v1/newsletters", () => {
   test("should call handleGetNewsletters()", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "GET",
-    })
+    const { req, res } = mockRequestResponse({ method: "GET" })
     await apiNewslettersHandler(req, res)
     expect(handleGetNewsletters).toHaveBeenCalledWith({ req, res })
   })
@@ -37,12 +32,7 @@ describe("GET /api/v1/newsletters", () => {
 
 describe("GET /api/v1/newsletters/:newsletterId", () => {
   test("should call handleGetNewsletter()", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "GET",
-      query: {
-        newsletterId: "dummy-newsletter-id",
-      },
-    })
+    const { req, res } = mockRequestResponse({ method: "GET" })
     await apiNewsletterHandler(req, res)
     expect(handleGetNewsletter).toHaveBeenCalledWith({ req, res })
   })

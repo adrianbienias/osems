@@ -11,10 +11,7 @@ vi.mock("@/modules/auth", () => ({
 
 describe("POST /api/v1/public/auth", () => {
   test("should call handlePostAuth()", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "POST",
-      body: { foo: "bar" },
-    })
+    const { req, res } = mockRequestResponse({ method: "POST" })
     await apiAuthHandler(req, res)
     expect(handlePostAuth).toHaveBeenCalledWith({ req, res })
   })

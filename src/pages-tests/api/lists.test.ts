@@ -18,10 +18,7 @@ vi.mock("@/modules/lists", () => ({
 
 describe("POST /api/v1/lists", () => {
   test("should call handlePostList()", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "POST",
-      body: { foo: "bar" },
-    })
+    const { req, res } = mockRequestResponse({ method: "POST" })
     await apiListsHandler(req, res)
     expect(handlePostList).toHaveBeenCalledWith({ req, res })
   })
@@ -37,10 +34,7 @@ describe("GET /api/v1/lists", () => {
 
 describe("GET /api/v1/list/:listId", () => {
   test("should call handleGetList()", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "GET",
-      query: { foo: "bar" },
-    })
+    const { req, res } = mockRequestResponse({ method: "GET" })
     await apiListHandler(req, res)
     expect(handleGetList).toHaveBeenCalledWith({ req, res })
   })
@@ -48,11 +42,7 @@ describe("GET /api/v1/list/:listId", () => {
 
 describe("PATCH /api/v1/list/:listId", () => {
   test("should call updateList()", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "PATCH",
-      query: { foo: "bar" },
-      body: { foo: "bar" },
-    })
+    const { req, res } = mockRequestResponse({ method: "PATCH" })
     await apiListHandler(req, res)
     expect(handlePatchList).toHaveBeenCalledWith({ req, res })
   })

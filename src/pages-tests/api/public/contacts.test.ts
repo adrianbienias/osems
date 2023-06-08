@@ -18,10 +18,7 @@ describe("GET /api/v1/public/contacts", () => {
 
 describe("POST /api/v1/public/contacts", () => {
   test("should call contactsPostHandler()", async () => {
-    const { req, res } = mockRequestResponse({
-      method: "POST",
-      body: { foo: "bar" },
-    })
+    const { req, res } = mockRequestResponse({ method: "POST" })
     await apiContactsHandler(req, res)
     expect(contactsPostHandler).toHaveBeenCalledWith({ req, res })
   })
