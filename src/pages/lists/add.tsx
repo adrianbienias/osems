@@ -62,8 +62,8 @@ export default function AddList() {
       <Navbar />
 
       <main>
-        <div className="mt-8 flex flex-col md:flex-row gap-8 justify-between">
-          <section className="grow-[0.25]">
+        <div className="mt-8 lg:grid lg:grid-cols-[2fr_3fr] gap-8 justify-between">
+          <section>
             <form onSubmit={handleFormSubmit}>
               <fieldset disabled={isSubmitted} className="border-none">
                 <div>
@@ -147,7 +147,7 @@ export default function AddList() {
             </form>
           </section>
 
-          <section className="grow-[0.75]">
+          <section>
             <h2>Confirmation template preview</h2>
 
             <div

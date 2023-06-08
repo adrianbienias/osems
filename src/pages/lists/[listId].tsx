@@ -74,8 +74,8 @@ export default function ShowList() {
       <Navbar />
 
       <main>
-        <div className="mt-8 flex flex-col md:flex-row gap-8 justify-between">
-          <section className="grow-[0.25]">
+        <div className="mt-8 lg:grid lg:grid-cols-[2fr_3fr] gap-8 justify-between">
+          <section>
             <h2>List details</h2>
 
             <form onSubmit={handleFormSubmit}>
@@ -160,7 +160,7 @@ export default function ShowList() {
             </form>
           </section>
 
-          <section className="grow-[0.75]">
+          <section>
             <h2>Confirmation template preview</h2>
 
             <div

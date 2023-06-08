@@ -39,8 +39,8 @@ export default function ShowNewsletter() {
       <Navbar />
 
       <main>
-        <div className="mt-8 flex flex-col md:flex-row gap-8 justify-between">
-          <section className="grow-[0.25] order-2 md:order-1">
+        <div className="mt-8 lg:grid lg:grid-cols-[2fr_3fr] gap-8 justify-between">
+          <section className="order-2 lg:order-1">
             <h2>Logs</h2>
 
             <Table>
@@ -71,7 +71,7 @@ export default function ShowNewsletter() {
             </Table>
           </section>
 
-          <section className="grow-[0.75] order-1 md:order-2">
+          <section className="order-1 lg:order-2">
             <h2>Newsletter template preview</h2>
 
             <p>

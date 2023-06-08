@@ -22,7 +22,7 @@ export function Navbar() {
   return (
     <>
       <div className="max-w-screen-xl mx-auto pb-4">
-        <div className="flex gap-6 items-center justify-between">
+        <div className="flex gap-16 items-center justify-between overflow-auto whitespace-nowrap">
           <div className="flex gap-16 items-center">
             <NavLink
               href="/"

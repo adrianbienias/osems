@@ -75,8 +75,8 @@ export default function ShowAutoresponder() {
       <Navbar />
 
       <main>
-        <div className="mt-8 flex flex-col md:flex-row gap-8 justify-between">
-          <section className="grow-[0.25]">
+        <div className="mt-8 lg:grid lg:grid-cols-[2fr_3fr] gap-8 justify-between">
+          <section>
             <h2>Autoresponder details</h2>
 
             <form onSubmit={handleFormSubmit}>
@@ -115,6 +115,7 @@ export default function ShowAutoresponder() {
                 id="textarea-html"
                 name="html"
                 rows={5}
+                className="resize-y"
                 defaultValue={template.html}
                 placeholder={template.html}
                 onChange={handleHtmlChange}
@@ -133,7 +134,7 @@ export default function ShowAutoresponder() {
             </form>
           </section>
 
-          <section className="grow-[0.75]">
+          <section>
             <h2>Autoresponder template preview</h2>
 
             <div

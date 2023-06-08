@@ -233,7 +233,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Improve UI layout (currently columns' width is too fluid)
 - [ ] Add missing tests
   - `src/pages/api/v1/autoresponders/`
   - `src/middleware.ts`
