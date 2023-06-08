@@ -33,7 +33,7 @@ export default function AutorespondersTable() {
         <Tbody>
           {autoresponders && autoresponders.length > 0 ? (
             autoresponders.map((autoresponder, index) => (
-              <Tr key={`${autoresponder.list.id}`}>
+              <Tr key={`${autoresponder.id}`}>
                 <Td>{index + 1}</Td>
                 <Td>
                   <Link href={`autoresponders/${autoresponder.id}`}>
