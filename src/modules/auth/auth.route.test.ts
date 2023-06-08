@@ -17,8 +17,8 @@ vi.mock("@/app-config", async () => {
   >("../../../mocks/test-data.json")
 
   return {
-    config: {
-      ...actualModule.config,
+    appConfig: {
+      ...actualModule.appConfig,
       initialAdminEmail: "foo@bar.baz",
       jwtSecret: testData.jwt.secret,
     },

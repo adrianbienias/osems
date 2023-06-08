@@ -1,13 +1,13 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 import nodemailer from "nodemailer"
 
 async function createNodemailerTransporter() {
   let transporter
 
-  if (config.isTest) {
+  if (appConfig.isTest) {
     transporter = nodemailer.createTransport({ jsonTransport: true })
   } else {
-    transporter = nodemailer.createTransport(config.smtp)
+    transporter = nodemailer.createTransport(appConfig.smtp)
   }
 
   if (!transporter) {
@@ -31,7 +31,7 @@ export async function sendEmail({
   html += getEmailFooter().html
   text += getEmailFooter().text
 
-  const from = config.sender
+  const from = appConfig.sender
   const transporter = await createNodemailerTransporter()
   const searchParams = new URLSearchParams([
     ["subject", encodeURIComponent("Unsubscribe")],
@@ -42,7 +42,7 @@ export async function sendEmail({
 
   await transporter.sendMail(data)
 
-  if (config.isTest) {
+  if (appConfig.isTest) {
     const message = { from, to, subject, html, text }
     console.info(`Simulated email send`, message)
   }

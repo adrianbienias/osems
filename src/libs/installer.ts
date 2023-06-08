@@ -1,10 +1,10 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 import { prisma } from "@/libs/prisma"
 import { appendFileSync } from "fs"
 import { generate } from "randomstring"
 
 export function setEnvVariables(envFilePath: string) {
-  if (!config.jwtSecret) {
+  if (!appConfig.jwtSecret) {
     appendFileSync(
       envFilePath,
       `
@@ -23,7 +23,7 @@ export async function setInitialAdminEmail() {
     return console.info("Admin is already set", admins)
   }
 
-  const email = config.initialAdminEmail
+  const email = appConfig.initialAdminEmail
   const admin = await prisma.admin.upsert({
     where: { email },
     update: {},

@@ -222,7 +222,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Rename config to appConfig to provide consistent name in all components
 - [ ] Add meta title for pages
 - [ ] Add 3 states for buttons: idle, loading, success (with timeout), and disable forms on loading
 - [ ] Improve UI layout (currently columns' width is too fluid)

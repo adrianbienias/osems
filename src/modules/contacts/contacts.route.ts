@@ -1,4 +1,4 @@
-import { config, SIGNUP_FORM_ACTIONS } from "@/app-config"
+import { appConfig, SIGNUP_FORM_ACTIONS } from "@/app-config"
 import type { ApiResponse } from "@/libs/types"
 import { createConfirmationUrl } from "@/libs/urls"
 import { isEmail } from "@/libs/validators"
@@ -36,7 +36,7 @@ export async function contactsPostHandler({
   }
 
   if (!email || !isEmail(email)) {
-    switch (config.signupFormAction) {
+    switch (appConfig.signupFormAction) {
       case SIGNUP_FORM_ACTIONS.api: {
         return res.status(400).json({ error: "Invalid email address" })
       }
@@ -51,7 +51,7 @@ export async function contactsPostHandler({
         // https://nextjs.org/docs/api-reference/next/server#why-does-redirect-use-307-and-308
         return res.redirect(
           302,
-          `${config.signupFormErrorUrl}?${searchParams.toString()}`
+          `${appConfig.signupFormErrorUrl}?${searchParams.toString()}`
         )
       }
     }
@@ -59,7 +59,7 @@ export async function contactsPostHandler({
 
   const contact = await addContact({ email, listId: listId })
   if (contact instanceof Error) {
-    switch (config.signupFormAction) {
+    switch (appConfig.signupFormAction) {
       case SIGNUP_FORM_ACTIONS.api: {
         return res.status(400).json({ error: contact.message })
       }
@@ -74,7 +74,7 @@ export async function contactsPostHandler({
         // https://nextjs.org/docs/api-reference/next/server#why-does-redirect-use-307-and-308
         return res.redirect(
           302,
-          `${config.signupFormErrorUrl}?${searchParams.toString()}`
+          `${appConfig.signupFormErrorUrl}?${searchParams.toString()}`
         )
       }
     }
@@ -105,7 +105,7 @@ export async function contactsPostHandler({
 
   await sendEmail(message)
 
-  switch (config.signupFormAction) {
+  switch (appConfig.signupFormAction) {
     case SIGNUP_FORM_ACTIONS.api: {
       return res.status(200).json({
         success: "Contact subscribed",
@@ -135,7 +135,7 @@ export async function contactsGetHandler({
     action?: string
   }
   if (!email) {
-    switch (config.signupFormAction) {
+    switch (appConfig.signupFormAction) {
       case SIGNUP_FORM_ACTIONS.api: {
         return res.status(400).json({ error: "Missing email" })
       }
@@ -143,7 +143,7 @@ export async function contactsGetHandler({
         const searchParams = new URLSearchParams([["error", "Missing email"]])
 
         return res.redirect(
-          `${config.signupFormErrorUrl}?${searchParams.toString()}`
+          `${appConfig.signupFormErrorUrl}?${searchParams.toString()}`
         )
       }
     }

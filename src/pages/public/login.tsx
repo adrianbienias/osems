@@ -1,4 +1,4 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input } from "@/components/form"
@@ -59,7 +59,7 @@ export async function getServerSideProps({
   req: NextApiRequest
   res: NextApiResponse
 }) {
-  const adminJwt = getCookie(config.adminJwtCookieName, { req })
+  const adminJwt = getCookie(appConfig.adminJwtCookieName, { req })
   if (!adminJwt || typeof adminJwt !== "string") {
     return { props: {} }
   }

@@ -8,7 +8,7 @@ vi.mock("@/app-config", async () => {
   >("../../../mocks/test-data.json")
 
   return {
-    config: { jwtSecret: testData.jwt.secret },
+    appConfig: { jwtSecret: testData.jwt.secret },
   }
 })
 

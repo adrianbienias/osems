@@ -56,7 +56,7 @@ if (isServer) {
   }
 }
 
-export const config = {
+export const appConfig = {
   isProduction: process.env.APP_ENV === APP_ENVS.production,
   isDevelopment: process.env.APP_ENV === APP_ENVS.development,
   isTest: process.env.APP_ENV === APP_ENVS.test,

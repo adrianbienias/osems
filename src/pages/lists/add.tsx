@@ -1,4 +1,4 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
@@ -69,24 +69,24 @@ export default function AddList() {
                   id="input-signup-redirect-url"
                   name="signupRedirectUrl"
                   type="text"
-                  defaultValue={`${config.baseUrl}/public/confirmation-required`}
-                  placeholder={`${config.baseUrl}/public/confirmation-required`}
+                  defaultValue={`${appConfig.baseUrl}/public/confirmation-required`}
+                  placeholder={`${appConfig.baseUrl}/public/confirmation-required`}
                 />
                 <Input
                   label="Confirmation redirect URL"
                   id="input-confirmation-redirect-url"
                   name="confirmationRedirectUrl"
                   type="text"
-                  defaultValue={`${config.baseUrl}/public/subscribed-successfully`}
-                  placeholder={`${config.baseUrl}/public/subscribed-successfully`}
+                  defaultValue={`${appConfig.baseUrl}/public/subscribed-successfully`}
+                  placeholder={`${appConfig.baseUrl}/public/subscribed-successfully`}
                 />
                 <Input
                   label="Unsubscribe redirect URL"
                   id="input-unsubscribe-redirect-url"
                   name="unsubscribeRedirectUrl"
                   type="text"
-                  defaultValue={`${config.baseUrl}/public/unsubscribed`}
-                  placeholder={`${config.baseUrl}/public/unsubscribed`}
+                  defaultValue={`${appConfig.baseUrl}/public/unsubscribed`}
+                  placeholder={`${appConfig.baseUrl}/public/unsubscribed`}
                 />
               </div>
 
@@ -98,7 +98,7 @@ export default function AddList() {
                   id="input-from"
                   name="from"
                   type="text"
-                  defaultValue={config.sender}
+                  defaultValue={appConfig.sender}
                   className="text-slate-400"
                   disabled
                 />

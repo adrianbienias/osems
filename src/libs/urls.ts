@@ -1,4 +1,4 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 
 export function createConfirmationUrl({
   email,
@@ -13,7 +13,7 @@ export function createConfirmationUrl({
     ["action", "confirm"],
   ])
   const confirmationUrl = `${
-    config.baseUrl
+    appConfig.baseUrl
   }/api/v1/public/contacts?${searchParams.toString()}`
 
   return confirmationUrl
@@ -32,7 +32,7 @@ export function createUnsubscribeUrl({
     ["action", "unsubscribe"],
   ])
   const unsubscribeUrl = `${
-    config.baseUrl
+    appConfig.baseUrl
   }/api/v1/public/contacts?${searchParams.toString()}`
 
   return unsubscribeUrl

@@ -1,4 +1,4 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 import type { ApiResponse } from "@/libs/types"
 import { isEmail } from "@/libs/validators"
 import { signAdminJwt } from "@/modules/auth"
@@ -31,7 +31,7 @@ export async function handlePostAuth({
   const token = generate({ length: 64 })
   await setToken({ email, token })
 
-  const magicLoginLink = `${config.baseUrl}/api/v1/public/auth?token=${token}`
+  const magicLoginLink = `${appConfig.baseUrl}/api/v1/public/auth?token=${token}`
   const html = `<a href="${magicLoginLink}">Click here to log in</a>`
   const subject = `Confirm logging in`
   const template = { subject, html, text: convertTemplateHtmlToText(html) }
@@ -68,13 +68,13 @@ export async function handleGetAuth({
   await confirmToken(token)
 
   const adminJWT = await signAdminJwt({ email, isAdmin: true })
-  setCookie(config.adminJwtCookieName, adminJWT, {
+  setCookie(appConfig.adminJwtCookieName, adminJWT, {
     req,
     res,
-    maxAge: config.jwtCookieMaxAge,
+    maxAge: appConfig.jwtCookieMaxAge,
   })
 
-  return res.redirect(config.loginPagePath)
+  return res.redirect(appConfig.loginPagePath)
 }
 
 export async function handleDeleteAuth({
@@ -84,7 +84,7 @@ export async function handleDeleteAuth({
   req: NextApiRequest
   res: NextApiResponse<ApiResponse>
 }) {
-  deleteCookie(config.adminJwtCookieName, { req, res })
+  deleteCookie(appConfig.adminJwtCookieName, { req, res })
 
   return res.status(200).json({ success: "Logged out" })
 }

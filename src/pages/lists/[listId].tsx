@@ -1,4 +1,4 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
@@ -110,7 +110,7 @@ export default function ShowList() {
                   id="input-from"
                   name="from"
                   type="text"
-                  defaultValue={config.sender}
+                  defaultValue={appConfig.sender}
                   className="text-slate-400"
                   disabled
                 />

@@ -1,7 +1,6 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 import { wait } from "@/libs/datetime"
 import { createUnsubscribeUrl } from "@/libs/urls"
-import type { Contact } from "@/modules/contacts"
 import { getContactsToSend } from "@/modules/contacts"
 import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
@@ -87,7 +86,7 @@ async function sendNewsletter(newsletter: Newsletter) {
       console.error(error)
     }
 
-    await wait(1000 / config.maxSendRatePerSecondNewsletter)
+    await wait(1000 / appConfig.maxSendRatePerSecondNewsletter)
   }
 
   await updateNewsletter({ newsletterId, sentAt: new Date() })

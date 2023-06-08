@@ -1,8 +1,8 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 
 export function SignupForm({ listId }: { listId: string }) {
   return (
-    <form action={config.signupFormSubmitUrl} method="POST">
+    <form action={appConfig.signupFormSubmitUrl} method="POST">
       <input type="hidden" name="listId" value={listId} />
       <label htmlFor="input-email">Email: </label>
       <input

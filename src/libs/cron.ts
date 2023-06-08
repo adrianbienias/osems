@@ -1,4 +1,4 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 import { sendAutoresponders } from "@/modules/autoresponders"
 import { sendNewsletters } from "@/modules/newsletters"
 import consoleStamp from "console-stamp"
@@ -16,11 +16,11 @@ const schedules = {
 }
 
 schedule(
-  config.isProduction ? schedules.everyTenSeconds : schedules.everySecond,
+  appConfig.isProduction ? schedules.everyTenSeconds : schedules.everySecond,
   async () => await sendNewsletters()
 )
 
 schedule(
-  config.isProduction ? schedules.everyTenSeconds : schedules.everySecond,
+  appConfig.isProduction ? schedules.everyTenSeconds : schedules.everySecond,
   async () => await sendAutoresponders()
 )

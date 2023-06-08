@@ -1,4 +1,4 @@
-import { config } from "@/app-config"
+import { appConfig } from "@/app-config"
 import { wait } from "@/libs/datetime"
 import { createUnsubscribeUrl } from "@/libs/urls"
 import { getContactsConfirmedBetweenDates } from "@/modules/contacts"
@@ -99,6 +99,6 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
       console.error(error)
     }
 
-    await wait(1000 / config.maxSendRatePerSecondAutoresponder)
+    await wait(1000 / appConfig.maxSendRatePerSecondAutoresponder)
   }
 }
