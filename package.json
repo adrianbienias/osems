@@ -18,7 +18,7 @@
     "setInitialAdminEmail": "dotenv -- ts-node -e \"import { setInitialAdminEmail } from './src/libs/installer'; setInitialAdminEmail();\"",
     "installer": "(npm run setEnvVariables) && (npm run setInitialAdminEmail)",
     "postinstall": "(prisma generate) && (prisma migrate deploy) && (npm run installer)",
-    "cron": "dotenv -- ts-node ./src/libs/cron.ts",
+    "cron": "dotenv -- ts-node -e \"import { startCronJobs } from './src/libs/cron'; startCronJobs();\"",
     "db:reset": "prisma migrate reset",
     "dev": "(npm run lint) && (prisma db push) ; (npm run installer) && (npm run cron) & (next dev)",
     "dev:db:seed": "dotenv -- ts-node -e \"import { seedDb } from './mocks/seed-db'; seedDb('dev-db.sqlite')\"",

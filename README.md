@@ -233,8 +233,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Add missing tests
-  - `src/libs/cron.ts`
 - [ ] Add filtering newsletters by list name (similar to autoresponders)
 - [ ] Provide more details in for sent newsletters (list name, excluded list names, scheduled date)
 - [ ] Use list pickers for selecting lists on Newsletter creation page

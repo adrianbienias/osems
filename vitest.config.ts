@@ -12,7 +12,7 @@ export default defineConfig({
     coverage: {
       all: true,
       include: ["src/*"],
-      exclude: ["**/*.tsx", "src/libs/types.ts"],
+      exclude: ["**/*.tsx", "src/libs/types.ts", "src/modules/**/index.ts"],
     },
   },
 })
