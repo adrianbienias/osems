@@ -128,9 +128,13 @@ export async function setAutoresponderSendingInProgress() {
 }
 
 export async function setAutoresponderSendingIdle() {
-  await prisma.setting.update({
+  await prisma.setting.upsert({
     where: { key: SETTINGS.autoresponder_sending_status.key },
-    data: { value: SETTINGS.autoresponder_sending_status.values.idle },
+    update: { value: SETTINGS.autoresponder_sending_status.values.idle },
+    create: {
+      key: SETTINGS.autoresponder_sending_status.key,
+      value: SETTINGS.autoresponder_sending_status.values.idle,
+    },
   })
 }
 

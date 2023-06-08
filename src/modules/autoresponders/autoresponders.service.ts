@@ -31,7 +31,11 @@ export async function sendAutoresponders() {
   await setAutoresponderSendingInProgress()
 
   for (const autoresponder of autoresponders) {
-    await sendAutoresponder(autoresponder)
+    try {
+      await sendAutoresponder(autoresponder)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   await setAutoresponderSendingIdle()

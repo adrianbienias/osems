@@ -113,9 +113,13 @@ export async function setNewsletterSendingInProgress() {
 }
 
 export async function setNewsletterSendingIdle() {
-  await prisma.setting.update({
+  await prisma.setting.upsert({
     where: { key: SETTINGS.newsletter_sending_status.key },
-    data: { value: SETTINGS.newsletter_sending_status.values.idle },
+    update: { value: SETTINGS.newsletter_sending_status.values.idle },
+    create: {
+      key: SETTINGS.newsletter_sending_status.key,
+      value: SETTINGS.newsletter_sending_status.values.idle,
+    },
   })
 }
 

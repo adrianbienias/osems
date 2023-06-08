@@ -31,7 +31,11 @@ export async function sendNewsletters() {
   await setNewsletterSendingInProgress()
 
   for (const newsletter of newsletters) {
-    await sendNewsletter(newsletter)
+    try {
+      await sendNewsletter(newsletter)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   await setNewsletterSendingIdle()
