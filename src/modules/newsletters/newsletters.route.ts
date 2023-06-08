@@ -17,16 +17,15 @@ export async function handlePostNewsletter({
   req: NextApiRequest
   res: NextApiResponse<ApiResponse & { newsletter?: Newsletter }>
 }) {
-  let { subject, html, listIdToInclude, listIdsToExclude, toSendAfter } =
-    req.body as {
-      subject?: string
-      html?: string
-      listIdToInclude?: string
-      listIdsToExclude?: string[]
-      toSendAfter?: string
-    }
+  let { subject, html, listId, listIdsToExclude, toSendAfter } = req.body as {
+    subject?: string
+    html?: string
+    listId?: string
+    listIdsToExclude?: string[]
+    toSendAfter?: string
+  }
 
-  if (!listIdToInclude) {
+  if (!listId) {
     return res.status(400).json({ error: "Missing list to send to" })
   }
   if (typeof listIdsToExclude === "string") {
@@ -34,7 +33,7 @@ export async function handlePostNewsletter({
       .status(400)
       .json({ error: "List ids to exclude has to be an array" })
   }
-  if (listIdsToExclude?.includes(listIdToInclude)) {
+  if (listIdsToExclude?.includes(listId)) {
     return res
       .status(400)
       .json({ error: "Cannot exclude a list that is selected as to send" })
@@ -54,7 +53,7 @@ export async function handlePostNewsletter({
       .json({ error: "Missing {{unsubscribe}} in html content" })
   }
 
-  const list = await getListWithContacts({ id: listIdToInclude })
+  const list = await getListWithContacts({ id: listId })
   if (list instanceof Error) {
     return res.status(400).json({ error: list.message })
   }
@@ -68,7 +67,7 @@ export async function handlePostNewsletter({
   try {
     const newsletter = await scheduleNewsletter({
       newsletterTemplate: { subject, html },
-      listIdToInclude,
+      listId,
       listIdsToExclude: JSON.stringify(listIdsToExclude),
       toSendAfter: new Date(toSendAfter),
     })

@@ -40,7 +40,7 @@ export async function sendNewsletters() {
 
 async function sendNewsletter(newsletter: Newsletter) {
   const contacts = await getContactsToSend({
-    listIdToInclude: newsletter.listIdToInclude,
+    listId: newsletter.listId,
     listIdsToExclude: JSON.parse(newsletter.listIdsToExclude),
   })
   if (contacts.length < 1) {
@@ -64,7 +64,7 @@ async function sendNewsletter(newsletter: Newsletter) {
 
   for (const contact of contacts) {
     const email = contact.email
-    const listId = newsletter.listIdToInclude.toString()
+    const listId = newsletter.listId
     const unsubscribeUrl = createUnsubscribeUrl({ email, listId })
     const messageVariables: Map<string, string> = new Map([
       // Here you can set all kinds of newsletter template variables

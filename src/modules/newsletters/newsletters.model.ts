@@ -9,12 +9,12 @@ export type NewsletterWithTemplate = Newsletter & { template: Template }
 
 export async function scheduleNewsletter({
   newsletterTemplate,
-  listIdToInclude,
+  listId,
   listIdsToExclude,
   toSendAfter,
 }: {
   newsletterTemplate: Pick<Template, "subject" | "html">
-  listIdToInclude: string
+  listId: string
   listIdsToExclude: string
   toSendAfter: Date
 }) {
@@ -26,7 +26,7 @@ export async function scheduleNewsletter({
   const newsletter = await prisma.newsletter.create({
     data: {
       templateId: template.id,
-      listIdToInclude,
+      listId,
       listIdsToExclude,
       toSendAfter,
     },

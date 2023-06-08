@@ -36,7 +36,7 @@ describe("POST /api/v1/newsletters", () => {
       body: {
         subject: "Dummy subject",
         html: `<p>Dummy email content</p><p><a href="{{unsubscribe}}">Unsubscribe</a></p>`,
-        listIdToInclude: "list-id-to-include",
+        listId: "list-id-to-include",
         listIdsToExclude: ["list-id-to-exclude"],
         toSendAfter: new Date().toISOString(),
       },
@@ -51,7 +51,7 @@ describe("POST /api/v1/newsletters", () => {
     expect(res._getStatusCode()).toStrictEqual(200)
 
     expect(scheduleNewsletter).toBeCalledWith({
-      listIdToInclude: "list-id-to-include",
+      listId: "list-id-to-include",
       listIdsToExclude: JSON.stringify(["list-id-to-exclude"]),
       newsletterTemplate: {
         html: `<p>Dummy email content</p><p><a href="{{unsubscribe}}">Unsubscribe</a></p>`,

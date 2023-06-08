@@ -222,28 +222,31 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Add toast for quick notifications e.g. after saving edited changes
+- [ ] Rename config to appConfig to provide consistent name in all components
+- [ ] Add meta title for pages
+- [ ] Add 3 states for buttons: idle, loading, success (with timeout), and disable forms on loading
 - [ ] Improve UI layout (currently columns' width is too fluid)
-- [ ] Dockerize the app
-- [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
-- [ ] Create a landing page with waiting list for a video course about building this app
+- [ ] Add table in readme comparing prices with other solutions
 - [ ] Add missing tests
   - `src/pages/api/v1/autoresponders/`
   - `src/middleware.ts`
   - `src/libs/cron.ts`
   - `src/libs/fetcher.ts`
-- [ ] Add results pagination
+- [ ] Add filtering newsletters by list name (similar to autoresponders)
+- [ ] Provide more details in for sent newsletters (list name, excluded list names, scheduled date)
 - [ ] Use list pickers for selecting lists on Newsletter creation page
-- [ ] Distill routes in modules to distinct files
-- [ ] Add fully fledged documentation
-  - [Docusaurus](https://docusaurus.io/)
-  - [Nextra](https://nextra.site/)
-- [ ] Rename config to appConfig to provide consistent name in all components
-- [ ] Measure performance depending on the dataset size
-- [ ] Exclude contacts by existing autoresponder logs before iterating them (inline TODO)
+- [ ] Add fully fledged documentation (using https://nextra.site/)
+- [ ] Create a landing page with waiting list for a video course about building this app
+- [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
+- [ ] Dockerize the app
 - [ ] Handle resubscribing (signup again after unsubscribing)
   - Place resubscribe button on the unsubscribe page
-- [ ] Create a landing page with waiting list for a cloud version
+- [ ] Add results pagination
+- [ ] Add template relations in schema to newsletters and autoresponders
+- [ ] Distill routes in modules to distinct files
+- [ ] Measure performance depending on the dataset size
+- [ ] Exclude contacts by existing autoresponder logs before iterating them (inline TODO)
+- [ ] Create a landing page with waiting list for a cloud version of this app
 
 ## Coding guidelines
 

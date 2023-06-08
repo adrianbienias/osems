@@ -16,6 +16,11 @@
     "html": "<p>Dummy autoresponder content. <a href=\"{{unsubscribe}}\">Unsubscribe</a></p>",
     "text": "Dummy autoresponder content. Unsubscribe [{{unsubscribe}}]"
   },
+  "newsletterTemplate": {
+    "subject": "Dummy newsletter subject",
+    "html": "<p>Dummy newsletter content. <a href=\"{{unsubscribe}}\">Unsubscribe</a></p>",
+    "text": "Dummy newsletter content. Unsubscribe [{{unsubscribe}}]"
+  },
   "email": {
     "to": "to-foo@bar.baz",
     "subject": "Dummy subject",

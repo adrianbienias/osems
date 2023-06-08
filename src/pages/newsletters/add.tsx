@@ -83,7 +83,7 @@ export default function AddNewsletter() {
                         <input
                           id={`list-to-include-${list.id}`}
                           type="radio"
-                          name="listIdToInclude"
+                          name="listId"
                           value={list.id}
                           className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded-full text-blue-500 focus:ring-blue-500"
                         />

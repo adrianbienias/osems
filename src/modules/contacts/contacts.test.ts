@@ -39,7 +39,7 @@ describe("getContactsToSend()", () => {
     )
 
     const contactsToSend = await getContactsToSend({
-      listIdToInclude: "list-id-to-include-1",
+      listId: "list-id-to-include-1",
       listIdsToExclude: ["list-id-to-exclude-2", "list-id-to-exclude-3"],
     })
 

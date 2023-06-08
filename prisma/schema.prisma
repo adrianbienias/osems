@@ -33,13 +33,15 @@ model List {
     confirmationRedirectUrl String
     unsubscribeRedirectUrl  String
     contacts                Contact[]
+    newsletters             Newsletter[]
     autoresponders          Autoresponder[]
     createdAt               DateTime        @default(now())
 }
 
 model Newsletter {
     id               String          @id @default(uuid())
-    listIdToInclude  String
+    listId           String
+    list             List            @relation(fields: [listId], references: [id])
     listIdsToExclude String
     templateId       String
     toSendAfter      DateTime

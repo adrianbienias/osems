@@ -20,11 +20,43 @@ export async function seedDb(destDbFilename: string) {
     maxContactsPerList: 200,
     maxAutorespondersPerList: 25,
   })
+  await seedNewsletters({ maxNewslettersPerList: 10 })
 }
 
-const createdAtConfig = {
-  years: 1.5,
-  refDate: "2001-01-01T00:00:00.000Z",
+const createdAtConfig = { years: 1.5, refDate: "2001-01-01T00:00:00.000Z" }
+
+async function seedNewsletters({
+  maxNewslettersPerList,
+}: {
+  maxNewslettersPerList: number
+}) {
+  const listIds = (await prisma.list.findMany()).map((list) => list.id)
+  for (let j = 0; j < listIds.length; j++) {
+    const listId = listIds[j]
+    const listIdsToExclude = faker.helpers.arrayElements(
+      listIds.filter((listIdToExclude) => listIdToExclude !== listId),
+      { min: 0, max: listIds.length - 1 }
+    )
+
+    const numberOfNewsletters = Math.ceil(Math.random() * maxNewslettersPerList)
+    for (let i = 0; i < numberOfNewsletters; i++) {
+      const { text, ...templateData } = testData.newsletterTemplate
+      const newsletterTemplate = await addTemplate(templateData)
+      if (newsletterTemplate instanceof Error) {
+        throw new Error(newsletterTemplate.message)
+      }
+
+      await prisma.newsletter.create({
+        data: {
+          listId,
+          toSendAfter: faker.date.past(createdAtConfig),
+          listIdsToExclude: JSON.stringify(listIdsToExclude),
+          templateId: newsletterTemplate.id,
+          createdAt: faker.date.past(createdAtConfig),
+        },
+      })
+    }
+  }
 }
 
 async function seedContacts({
@@ -34,10 +66,10 @@ async function seedContacts({
   listId: string
   numberOfContacts: number
 }) {
-  const contacts = []
   for (let i = 0; i < numberOfContacts; i++) {
     const createdAt = faker.date.past(createdAtConfig)
-    const contact = await prisma.contact.create({
+
+    await prisma.contact.create({
       data: {
         email: faker.internet.email().toLowerCase(),
         listId,
@@ -52,10 +84,7 @@ async function seedContacts({
             : undefined,
       },
     })
-    contacts.push(contact)
   }
-
-  return contacts
 }
 
 async function seedList() {
@@ -89,23 +118,17 @@ async function seedListsWithContactsAndAutoresponders({
   maxContactsPerList: number
   maxAutorespondersPerList: number
 }) {
-  const seededData = []
   for (let i = 0; i < numberOfLists; i++) {
-    const { name: listName, id: listId } = await seedList()
+    const { id: listId } = await seedList()
+
     const numberOfContacts = Math.ceil(Math.random() * maxContactsPerList)
-    const contacts = await seedContacts({ listId, numberOfContacts })
+    await seedContacts({ listId, numberOfContacts })
+
     const numberOfAutoresponders = Math.ceil(
       Math.random() * maxAutorespondersPerList
     )
-    const autoresponders = await seedAutoresponders({
-      listId,
-      numberOfAutoresponders,
-    })
-
-    seededData.push({ listId, listName, contacts, autoresponders })
+    await seedAutoresponders({ listId, numberOfAutoresponders })
   }
-
-  return seededData
 }
 
 async function seedAutoresponders({
@@ -117,7 +140,6 @@ async function seedAutoresponders({
   numberOfAutoresponders: number
   maxDelayDays?: number
 }) {
-  const autoresponders = []
   for (let i = 0; i < numberOfAutoresponders; i++) {
     const { text, ...templateData } = testData.autoresponderTemplate
     const autoresponderTemplate = await addTemplate(templateData)
@@ -125,7 +147,7 @@ async function seedAutoresponders({
       throw new Error(autoresponderTemplate.message)
     }
 
-    const autoresponder = await prisma.autoresponder.create({
+    await prisma.autoresponder.create({
       data: {
         delayDays: faker.number.int(maxDelayDays),
         listId,
@@ -133,8 +155,5 @@ async function seedAutoresponders({
         createdAt: faker.date.past(createdAtConfig),
       },
     })
-    autoresponders.push(autoresponder)
   }
-
-  return autoresponders
 }

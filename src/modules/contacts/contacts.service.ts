@@ -24,13 +24,13 @@ async function getContactsToExclude({
 }
 
 export async function getContactsToSend({
-  listIdToInclude,
+  listId,
   listIdsToExclude,
 }: {
-  listIdToInclude: string
+  listId: string
   listIdsToExclude: string[]
 }) {
-  const contactsToInclude = await getContacts({ listId: listIdToInclude })
+  const contactsToInclude = await getContacts({ listId: listId })
   if (contactsToInclude instanceof Error) {
     console.error(contactsToInclude.message)
 
