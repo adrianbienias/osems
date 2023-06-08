@@ -61,6 +61,22 @@
   blockquote a {
     @apply text-base;
   }
+  table {
+    @apply border-collapse border-solid border-slate-100 p-0;
+  }
+  thead {
+    @apply text-gray-700 bg-slate-100 m-0;
+  }
+  tr {
+    @apply border-solid border;
+  }
+  th {
+    @apply text-left;
+  }
+  th,
+  td {
+    @apply p-4;
+  }
 }
 
 .reset * {

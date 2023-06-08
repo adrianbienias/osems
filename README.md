@@ -30,6 +30,17 @@ If you find that something doesn't work in this software properly - just [report
 
 The same goes with features. If you think that something is missing, feel free to [submit a feature request](https://github.com/adrianbienias/osems/issues).
 
+## Pricing comparison (10 000 contacts example)
+
+| Email service          | Monthly send limit | Monthly cost                           |
+| ---------------------- | ------------------ | -------------------------------------- |
+| Mailchimp              | 100 000            | $100                                   |
+| AWeber                 | Unlimited          | $79.99                                 |
+| GetResponse            | Unlimited          | $79                                    |
+| **OSEMS** + Amazon SES | Unlimited          | $5 + $1 per 10 000 emails sent via SES |
+
+OSEMS is free of charge. $5 is the cost of hosting the app on [DigitalOcean App Platform](https://www.digitalocean.com/products/app-platform?refcode=80e257abf861) (by using this link you even get 60 days for free).
+
 ## Quick test drive
 
 To quickly test OSEMS, just clone the repo and test it in your dev environment.
@@ -129,7 +140,7 @@ You can deploy OSEMS on a regular VPS, but then you need to manage few server ad
 
 The other, and much simple choice, is to use a serverless hosting provider.
 
-One of them, which I suggest to use, is [App Platform](https://www.digitalocean.com/products/app-platform) from DigitalOcean.
+One of them, which I suggest to use, is [App Platform](https://www.digitalocean.com/products/app-platform?refcode=80e257abf861) from DigitalOcean.
 
 Here's a [ref code](https://www.digitalocean.com/?refcode=80e257abf861) that you can use to get $200 coupon for their service, that you can spend within 60 days after signup.
 
@@ -223,7 +234,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 ## TODOs
 
 - [ ] Improve UI layout (currently columns' width is too fluid)
-- [ ] Add table in readme comparing prices with other solutions
 - [ ] Add missing tests
   - `src/pages/api/v1/autoresponders/`
   - `src/middleware.ts`
@@ -233,6 +243,7 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 - [ ] Provide more details in for sent newsletters (list name, excluded list names, scheduled date)
 - [ ] Use list pickers for selecting lists on Newsletter creation page
 - [ ] Add fully fledged documentation (using https://nextra.site/)
+- [ ] Add instruction for using https://aws.amazon.com/ses/
 - [ ] Create a landing page with waiting list for a video course about building this app
 - [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] Dockerize the app
