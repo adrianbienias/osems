@@ -22,7 +22,7 @@ async function verifyJwt(token: string) {
  * Renews if it's valid, redirects to login page if it's not.
  * @see https://nextjs.org/docs/pages/building-your-application/routing/middleware
  */
-export async function handleJwtMiddleware({ req }: { req: NextRequest }) {
+async function handleJwtMiddleware({ req }: { req: NextRequest }) {
   const redirectUrl = new URL(appConfig.loginPagePath, req.url)
 
   const adminJwt = req.cookies.get(appConfig.adminJwtCookieName)?.value

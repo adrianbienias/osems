@@ -234,7 +234,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 ## TODOs
 
 - [ ] Add missing tests
-  - `src/middleware.ts`
   - `src/libs/cron.ts`
   - `src/libs/fetcher.ts`
 - [ ] Add filtering newsletters by list name (similar to autoresponders)

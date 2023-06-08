@@ -141,7 +141,7 @@ describe("sendNewsletters()", () => {
     newslettersModel.setNewsletterSendingInProgress()
 
     const originalConsoleInfo = console.info
-    vi.spyOn(console, "info")
+    vi.spyOn(console, "info").mockImplementation(() => vi.fn())
 
     await sendNewsletters()
 
