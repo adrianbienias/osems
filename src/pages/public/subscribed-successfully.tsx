@@ -1,6 +1,10 @@
+import MetaHead from "@/components/meta-head"
+
 export default function SubscribedSuccessfully() {
   return (
     <>
+      <MetaHead title="Subscribed successfully" />
+
       <h1>Subscribed successfully</h1>
       <p>Your email has been confirmed.</p>
       <p>

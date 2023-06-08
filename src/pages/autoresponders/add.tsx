@@ -3,6 +3,7 @@ import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
 import ListPicker from "@/components/lists/list-picker"
+import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import type { ApiResponse, StringValues } from "@/libs/types"
 import type { Autoresponder } from "@/modules/autoresponders"
@@ -53,6 +54,8 @@ export default function AddAutoresponder() {
 
   return (
     <>
+      <MetaHead title="Add autoresponder" />
+
       <Navbar />
 
       <main>

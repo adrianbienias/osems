@@ -2,6 +2,7 @@ import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input } from "@/components/form"
+import MetaHead from "@/components/meta-head"
 import { verifyJwt } from "@/modules/auth"
 import { getCookie } from "cookies-next"
 import type { NextApiRequest, NextApiResponse } from "next"
@@ -32,8 +33,10 @@ export default function Login() {
 
   return (
     <>
+      <MetaHead title="Login" />
+
       <div className="max-w-sm mx-auto">
-        <h1>Log in</h1>
+        <h1>Login</h1>
 
         {successMsg ? (
           <p>{successMsg}</p>

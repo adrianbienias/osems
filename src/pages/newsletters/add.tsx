@@ -2,6 +2,7 @@ import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
+import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { getLocalDateTime } from "@/libs/datetime"
 import { fetcher } from "@/libs/fetcher"
@@ -65,6 +66,8 @@ export default function AddNewsletter() {
 
   return (
     <>
+      <MetaHead title="Schedule newsletter" />
+
       <Navbar />
 
       <main>

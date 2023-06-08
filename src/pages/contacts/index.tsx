@@ -1,5 +1,6 @@
 import ContactsTable from "@/components/contacts/contacts-table"
 import ListPicker from "@/components/lists/list-picker"
+import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { ReactSelectOption } from "@/libs/types"
 import { useRouter } from "next/router"
@@ -17,6 +18,8 @@ export default function Contacts() {
 
   return (
     <>
+      <MetaHead title="Contacts" />
+
       <Navbar />
 
       <main>

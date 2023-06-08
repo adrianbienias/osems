@@ -1,20 +1,12 @@
+import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { readFileSync } from "fs"
 import { marked } from "marked"
-import Head from "next/head"
 
 export default function Home({ readmeHtml }: { readmeHtml: string }) {
   return (
     <>
-      <Head>
-        <title>OSEMS</title>
-        <meta
-          name="description"
-          content="Open Source Email Marketing Software"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <MetaHead title="Readme" />
 
       <Navbar />
 

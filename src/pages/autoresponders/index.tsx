@@ -1,6 +1,7 @@
 import AutorespondersTable from "@/components/autoresponders/autoresponders-table"
 import { LinkButton } from "@/components/button"
 import ListPicker from "@/components/lists/list-picker"
+import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { ReactSelectOption } from "@/libs/types"
 import { useRouter } from "next/router"
@@ -18,6 +19,8 @@ export default function Autoresponders() {
 
   return (
     <>
+      <MetaHead title="Autoresponders" />
+
       <Navbar />
 
       <main>

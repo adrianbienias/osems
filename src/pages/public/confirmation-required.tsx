@@ -1,6 +1,10 @@
+import MetaHead from "@/components/meta-head"
+
 export default function ConfirmationRequired() {
   return (
     <>
+      <MetaHead title="Confirmation required" />
+
       <h1>Confirmation required</h1>
       <p>Check out your inbox.</p>
       <p>

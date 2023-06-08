@@ -1,3 +1,4 @@
+import MetaHead from "@/components/meta-head"
 import { SignupForm } from "@/components/signup-form"
 import { useRouter } from "next/router"
 
@@ -7,6 +8,8 @@ export default function SignupFormError() {
 
   return (
     <>
+      <MetaHead title="Signup" />
+
       {typeof listId === "string" && <SignupForm listId={listId} />}
 
       {error && (

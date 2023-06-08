@@ -3,6 +3,7 @@ import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
 import ListSignup from "@/components/lists/list-signup"
+import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { fetcher } from "@/libs/fetcher"
 import { ApiResponse, StringValues } from "@/libs/types"
@@ -59,6 +60,8 @@ export default function ShowList() {
 
   return (
     <>
+      <MetaHead title="List details" />
+
       <Navbar />
 
       <main>

@@ -1,5 +1,6 @@
 import { LinkButton } from "@/components/button"
 import { DatetimeUtc } from "@/components/datetime-utc"
+import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
@@ -18,6 +19,8 @@ export default function Newsletters() {
 
   return (
     <>
+      <MetaHead title="Newsletters" />
+
       <Navbar />
 
       <main>

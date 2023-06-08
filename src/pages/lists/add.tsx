@@ -2,6 +2,7 @@ import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
+import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import type { StringValues } from "@/libs/types"
 import type { List } from "@/modules/lists"
@@ -48,6 +49,8 @@ export default function AddList() {
 
   return (
     <>
+      <MetaHead title="Add list" />
+
       <Navbar />
 
       <main>

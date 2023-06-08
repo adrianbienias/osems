@@ -1,6 +1,10 @@
+import MetaHead from "@/components/meta-head"
+
 export default function Unsubscribed() {
   return (
     <>
+      <MetaHead title="Unsubscribed" />
+
       <h1>Unsubscribed</h1>
       <p>You&apos;ve been unsubscribed successfully.</p>
       <p>

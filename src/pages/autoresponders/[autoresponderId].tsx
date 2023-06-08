@@ -3,6 +3,7 @@ import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
 import ListPicker from "@/components/lists/list-picker"
+import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { fetcher } from "@/libs/fetcher"
 import type { ApiResponse } from "@/libs/types"
@@ -59,6 +60,8 @@ export default function ShowAutoresponder() {
 
   return (
     <>
+      <MetaHead title="Autoresponder details" />
+
       <Navbar />
 
       <main>
