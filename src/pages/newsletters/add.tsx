@@ -19,6 +19,8 @@ const templateHtmlExample = `<p>Test message</p>
 export default function AddNewsletter() {
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const router = useRouter()
 
   function handleHtmlChange(event: React.SyntheticEvent) {
@@ -30,6 +32,9 @@ export default function AddNewsletter() {
 
   async function handleFormSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
+
+    setIsSubmitted(true)
+    setIsSuccess(false)
 
     const formData = new FormData(event.target as HTMLFormElement)
     const toSendAfter = new Date(
@@ -51,10 +56,14 @@ export default function AddNewsletter() {
 
     if (error) {
       setErrorMsg(error)
+      setIsSubmitted(false)
       return
     }
 
     setErrorMsg("")
+    setIsSubmitted(false)
+    setIsSuccess(true)
+    setTimeout(() => setIsSuccess(false), 1500)
 
     if (newsletter?.id) {
       router.push(`/newsletters/${newsletter.id}`)
@@ -76,98 +85,106 @@ export default function AddNewsletter() {
             <h2>Newsletter details</h2>
 
             <form onSubmit={handleFormSubmit}>
-              {lists && lists.length > 0 ? (
-                <>
-                  <h3>List to send to</h3>
+              <fieldset disabled={isSubmitted} className="border-none">
+                {lists && lists.length > 0 ? (
+                  <>
+                    <h3>List to send to</h3>
 
-                  <ul className="list-none p-0">
-                    {lists.map((list) => (
-                      <li key={list.id}>
-                        <input
-                          id={`list-to-include-${list.id}`}
-                          type="radio"
-                          name="listId"
-                          value={list.id}
-                          className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded-full text-blue-500 focus:ring-blue-500"
-                        />
-                        <label htmlFor={`list-to-include-${list.id}`}>
-                          {list.name}
-                        </label>
-                        <span> </span>
-                      </li>
-                    ))}
-                  </ul>
+                    <ul className="list-none p-0">
+                      {lists.map((list) => (
+                        <li key={list.id}>
+                          <input
+                            id={`list-to-include-${list.id}`}
+                            type="radio"
+                            name="listId"
+                            value={list.id}
+                            className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded-full text-blue-500 focus:ring-blue-500"
+                          />
+                          <label htmlFor={`list-to-include-${list.id}`}>
+                            {list.name}
+                          </label>
+                          <span> </span>
+                        </li>
+                      ))}
+                    </ul>
 
-                  <h3>Lists to exclude</h3>
+                    <h3>Lists to exclude</h3>
 
-                  <ul className="list-none p-0">
-                    {lists.map((list) => (
-                      <li key={list.id}>
-                        <input
-                          id={`list-to-exclude-${list.id}`}
-                          type="checkbox"
-                          name="listIdsToExclude"
-                          value={list.id}
-                          className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded text-blue-500 focus:ring-blue-500"
-                        />
-                        <label htmlFor={`list-to-exclude-${list.id}`}>
-                          {list.name}
-                        </label>
-                        <span> </span>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <>
-                  {isLoading && <span>Loading...</span>}
-                  {error && <span>Failed to load</span>}
-                  {lists?.length === 0 && <span>No data</span>}
-                </>
-              )}
+                    <ul className="list-none p-0">
+                      {lists.map((list) => (
+                        <li key={list.id}>
+                          <input
+                            id={`list-to-exclude-${list.id}`}
+                            type="checkbox"
+                            name="listIdsToExclude"
+                            value={list.id}
+                            className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded text-blue-500 focus:ring-blue-500"
+                          />
+                          <label htmlFor={`list-to-exclude-${list.id}`}>
+                            {list.name}
+                          </label>
+                          <span> </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : (
+                  <>
+                    {isLoading && <span>Loading...</span>}
+                    {error && <span>Failed to load</span>}
+                    {lists?.length === 0 && <span>No data</span>}
+                  </>
+                )}
 
-              <h3 id="input-datetime">Scheduled date</h3>
+                <h3 id="input-datetime">Scheduled date</h3>
 
-              <input
-                aria-labelledby="input-datetime"
-                name="toSendAfter"
-                type="datetime-local"
-                className="inline-block w-full placeholder:text-slate-400/60 border-solid border bg-slate-50/50 border-slate-300 px-3 py-1.5 rounded"
-              />
+                <input
+                  aria-labelledby="input-datetime"
+                  name="toSendAfter"
+                  type="datetime-local"
+                  className="inline-block w-full placeholder:text-slate-400/60 border-solid border bg-slate-50/50 border-slate-300 px-3 py-1.5 rounded"
+                />
 
-              <h2>Newsletter template</h2>
+                <h2>Newsletter template</h2>
 
-              <Input
-                label="Sender (set in .env)"
-                id="input-from"
-                name="from"
-                type="text"
-                defaultValue={appConfig.sender}
-                className="text-slate-400"
-                disabled
-              />
-              <Input
-                label="Subject"
-                id="input-subject"
-                name="subject"
-                type="text"
-                defaultValue="Newsletter subject"
-                placeholder="Newsletter subject"
-              />
-              <Textarea
-                label="Email template (HTML)"
-                id="textarea-html"
-                name="html"
-                rows={5}
-                defaultValue={templateHtmlExample}
-                placeholder={templateHtmlExample}
-                onChange={handleHtmlChange}
-              />
+                <Input
+                  label="Sender (set in .env)"
+                  id="input-from"
+                  name="from"
+                  type="text"
+                  defaultValue={appConfig.sender}
+                  className="text-slate-400"
+                  disabled
+                />
+                <Input
+                  label="Subject"
+                  id="input-subject"
+                  name="subject"
+                  type="text"
+                  defaultValue="Newsletter subject"
+                  placeholder="Newsletter subject"
+                />
+                <Textarea
+                  label="Email template (HTML)"
+                  id="textarea-html"
+                  name="html"
+                  rows={5}
+                  defaultValue={templateHtmlExample}
+                  placeholder={templateHtmlExample}
+                  onChange={handleHtmlChange}
+                />
 
-              <div className="mt-8">
-                <ErrorMsg errorMsg={errorMsg} />
-                <Button type="submit">Schedule</Button>
-              </div>
+                <div className="mt-8">
+                  <ErrorMsg errorMsg={errorMsg} />
+                  <Button
+                    type="submit"
+                    isLoading={isSubmitted}
+                    isSuccess={isSuccess}
+                  >
+                    Schedule
+                  </Button>
+                </div>
+              </fieldset>
             </form>
           </section>
 

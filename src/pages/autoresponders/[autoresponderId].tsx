@@ -16,6 +16,8 @@ import useSWR from "swr"
 export default function ShowAutoresponder() {
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const router = useRouter()
   const { autoresponderId } = router.query
   const { data, error, isLoading, mutate } = useSWR(
@@ -39,6 +41,9 @@ export default function ShowAutoresponder() {
   const handleFormSubmit = async function (event: React.SyntheticEvent) {
     event.preventDefault()
 
+    setIsSubmitted(true)
+    setIsSuccess(false)
+
     const formData = new FormData(event.target as HTMLFormElement)
     const response = await fetch(`/api/v1/autoresponders/${autoresponder.id}`, {
       method: "PATCH",
@@ -51,10 +56,15 @@ export default function ShowAutoresponder() {
     const { error } = (await response.json()) as ApiResponse
     if (error) {
       setErrorMsg(error)
+      setIsSubmitted(false)
       return
     }
 
     setErrorMsg("")
+    setIsSubmitted(false)
+    setIsSuccess(true)
+    setTimeout(() => setIsSuccess(false), 1500)
+
     mutate()
   }
 
@@ -112,7 +122,13 @@ export default function ShowAutoresponder() {
 
               <div className="mt-8">
                 <ErrorMsg errorMsg={errorMsg} />
-                <Button type="submit">Save</Button>
+                <Button
+                  type="submit"
+                  isLoading={isSubmitted}
+                  isSuccess={isSuccess}
+                >
+                  Save
+                </Button>
               </div>
             </form>
           </section>

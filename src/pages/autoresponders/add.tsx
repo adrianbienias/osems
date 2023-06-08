@@ -5,10 +5,10 @@ import { Input, Textarea } from "@/components/form"
 import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
-import type { ApiResponse, StringValues } from "@/libs/types"
-import type { Autoresponder } from "@/modules/autoresponders"
+import type { ApiResponse } from "@/libs/types"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import { useSWRConfig } from "swr"
 
 const templateHtmlExample = `<p>Test message</p>
 <p><a href="{{unsubscribe}}">Unsubscribe</a></p>`
@@ -16,7 +16,10 @@ const templateHtmlExample = `<p>Test message</p>
 export default function AddAutoresponder() {
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const router = useRouter()
+  const { mutate } = useSWRConfig()
 
   function handleHtmlChange(event: React.SyntheticEvent) {
     const target = event.target as HTMLTextAreaElement
@@ -28,6 +31,9 @@ export default function AddAutoresponder() {
   async function handleFormSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
 
+    setIsSubmitted(true)
+    setIsSuccess(false)
+
     const formData = new FormData(event.target as HTMLFormElement)
     const response = await fetch(`/api/v1/autoresponders`, {
       method: "POST",
@@ -36,20 +42,21 @@ export default function AddAutoresponder() {
         ...Object.fromEntries(formData.entries()),
       }),
     })
-    const { autoresponder, error } = (await response.json()) as ApiResponse & {
-      autoresponder?: StringValues<Autoresponder>
-    }
+    const { error } = (await response.json()) as ApiResponse
 
     if (error) {
       setErrorMsg(error)
+      setIsSubmitted(false)
       return
     }
 
     setErrorMsg("")
+    setIsSubmitted(false)
+    setIsSuccess(true)
+    setTimeout(() => setIsSuccess(false), 1500)
 
-    if (autoresponder?.id) {
-      router.push(`/autoresponders`)
-    }
+    mutate("/api/v1/autoresponders")
+    router.push(`/autoresponders`)
   }
 
   return (
@@ -64,50 +71,58 @@ export default function AddAutoresponder() {
             <h2>Autoresponder details</h2>
 
             <form onSubmit={handleFormSubmit}>
-              <ListPicker />
+              <fieldset disabled={isSubmitted} className="border-none">
+                <ListPicker />
 
-              <Input
-                label="Delay days"
-                id="input-delay-days"
-                name="delayDays"
-                type="number"
-                defaultValue={0}
-                min={0}
-              />
+                <Input
+                  label="Delay days"
+                  id="input-delay-days"
+                  name="delayDays"
+                  type="number"
+                  defaultValue={0}
+                  min={0}
+                />
 
-              <h2>Autoresponder template</h2>
+                <h2>Autoresponder template</h2>
 
-              <Input
-                label="Sender (set in .env)"
-                id="input-from"
-                name="from"
-                type="text"
-                defaultValue={appConfig.sender}
-                className="text-slate-400"
-                disabled
-              />
-              <Input
-                label="Subject"
-                id="input-subject"
-                name="subject"
-                type="text"
-                defaultValue="Autoresponder subject"
-                placeholder="Autoresponder subject"
-              />
-              <Textarea
-                label="Email template (HTML)"
-                id="textarea-html"
-                name="html"
-                rows={5}
-                defaultValue={templateHtmlExample}
-                placeholder={templateHtmlExample}
-                onChange={handleHtmlChange}
-              />
+                <Input
+                  label="Sender (set in .env)"
+                  id="input-from"
+                  name="from"
+                  type="text"
+                  defaultValue={appConfig.sender}
+                  className="text-slate-400"
+                  disabled
+                />
+                <Input
+                  label="Subject"
+                  id="input-subject"
+                  name="subject"
+                  type="text"
+                  defaultValue="Autoresponder subject"
+                  placeholder="Autoresponder subject"
+                />
+                <Textarea
+                  label="Email template (HTML)"
+                  id="textarea-html"
+                  name="html"
+                  rows={5}
+                  defaultValue={templateHtmlExample}
+                  placeholder={templateHtmlExample}
+                  onChange={handleHtmlChange}
+                />
 
-              <div className="mt-8">
-                <ErrorMsg errorMsg={errorMsg} />
-                <Button type="submit">Add</Button>
-              </div>
+                <div className="mt-8">
+                  <ErrorMsg errorMsg={errorMsg} />
+                  <Button
+                    type="submit"
+                    isLoading={isSubmitted}
+                    isSuccess={isSuccess}
+                  >
+                    Add
+                  </Button>
+                </div>
+              </fieldset>
             </form>
           </section>
 

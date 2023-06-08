@@ -16,6 +16,8 @@ export default function ShowList() {
   const router = useRouter()
   const [html, setHtml] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const { listId } = router.query
   const { data, error, isLoading, mutate } = useSWR(
     `/api/v1/lists/${listId}`,
@@ -39,6 +41,9 @@ export default function ShowList() {
   const handleFormSubmit = async function (event: React.SyntheticEvent) {
     event.preventDefault()
 
+    setIsSubmitted(true)
+    setIsSuccess(false)
+
     const formData = new FormData(event.target as HTMLFormElement)
     const response = await fetch(`/api/v1/lists/${list.id}`, {
       method: "PATCH",
@@ -49,10 +54,14 @@ export default function ShowList() {
     const { error } = (await response.json()) as ApiResponse
     if (error) {
       setErrorMsg(error)
+      setIsSubmitted(false)
       return
     }
 
     setErrorMsg("")
+    setIsSubmitted(false)
+    setIsSuccess(true)
+    setTimeout(() => setIsSuccess(false), 1500)
     mutate()
   }
 
@@ -70,76 +79,84 @@ export default function ShowList() {
             <h2>List details</h2>
 
             <form onSubmit={handleFormSubmit}>
-              <div>
-                <Input
-                  label="List name"
-                  id="input-list-name"
-                  name="name"
-                  type="text"
-                  defaultValue={list.name}
-                  placeholder={list.name}
-                />
-                <Input
-                  label="Signup redirect URL"
-                  id="input-signup-redirect-url"
-                  name="signupRedirectUrl"
-                  type="text"
-                  defaultValue={list.signupRedirectUrl}
-                  placeholder={list.signupRedirectUrl}
-                />
-                <Input
-                  label="Confirmation redirect URL"
-                  id="input-confirmation-redirect-url"
-                  name="confirmationRedirectUrl"
-                  type="text"
-                  defaultValue={list.confirmationRedirectUrl}
-                  placeholder={list.confirmationRedirectUrl}
-                />
-                <Input
-                  label="Unsubscribe redirect URL"
-                  id="input-unsubscribe-redirect-url"
-                  name="unsubscribeRedirectUrl"
-                  type="text"
-                  defaultValue={list.unsubscribeRedirectUrl}
-                  placeholder={list.unsubscribeRedirectUrl}
-                />
-              </div>
+              <fieldset disabled={isSubmitted} className="border-none">
+                <div>
+                  <Input
+                    label="List name"
+                    id="input-list-name"
+                    name="name"
+                    type="text"
+                    defaultValue={list.name}
+                    placeholder={list.name}
+                  />
+                  <Input
+                    label="Signup redirect URL"
+                    id="input-signup-redirect-url"
+                    name="signupRedirectUrl"
+                    type="text"
+                    defaultValue={list.signupRedirectUrl}
+                    placeholder={list.signupRedirectUrl}
+                  />
+                  <Input
+                    label="Confirmation redirect URL"
+                    id="input-confirmation-redirect-url"
+                    name="confirmationRedirectUrl"
+                    type="text"
+                    defaultValue={list.confirmationRedirectUrl}
+                    placeholder={list.confirmationRedirectUrl}
+                  />
+                  <Input
+                    label="Unsubscribe redirect URL"
+                    id="input-unsubscribe-redirect-url"
+                    name="unsubscribeRedirectUrl"
+                    type="text"
+                    defaultValue={list.unsubscribeRedirectUrl}
+                    placeholder={list.unsubscribeRedirectUrl}
+                  />
+                </div>
 
-              <h2>Confirmation template</h2>
+                <h2>Confirmation template</h2>
 
-              <div>
-                <Input
-                  label="Sender (set in .env)"
-                  id="input-from"
-                  name="from"
-                  type="text"
-                  defaultValue={appConfig.sender}
-                  className="text-slate-400"
-                  disabled
-                />
-                <Input
-                  label="Confirmation email subject"
-                  id="input-subject"
-                  name="subject"
-                  type="text"
-                  defaultValue={confirmationTemplate.subject}
-                  placeholder={confirmationTemplate.subject}
-                />
-                <Textarea
-                  label="Confirmation email template (HTML)"
-                  id="textarea-html"
-                  name="html"
-                  rows={5}
-                  defaultValue={confirmationTemplate.html}
-                  placeholder={confirmationTemplate.html}
-                  onChange={handleHtmlChange}
-                />
-              </div>
+                <div>
+                  <Input
+                    label="Sender (set in .env)"
+                    id="input-from"
+                    name="from"
+                    type="text"
+                    defaultValue={appConfig.sender}
+                    className="text-slate-400"
+                    disabled
+                  />
+                  <Input
+                    label="Confirmation email subject"
+                    id="input-subject"
+                    name="subject"
+                    type="text"
+                    defaultValue={confirmationTemplate.subject}
+                    placeholder={confirmationTemplate.subject}
+                  />
+                  <Textarea
+                    label="Confirmation email template (HTML)"
+                    id="textarea-html"
+                    name="html"
+                    rows={5}
+                    defaultValue={confirmationTemplate.html}
+                    placeholder={confirmationTemplate.html}
+                    onChange={handleHtmlChange}
+                  />
+                </div>
 
-              <div className="mt-8">
-                <ErrorMsg errorMsg={errorMsg} />
-                <Button type="submit">Save changes</Button>
-              </div>
+                <div className="mt-8">
+                  <ErrorMsg errorMsg={errorMsg} />
+                  <Button
+                    type="submit"
+                    isLoading={isSubmitted}
+                    isSuccess={isSuccess}
+                  >
+                    Save changes
+                  </Button>
+                </div>
+              </fieldset>
             </form>
           </section>
 
