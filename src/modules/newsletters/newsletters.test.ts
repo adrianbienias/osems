@@ -59,16 +59,15 @@ describe("scheduleNewsletter()", () => {
         {
           id: expect.stringMatching(uuidRegex),
           listId: "048df004-02a0-4b26-b77a-0d6f713fac4c",
-          listIdsToExclude:
-            '["180d1933-5f45-445a-87dd-0ce8cbb86c6d","2e4b0581-0bdc-4a54-bc05-8877b8808a40"]',
-          templateId: expect.stringMatching(uuidRegex),
-          sentAt: null,
-          createdAt: expect.any(Date),
-          toSendAfter: expect.any(Date),
-        },
-        {
-          id: expect.stringMatching(uuidRegex),
-          listId: "048df004-02a0-4b26-b77a-0d6f713fac4c",
+          list: {
+            confirmationRedirectUrl: "http://example.com/redirect/confirmation",
+            confirmationTemplateId: expect.stringMatching(uuidRegex),
+            createdAt: expect.any(Date),
+            id: "048df004-02a0-4b26-b77a-0d6f713fac4c",
+            name: "Er nippy authenticity neatly as card defiantly ah rework deeply",
+            signupRedirectUrl: "http://example.com/redirect/signup",
+            unsubscribeRedirectUrl: "http://example.com/redirect/unsubscribe",
+          },
           listIdsToExclude:
             '["180d1933-5f45-445a-87dd-0ce8cbb86c6d","2e4b0581-0bdc-4a54-bc05-8877b8808a40"]',
           templateId: expect.stringMatching(uuidRegex),
@@ -96,6 +95,15 @@ describe("getNewsletters()", () => {
         {
           id: "5d972ea3-4e2f-4e4c-832f-88f03722422e",
           listId: "180d1933-5f45-445a-87dd-0ce8cbb86c6d",
+          list: {
+            confirmationRedirectUrl: "http://example.com/redirect/confirmation",
+            confirmationTemplateId: "eb651d6f-84a6-46c9-b6b6-a9484ec339b5",
+            createdAt: expect.any(Date),
+            id: "180d1933-5f45-445a-87dd-0ce8cbb86c6d",
+            name: "Worth hmph toward boohoo hm redo um forenenst when measly",
+            signupRedirectUrl: "http://example.com/redirect/signup",
+            unsubscribeRedirectUrl: "http://example.com/redirect/unsubscribe",
+          },
           listIdsToExclude:
             '["2472375a-a373-4aa2-b13f-6dc3118854c8","048df004-02a0-4b26-b77a-0d6f713fac4c","2e4b0581-0bdc-4a54-bc05-8877b8808a40"]',
           templateId: "6e3d0ce7-59cb-48c7-89b3-5c09b9bd5e74",
@@ -117,6 +125,15 @@ describe("getNewsletter()", () => {
     ).toStrictEqual({
       id: expect.stringMatching(uuidRegex),
       listId: "3ec8b12c-f1fb-432e-adf9-7a5e7c35f6af",
+      list: {
+        id: "3ec8b12c-f1fb-432e-adf9-7a5e7c35f6af",
+        name: "Each closely ugh male syndicate pamper kiddingly hmph kissingly pfft",
+        confirmationTemplateId: "3c4c1660-776d-407f-b75f-b815ad0a33c3",
+        signupRedirectUrl: "http://example.com/redirect/signup",
+        confirmationRedirectUrl: "http://example.com/redirect/confirmation",
+        unsubscribeRedirectUrl: "http://example.com/redirect/unsubscribe",
+        createdAt: new Date("1999-09-11T14:22:59.630Z"),
+      },
       listIdsToExclude:
         '["180d1933-5f45-445a-87dd-0ce8cbb86c6d","2e4b0581-0bdc-4a54-bc05-8877b8808a40"]',
       templateId: "60af76e6-bc52-4370-9d95-216636ab4d1a",

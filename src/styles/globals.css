@@ -18,9 +18,11 @@
   h3 {
     @apply text-xl;
   }
-  h2:not(:first-child),
-  h3:not(:first-child) {
+  h2:not(:first-child) {
     @apply mt-12;
+  }
+  h3:not(:first-child) {
+    @apply mt-6;
   }
   p,
   ul,

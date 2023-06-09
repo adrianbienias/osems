@@ -1,3 +1,4 @@
+import { getListsByIds } from "@/modules/lists"
 import { getTemplate } from "@/modules/templates"
 import { describe, expect, test, vi } from "vitest"
 import { mockRequestResponse } from "../../../mocks/api-mocks"
@@ -13,6 +14,7 @@ import {
 } from "./newsletters.route"
 
 vi.mock("@/modules/lists", () => ({
+  getListsByIds: vi.fn().mockResolvedValue(["excluded-list-id"]),
   getListWithContacts: vi
     .fn()
     .mockResolvedValue({ contacts: [{ dummy: "contact" }] }),
@@ -23,6 +25,7 @@ vi.mock("./newsletters.model", () => ({
   getNewsletter: vi.fn().mockResolvedValue({
     dummy: "newsletter",
     templateId: "dummy-template-id",
+    listIdsToExclude: '["excluded-list-id"]',
   }),
 }))
 vi.mock("@/modules/templates", () => ({
@@ -95,12 +98,18 @@ describe("GET /api/v1/newsletters/:newsletterId", () => {
 
     expect(res._getJSONData()).toStrictEqual({
       success: "Ok",
-      newsletter: { dummy: "newsletter", templateId: "dummy-template-id" },
+      newsletter: {
+        dummy: "newsletter",
+        templateId: "dummy-template-id",
+        listIdsToExclude: '["excluded-list-id"]',
+      },
       template: { dummy: "template" },
+      excludedLists: ["excluded-list-id"],
     })
     expect(res._getStatusCode()).toStrictEqual(200)
 
     expect(getNewsletter).toHaveBeenCalledWith({ id: "dummy-newsletter-id" })
     expect(getTemplate).toHaveBeenCalledWith({ id: "dummy-template-id" })
+    expect(getListsByIds).toHaveBeenCalled()
   })
 })

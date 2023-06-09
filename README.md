@@ -233,7 +233,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Provide more details in for sent newsletters (list name, excluded list names, scheduled date)
 - [ ] Use list pickers for selecting lists on Newsletter creation page
 
 - [ ] Add fully fledged documentation (using https://nextra.site/)

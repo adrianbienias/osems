@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma"
+import type { List } from "@/modules/lists"
 import type { Template } from "@/modules/templates"
 import { addTemplate } from "@/modules/templates"
 import { SETTINGS } from "@/settings"
@@ -6,6 +7,10 @@ import type { Newsletter } from "@prisma/client"
 
 export type { Newsletter } from "@prisma/client"
 export type NewsletterWithTemplate = Newsletter & { template: Template }
+export type NewsletterWithListAndTemplate = Newsletter & {
+  list: List
+  template: Template
+}
 
 export async function scheduleNewsletter({
   newsletterTemplate,
@@ -56,6 +61,7 @@ export async function getNewsletters(filters: { listId?: string } = {}) {
     const newsletters = await prisma.newsletter.findMany({
       orderBy: { toSendAfter: "desc" },
       where: { listId },
+      include: { list: true },
     })
 
     return newsletters
@@ -70,7 +76,7 @@ export async function getNewsletter({ id }: { id: string }) {
   try {
     return await prisma.newsletter.findUnique({
       where: { id },
-      include: { logs: true },
+      include: { logs: true, list: true },
     })
   } catch (error) {
     console.error(error)

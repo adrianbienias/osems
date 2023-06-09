@@ -6,7 +6,7 @@ import { Navbar } from "@/components/navbar"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
 import type { ReactSelectOption, StringValues } from "@/libs/types"
-import { NewsletterWithTemplate } from "@/modules/newsletters"
+import { NewsletterWithListAndTemplate } from "@/modules/newsletters"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import useSWR from "swr"
@@ -19,7 +19,7 @@ export default function Newsletters() {
     fetcher
   )
   const newsletters = data?.newslettersWithTemplate as StringValues<
-    NewsletterWithTemplate[] | undefined
+    NewsletterWithListAndTemplate[] | undefined
   >
 
   function onChange(selectedOption: ReactSelectOption) {
@@ -49,34 +49,30 @@ export default function Newsletters() {
         <Table>
           <Thead>
             <Tr>
+              <Th>No.</Th>
               <Th>Subject</Th>
-              <Th>Created at</Th>
+              <Th>List</Th>
               <Th>Scheduled to send at</Th>
-              <Th>Sent at</Th>
               <Th>Status</Th>
             </Tr>
           </Thead>
           <Tbody>
             {newsletters && newsletters.length > 0 ? (
-              newsletters.map((newsletter) => (
+              newsletters.map((newsletter, index) => (
                 <Tr key={newsletter.id}>
+                  <Td>{index + 1}</Td>
                   <Td>
                     <Link href={`${router.pathname}/${newsletter.id}`}>
                       {newsletter.template.subject}
                     </Link>
                   </Td>
                   <Td>
-                    <DatetimeUtc datetime={newsletter.createdAt} />
+                    <Link href={`lists/${newsletter.listId}`}>
+                      {newsletter.list.name}
+                    </Link>
                   </Td>
                   <Td>
                     <DatetimeUtc datetime={newsletter.toSendAfter} />
-                  </Td>
-                  <Td>
-                    {newsletter.sentAt ? (
-                      <DatetimeUtc datetime={newsletter.sentAt} />
-                    ) : (
-                      "N/A"
-                    )}
                   </Td>
                   <Td>{newsletter.sentAt ? "Sent" : "Scheduled"}</Td>
                 </Tr>

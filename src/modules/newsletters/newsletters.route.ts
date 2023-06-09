@@ -1,5 +1,6 @@
 import type { ApiResponse } from "@/libs/types"
-import { getListWithContacts } from "@/modules/lists"
+import type { List } from "@/modules/lists"
+import { getListWithContacts, getListsByIds } from "@/modules/lists"
 import type { Template } from "@/modules/templates"
 import { getTemplate } from "@/modules/templates"
 import type { NextApiRequest, NextApiResponse } from "next"
@@ -122,7 +123,11 @@ export async function handleGetNewsletter({
 }: {
   req: NextApiRequest
   res: NextApiResponse<
-    ApiResponse & { newsletter?: Newsletter; template?: Template }
+    ApiResponse & {
+      newsletter?: Newsletter
+      template?: Template
+      excludedLists?: List[]
+    }
   >
 }) {
   const newsletterId = req.query.newsletterId
@@ -146,5 +151,11 @@ export async function handleGetNewsletter({
     return res.status(400).json({ error: "No template with provided id" })
   }
 
-  return res.status(200).json({ success: "Ok", newsletter, template })
+  const excludedLists = await getListsByIds(
+    JSON.parse(newsletter.listIdsToExclude)
+  )
+
+  return res
+    .status(200)
+    .json({ success: "Ok", newsletter, template, excludedLists })
 }

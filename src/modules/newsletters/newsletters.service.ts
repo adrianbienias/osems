@@ -34,7 +34,7 @@ export async function sendNewsletters() {
     try {
       await sendNewsletter(newsletter)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

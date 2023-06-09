@@ -77,6 +77,12 @@ export async function getLists() {
   }
 }
 
+export async function getListsByIds(ids: string[]) {
+  return await prisma.list.findMany({
+    where: { id: { in: ids } },
+  })
+}
+
 export async function getAllLists() {
   return await prisma.list.findMany()
 }
