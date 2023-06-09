@@ -92,7 +92,12 @@ export async function handleGetNewsletters({
     ApiResponse & { newslettersWithTemplate?: NewsletterWithTemplate[] }
   >
 }) {
-  const newsletters = await getNewsletters()
+  let listId = req.query.listId?.toString()
+  if (listId === "undefined" || listId === "") {
+    listId = undefined
+  }
+
+  const newsletters = await getNewsletters({ listId })
   if (newsletters instanceof Error) {
     return res.status(400).json({ error: newsletters.message })
   }

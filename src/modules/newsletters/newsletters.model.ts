@@ -50,10 +50,12 @@ export async function getScheduledNewsletters() {
   }
 }
 
-export async function getNewsletters() {
+export async function getNewsletters(filters: { listId?: string } = {}) {
+  const { listId } = filters
   try {
     const newsletters = await prisma.newsletter.findMany({
       orderBy: { toSendAfter: "desc" },
+      where: { listId },
     })
 
     return newsletters

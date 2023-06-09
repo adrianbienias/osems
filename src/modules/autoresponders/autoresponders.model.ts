@@ -6,7 +6,8 @@ import { SETTINGS } from "@/settings"
 import type { Autoresponder } from "@prisma/client"
 
 export type { Autoresponder } from "@prisma/client"
-export type AutoresponderWithListAndTemplates = Autoresponder & {
+export type AutoresponderWithTemplate = Autoresponder & { template: Template }
+export type AutoresponderWithListAndTemplate = Autoresponder & {
   list: List
   template: Template
 }

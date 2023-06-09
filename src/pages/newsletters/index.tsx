@@ -1,10 +1,11 @@
 import { LinkButton } from "@/components/button"
 import { DatetimeUtc } from "@/components/datetime-utc"
+import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
-import { StringValues } from "@/libs/types"
+import type { ReactSelectOption, StringValues } from "@/libs/types"
 import { NewsletterWithTemplate } from "@/modules/newsletters"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -12,10 +13,22 @@ import useSWR from "swr"
 
 export default function Newsletters() {
   const router = useRouter()
-  const { data, error, isLoading } = useSWR("/api/v1/newsletters", fetcher)
+  const listId = router.query.listId
+  const { data, error, isLoading } = useSWR(
+    `/api/v1/newsletters?listId=${listId}`,
+    fetcher
+  )
   const newsletters = data?.newslettersWithTemplate as StringValues<
     NewsletterWithTemplate[] | undefined
   >
+
+  function onChange(selectedOption: ReactSelectOption) {
+    if (selectedOption) {
+      router.push({ query: { listId: selectedOption.value } })
+    } else {
+      router.push({ query: {} })
+    }
+  }
 
   return (
     <>
@@ -30,6 +43,8 @@ export default function Newsletters() {
             Schedule new newsletter
           </LinkButton>
         </p>
+
+        <ListPicker onChange={onChange} />
 
         <Table>
           <Thead>

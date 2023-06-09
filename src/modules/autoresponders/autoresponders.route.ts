@@ -2,7 +2,10 @@ import type { ApiResponse } from "@/libs/types"
 import type { Template } from "@/modules/templates"
 import { getTemplate, updateTemplate } from "@/modules/templates"
 import type { NextApiRequest, NextApiResponse } from "next"
-import type { Autoresponder } from "./autoresponders.model"
+import type {
+  Autoresponder,
+  AutoresponderWithTemplate,
+} from "./autoresponders.model"
 import {
   addAutoresponder,
   filterAutoresponders,
@@ -66,7 +69,7 @@ export async function handleGetAutoresponders({
     }
   >
 }) {
-  let listId = req.query.listId as string | undefined
+  let listId = req.query.listId?.toString()
   if (listId === "undefined" || listId === "") {
     listId = undefined
   }
@@ -76,7 +79,7 @@ export async function handleGetAutoresponders({
     return res.status(400).json({ error: autoresponders.message })
   }
 
-  const autorespondersWithTemplates = []
+  const autorespondersWithTemplates: AutoresponderWithTemplate[] = []
   for (const autoresponder of autoresponders) {
     const template = await getTemplate({
       id: autoresponder.templateId,
@@ -88,13 +91,7 @@ export async function handleGetAutoresponders({
       return res.status(400).json({ error: "Missing template" })
     }
 
-    const autoresponderWithTemplate: Autoresponder & {
-      template: Template
-    } = {
-      ...autoresponder,
-      template,
-    }
-
+    const autoresponderWithTemplate = { ...autoresponder, template }
     autorespondersWithTemplates.push(autoresponderWithTemplate)
   }
 

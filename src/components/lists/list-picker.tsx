@@ -1,5 +1,5 @@
 import { fetcher } from "@/libs/fetcher"
-import { ReactSelectOption } from "@/libs/types"
+import type { ReactSelectOption } from "@/libs/types"
 import { List } from "@prisma/client"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useState } from "react"

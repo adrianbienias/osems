@@ -233,12 +233,16 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Add filtering newsletters by list name (similar to autoresponders)
 - [ ] Provide more details in for sent newsletters (list name, excluded list names, scheduled date)
 - [ ] Use list pickers for selecting lists on Newsletter creation page
+
 - [ ] Add fully fledged documentation (using https://nextra.site/)
 - [ ] Add instruction for using https://aws.amazon.com/ses/
+
 - [ ] Create a landing page with waiting list for a video course about building this app
+
+---
+
 - [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] Dockerize the app
 - [ ] Handle resubscribing (signup again after unsubscribing)

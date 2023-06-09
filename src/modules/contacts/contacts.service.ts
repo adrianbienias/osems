@@ -1,11 +1,11 @@
-import { getContacts } from "./contacts.model"
+import { Contact, getContacts } from "./contacts.model"
 
 async function getContactsToExclude({
   listIdsToExclude,
 }: {
   listIdsToExclude?: string[]
 }) {
-  let contactsToExclude = []
+  let contactsToExclude: Contact[] = []
   if (listIdsToExclude) {
     for (const listIdToExclude of listIdsToExclude) {
       const contacts = await getContacts({ listId: listIdToExclude })
@@ -13,10 +13,7 @@ async function getContactsToExclude({
         return Error(contacts.message)
       }
 
-      const emails = contacts.map((contact) => ({
-        email: contact.email,
-      }))
-      contactsToExclude.push(...emails)
+      contactsToExclude.push(...contacts)
     }
   }
 

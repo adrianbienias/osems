@@ -1,6 +1,7 @@
 export type {
   Autoresponder,
-  AutoresponderWithListAndTemplates,
+  AutoresponderWithListAndTemplate,
+  AutoresponderWithTemplate,
 } from "./autoresponders.model"
 export {
   handleGetAutoresponder,
