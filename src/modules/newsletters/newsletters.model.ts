@@ -59,7 +59,7 @@ export async function getNewsletters(filters: { listId?: string } = {}) {
   const { listId } = filters
   try {
     const newsletters = await prisma.newsletter.findMany({
-      orderBy: { toSendAfter: "desc" },
+      orderBy: { toSendAfter: "asc" },
       where: { listId },
       include: { list: true },
     })

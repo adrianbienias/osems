@@ -4,7 +4,7 @@ import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
-import type { ReactSelectOption, StringValues } from "@/libs/types"
+import type { StringValues } from "@/libs/types"
 import type { ContactWithList } from "@/modules/contacts"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -19,14 +19,6 @@ export default function Contacts() {
   )
   const contacts = data?.contacts as StringValues<ContactWithList[]> | undefined
 
-  function onChange(selectedOption: ReactSelectOption) {
-    if (selectedOption) {
-      router.push({ query: { listId: selectedOption.value } })
-    } else {
-      router.push({ query: {} })
-    }
-  }
-
   return (
     <>
       <MetaHead title="Contacts" />
@@ -36,7 +28,7 @@ export default function Contacts() {
       <main>
         <h2 className="mb-4">Contacts</h2>
 
-        <ListPicker onChange={onChange} />
+        <ListPicker pushUrlQuery={true} />
 
         <Table>
           <Thead>

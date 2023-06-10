@@ -5,5 +5,4 @@ export type StringValues<TModel> = {
     ? StringValues<TModel[Key]>
     : string
 }
-export type ReactSelectOption = { value: string; label: string } | null
 export type ApiResponse = { error?: string; success?: string }

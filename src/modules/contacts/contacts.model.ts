@@ -139,7 +139,7 @@ export async function filterContacts({
     return await prisma.contact.findMany({
       take,
       where: { listId },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: "asc" },
       include: { list: { select: { name: true, id: true } } },
     })
   } catch (error) {

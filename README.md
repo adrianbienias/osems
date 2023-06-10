@@ -233,8 +233,6 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Use list pickers for selecting lists on Newsletter creation page
-
 - [ ] Add fully fledged documentation (using https://nextra.site/)
 - [ ] Add instruction for using https://aws.amazon.com/ses/
 

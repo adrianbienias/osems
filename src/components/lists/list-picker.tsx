@@ -1,17 +1,32 @@
 import { fetcher } from "@/libs/fetcher"
-import type { ReactSelectOption } from "@/libs/types"
 import { List } from "@prisma/client"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useState } from "react"
-import Select from "react-select"
+import Select, { MultiValue, SingleValue } from "react-select"
 import useSWR from "swr"
+
+type ReactSelectOption =
+  | MultiValue<{
+      value: string
+      label: string
+    }>
+  | SingleValue<{
+      value: string
+      label: string
+    }>
 
 export default function ListPicker({
   currentId,
-  onChange,
+  selectName = "listId",
+  label = "Lists:",
+  isMulti = false,
+  pushUrlQuery = false,
 }: {
   currentId?: string
-  onChange?: (selectedOption: ReactSelectOption) => void
+  selectName?: string
+  label?: string
+  isMulti?: boolean
+  pushUrlQuery?: boolean
 }) {
   const router = useRouter()
   const [selectedOption, setSelectedOption] = useState<ReactSelectOption>(null)
@@ -41,8 +56,12 @@ export default function ListPicker({
   function handleChange(selectedOption: ReactSelectOption) {
     setSelectedOption(selectedOption)
 
-    if (onChange) {
-      onChange(selectedOption)
+    if (pushUrlQuery) {
+      if (selectedOption && "value" in selectedOption) {
+        router.push({ query: { listId: selectedOption.value } })
+      } else {
+        router.push({ query: {} })
+      }
     }
   }
 
@@ -59,12 +78,13 @@ export default function ListPicker({
       <div className="mb-4">
         <div className="mb-0.5">
           <label htmlFor="list-picker" className="text-sm text-slate-600">
-            List:
+            {label}
           </label>
         </div>
 
         <Select
-          name="listId"
+          isMulti={isMulti}
+          name={selectName}
           instanceId="list-picker"
           isLoading={isLoading}
           isClearable={true}

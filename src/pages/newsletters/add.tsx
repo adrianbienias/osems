@@ -2,6 +2,7 @@ import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
+import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { getLocalDateTime } from "@/libs/datetime"
@@ -88,45 +89,13 @@ export default function AddNewsletter() {
               <fieldset disabled={isSubmitted} className="border-none">
                 {lists && lists.length > 0 ? (
                   <>
-                    <h3>List to send to</h3>
+                    <ListPicker selectName="listId" label="List to send to" />
 
-                    <ul className="list-none p-0">
-                      {lists.map((list) => (
-                        <li key={list.id}>
-                          <input
-                            id={`list-to-include-${list.id}`}
-                            type="radio"
-                            name="listId"
-                            value={list.id}
-                            className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded-full text-blue-500 focus:ring-blue-500"
-                          />
-                          <label htmlFor={`list-to-include-${list.id}`}>
-                            {list.name}
-                          </label>
-                          <span> </span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <h3>Lists to exclude</h3>
-
-                    <ul className="list-none p-0">
-                      {lists.map((list) => (
-                        <li key={list.id}>
-                          <input
-                            id={`list-to-exclude-${list.id}`}
-                            type="checkbox"
-                            name="listIdsToExclude"
-                            value={list.id}
-                            className="mb-1 mr-2 w-4 h-4 bg-gray-50 border-solid border-gray-300 rounded text-blue-500 focus:ring-blue-500"
-                          />
-                          <label htmlFor={`list-to-exclude-${list.id}`}>
-                            {list.name}
-                          </label>
-                          <span> </span>
-                        </li>
-                      ))}
-                    </ul>
+                    <ListPicker
+                      selectName="listIdsToExclude"
+                      label="Lists to exclude"
+                      isMulti={true}
+                    />
                   </>
                 ) : (
                   <>
@@ -136,10 +105,9 @@ export default function AddNewsletter() {
                   </>
                 )}
 
-                <h3 id="input-datetime">Scheduled date</h3>
-
-                <input
-                  aria-labelledby="input-datetime"
+                <Input
+                  label="Scheduled date"
+                  id="input-datetime"
                   name="toSendAfter"
                   type="datetime-local"
                   className="inline-block w-full placeholder:text-slate-400/60 border-solid border bg-slate-50/50 border-slate-300 px-3 py-1.5 rounded"
