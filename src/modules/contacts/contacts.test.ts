@@ -58,13 +58,9 @@ describe("filterContacts()", async () => {
     seedTestDatabase()
 
     const expectedNumberOfFilteredAutoresponders = 25
-
     const contacts = await filterContacts({
       take: expectedNumberOfFilteredAutoresponders,
     })
-    if (contacts instanceof Error) {
-      return expect(contacts).not.toBeInstanceOf(Error)
-    }
 
     expect(contacts.length).toStrictEqual(
       expectedNumberOfFilteredAutoresponders
@@ -76,13 +72,10 @@ describe("getContacts()", () => {
   test("should get contacts from database", async () => {
     seedTestDatabase()
 
+    const expectedNumberOfContacts = 21
     const contacts = await getContacts({
       listId: "2e4b0581-0bdc-4a54-bc05-8877b8808a40",
     })
-    if (contacts instanceof Error) {
-      return expect(contacts).not.toBeInstanceOf(Error)
-    }
-    const expectedNumberOfContacts = 21
 
     expect(contacts.length).toStrictEqual(expectedNumberOfContacts)
   })

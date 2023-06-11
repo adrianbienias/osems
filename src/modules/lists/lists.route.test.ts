@@ -23,7 +23,7 @@ vi.mock("@/modules/templates", () => ({
   addTemplate: vi
     .fn()
     .mockResolvedValue({ id: "dummy-confirmation-template-id" }),
-  getTemplate: vi.fn(),
+  getTemplate: vi.fn().mockResolvedValue({ foo: "bar" }),
   updateTemplate: vi.fn(),
 }))
 
@@ -113,9 +113,12 @@ describe("GET /api/v1/list/:listId", () => {
 
     await handleGetList({ req, res })
 
+    console.log(res._getJSONData())
+
     expect(res._getJSONData()).toStrictEqual({
       success: "Ok",
       list: { name: "Dummy mocked list" },
+      confirmationTemplate: { foo: "bar" },
     })
     expect(res._getStatusCode()).toStrictEqual(200)
 

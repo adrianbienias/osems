@@ -12,7 +12,7 @@ function runMiddleware(
   callbackFn: Function
 ) {
   return new Promise((resolve, reject) => {
-    callbackFn(req, res, (result: any) => {
+    callbackFn(req, res, (result: unknown) => {
       if (result instanceof Error) {
         return reject(result)
       }

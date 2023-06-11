@@ -23,7 +23,7 @@ export async function addAutoresponder({
 }) {
   const template = await addTemplate(autoresponderTemplate)
   if (template instanceof Error) {
-    return Error(template.message)
+    return template
   }
 
   const autoresponder = await prisma.autoresponder.create({
@@ -44,40 +44,22 @@ export async function filterAutoresponders({
   take?: number
   listId?: string
 }) {
-  try {
-    return await prisma.autoresponder.findMany({
-      take,
-      where: { listId },
-      orderBy: { delayDays: "asc" },
-      include: { list: true },
-    })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.autoresponder.findMany({
+    take,
+    where: { listId },
+    orderBy: { delayDays: "asc" },
+    include: { list: true },
+  })
 }
 
 export async function getAutoresponder({ id }: { id: string }) {
-  try {
-    return await prisma.autoresponder.findUnique({
-      where: { id },
-    })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.autoresponder.findUnique({
+    where: { id },
+  })
 }
 
 export async function getAutoresponders() {
-  try {
-    return await prisma.autoresponder.findMany()
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.autoresponder.findMany()
 }
 
 export async function updateAutoresponder({
@@ -89,21 +71,15 @@ export async function updateAutoresponder({
   delayDays?: number
   listId?: string
 }) {
-  try {
-    return await prisma.autoresponder.update({
-      where: {
-        id,
-      },
-      data: {
-        delayDays,
-        listId,
-      },
-    })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.autoresponder.update({
+    where: {
+      id,
+    },
+    data: {
+      delayDays,
+      listId,
+    },
+  })
 }
 
 export async function checkIfAutoresponderIsSending() {

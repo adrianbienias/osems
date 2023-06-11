@@ -20,23 +20,11 @@ export async function addTemplate({
 
   const text = convertTemplateHtmlToText(html)
 
-  try {
-    return await prisma.template.create({ data: { subject, html, text } })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.template.create({ data: { subject, html, text } })
 }
 
 export async function getTemplates() {
-  try {
-    return await prisma.template.findMany({ orderBy: { createdAt: "desc" } })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.template.findMany({ orderBy: { createdAt: "desc" } })
 }
 
 export async function updateTemplate({
@@ -61,24 +49,12 @@ export async function updateTemplate({
     text = convertTemplateHtmlToText(html)
   }
 
-  try {
-    return await prisma.template.update({
-      where: { id },
-      data: { subject, html, text },
-    })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.template.update({
+    where: { id },
+    data: { subject, html, text },
+  })
 }
 
 export async function getTemplate({ id }: { id: string }) {
-  try {
-    return await prisma.template.findUnique({ where: { id } })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.template.findUnique({ where: { id } })
 }

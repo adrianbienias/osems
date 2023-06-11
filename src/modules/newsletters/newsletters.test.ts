@@ -85,9 +85,6 @@ describe("getNewsletters()", () => {
     seedTestDatabase()
 
     const newsletters = await getNewsletters()
-    if (newsletters instanceof Error) {
-      return expect(newsletters).not.toBeInstanceOf(Error)
-    }
 
     expect(newsletters.length).toStrictEqual(14)
     expect(newsletters).toStrictEqual(

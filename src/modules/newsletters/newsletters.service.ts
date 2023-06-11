@@ -17,9 +17,6 @@ import {
 
 export async function sendNewsletters() {
   const newsletters = await getScheduledNewsletters()
-  if (newsletters instanceof Error) {
-    return console.error(newsletters.message)
-  }
   if (newsletters.length < 1) {
     return // No newsletters to send
   }
@@ -56,10 +53,7 @@ async function sendNewsletter(newsletter: Newsletter) {
   const newsletterTemplate = await getTemplate({
     id: newsletter.templateId,
   })
-  if (newsletterTemplate instanceof Error) {
-    return console.error(newsletterTemplate.message)
-  }
-  if (newsletterTemplate === null) {
+  if (!newsletterTemplate) {
     return console.error("Missing newsletter template")
   }
   const { id, createdAt, ...template } = newsletterTemplate
@@ -82,13 +76,9 @@ async function sendNewsletter(newsletter: Newsletter) {
       }),
     }
 
-    try {
-      await createNewsletterLog({ email, newsletterId })
-      await sendEmail(message)
-      await updateNewsletterLog({ email, newsletterId, sentAt: new Date() })
-    } catch (error) {
-      console.error(error)
-    }
+    await createNewsletterLog({ email, newsletterId })
+    await sendEmail(message)
+    await updateNewsletterLog({ email, newsletterId, sentAt: new Date() })
 
     await wait(1000 / appConfig.maxSendRatePerSecondNewsletter)
   }

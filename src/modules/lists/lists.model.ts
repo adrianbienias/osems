@@ -35,46 +35,26 @@ export async function addList({
       }
     }
 
-    console.error(error)
-
-    return Error("Internal Server Error")
+    throw error
   }
 }
 
 export async function getList({ id }: { id: string }) {
-  try {
-    return await prisma.list.findUnique({ where: { id } })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.list.findUnique({ where: { id } })
 }
 
 export async function getListWithContacts({ id }: { id: string }) {
-  try {
-    return await prisma.list.findUnique({
-      where: { id },
-      include: { contacts: true },
-    })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.list.findUnique({
+    where: { id },
+    include: { contacts: true },
+  })
 }
 
 export async function getLists() {
-  try {
-    return await prisma.list.findMany({
-      orderBy: { createdAt: "desc" },
-      include: { _count: { select: { contacts: true } } },
-    })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.list.findMany({
+    orderBy: { createdAt: "desc" },
+    include: { _count: { select: { contacts: true } } },
+  })
 }
 
 export async function getListsByIds(ids: string[]) {
@@ -119,8 +99,6 @@ export async function updateList({
       }
     }
 
-    console.error(error)
-
-    return Error("Internal Server Error")
+    throw error
   }
 }

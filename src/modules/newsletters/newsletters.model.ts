@@ -41,48 +41,30 @@ export async function scheduleNewsletter({
 }
 
 export async function getScheduledNewsletters() {
-  try {
-    const newsletters = await prisma.newsletter.findMany({
-      where: { sentAt: null, toSendAfter: { lte: new Date() } },
-      orderBy: { toSendAfter: "asc" },
-    })
+  const newsletters = await prisma.newsletter.findMany({
+    where: { sentAt: null, toSendAfter: { lte: new Date() } },
+    orderBy: { toSendAfter: "asc" },
+  })
 
-    return newsletters
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return newsletters
 }
 
 export async function getNewsletters(filters: { listId?: string } = {}) {
   const { listId } = filters
-  try {
-    const newsletters = await prisma.newsletter.findMany({
-      orderBy: { toSendAfter: "asc" },
-      where: { listId },
-      include: { list: true },
-    })
+  const newsletters = await prisma.newsletter.findMany({
+    orderBy: { toSendAfter: "asc" },
+    where: { listId },
+    include: { list: true },
+  })
 
-    return newsletters
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return newsletters
 }
 
 export async function getNewsletter({ id }: { id: string }) {
-  try {
-    return await prisma.newsletter.findUnique({
-      where: { id },
-      include: { logs: true, list: true },
-    })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.newsletter.findUnique({
+    where: { id },
+    include: { logs: true, list: true },
+  })
 }
 
 export async function updateNewsletter({

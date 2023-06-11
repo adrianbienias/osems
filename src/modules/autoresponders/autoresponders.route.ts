@@ -75,18 +75,9 @@ export async function handleGetAutoresponders({
   }
 
   const autoresponders = await filterAutoresponders({ listId })
-  if (autoresponders instanceof Error) {
-    return res.status(400).json({ error: autoresponders.message })
-  }
-
   const autorespondersWithTemplates: AutoresponderWithTemplate[] = []
   for (const autoresponder of autoresponders) {
-    const template = await getTemplate({
-      id: autoresponder.templateId,
-    })
-    if (template instanceof Error) {
-      return res.status(400).json({ error: template.message })
-    }
+    const template = await getTemplate({ id: autoresponder.templateId })
     if (!template) {
       return res.status(400).json({ error: "Missing template" })
     }
@@ -115,18 +106,12 @@ export async function handleGetAutoresponder({
   }
 
   const autoresponder = await getAutoresponder({ id: autoresponderId })
-  if (autoresponder instanceof Error) {
-    return res.status(400).json({ error: autoresponder.message })
-  }
-  if (autoresponder === null) {
+  if (!autoresponder) {
     return res.status(400).json({ error: "No autoresponder with provided id" })
   }
 
   const template = await getTemplate({ id: autoresponder.templateId })
-  if (template instanceof Error) {
-    return res.status(400).json({ error: template.message })
-  }
-  if (template === null) {
+  if (!template) {
     return res.status(400).json({ error: "No template with provided id" })
   }
 
@@ -177,9 +162,6 @@ export async function handlePatchAutoresponder({
     listId,
     delayDays: Number(delayDays),
   })
-  if (autoresponder instanceof Error) {
-    return res.status(400).json({ error: autoresponder.message })
-  }
 
   const template = await updateTemplate({
     id: autoresponder.templateId,

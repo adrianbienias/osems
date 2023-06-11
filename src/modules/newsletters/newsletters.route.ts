@@ -55,9 +55,6 @@ export async function handlePostNewsletter({
   }
 
   const list = await getListWithContacts({ id: listId })
-  if (list instanceof Error) {
-    return res.status(400).json({ error: list.message })
-  }
   if (!list) {
     return res.status(400).json({ error: "List does not exists" })
   }
@@ -65,23 +62,17 @@ export async function handlePostNewsletter({
     return res.status(400).json({ error: "No contacts on the list" })
   }
 
-  try {
-    const newsletter = await scheduleNewsletter({
-      newsletterTemplate: { subject, html },
-      listId,
-      listIdsToExclude: JSON.stringify(listIdsToExclude),
-      toSendAfter: new Date(toSendAfter),
-    })
-    if (newsletter instanceof Error) {
-      return res.status(400).json({ error: newsletter.message })
-    }
-
-    return res.status(200).json({ success: "Ok", newsletter })
-  } catch (error) {
-    console.error(error)
-
-    return res.status(500).json({ error: "Internal server error" })
+  const newsletter = await scheduleNewsletter({
+    newsletterTemplate: { subject, html },
+    listId,
+    listIdsToExclude: JSON.stringify(listIdsToExclude),
+    toSendAfter: new Date(toSendAfter),
+  })
+  if (newsletter instanceof Error) {
+    return res.status(400).json({ error: newsletter.message })
   }
+
+  return res.status(200).json({ success: "Ok", newsletter })
 }
 
 export async function handleGetNewsletters({
@@ -99,19 +90,14 @@ export async function handleGetNewsletters({
   }
 
   const newsletters = await getNewsletters({ listId })
-  if (newsletters instanceof Error) {
-    return res.status(400).json({ error: newsletters.message })
-  }
-
   const newslettersWithTemplate: NewsletterWithTemplate[] = []
   for (const newsletter of newsletters) {
     const template = await getTemplate({ id: newsletter.templateId })
-    if (template instanceof Error) {
-      return res.status(400).json({ error: template.message })
+    if (!template) {
+      continue
     }
-    if (template) {
-      newslettersWithTemplate.push({ ...newsletter, template })
-    }
+
+    newslettersWithTemplate.push({ ...newsletter, template })
   }
 
   return res.status(200).json({ success: "Ok", newslettersWithTemplate })
@@ -136,18 +122,12 @@ export async function handleGetNewsletter({
   }
 
   const newsletter = await getNewsletter({ id: newsletterId })
-  if (newsletter instanceof Error) {
-    return res.status(400).json({ error: newsletter.message })
-  }
-  if (newsletter === null) {
+  if (!newsletter) {
     return res.status(400).json({ error: "No newsletter with provided id" })
   }
 
   const template = await getTemplate({ id: newsletter.templateId })
-  if (template instanceof Error) {
-    return res.status(400).json({ error: template.message })
-  }
-  if (template === null) {
+  if (!template) {
     return res.status(400).json({ error: "No template with provided id" })
   }
 

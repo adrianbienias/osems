@@ -28,11 +28,8 @@ export async function contactsPostHandler({
   }
 
   const list = await getList({ id: listId })
-  if (list instanceof Error) {
-    return res.status(500).json({ error: list.message })
-  }
   if (!list) {
-    return res.status(500).json({ error: "List does not exist" })
+    return res.status(400).json({ error: "List does not exist" })
   }
 
   if (!email || !isEmail(email)) {
@@ -83,10 +80,7 @@ export async function contactsPostHandler({
   const confirmationTemplate = await getTemplate({
     id: list.confirmationTemplateId,
   })
-  if (confirmationTemplate instanceof Error) {
-    return res.status(500).json({ error: confirmationTemplate.message })
-  }
-  if (confirmationTemplate === null) {
+  if (!confirmationTemplate) {
     return res.status(500).json({ error: "Missing confirmation template" })
   }
 
@@ -158,9 +152,6 @@ export async function contactsGetHandler({
   email = decodeURIComponent(email)
 
   const list = await getList({ id: listId })
-  if (list instanceof Error) {
-    return res.status(500).json({ error: list.message })
-  }
   if (!list) {
     return res.status(400).json({ error: "List does not exist" })
   }
@@ -203,9 +194,6 @@ export async function handleGetContacts({
   }
 
   const contacts = await filterContacts({ listId })
-  if (contacts instanceof Error) {
-    return res.status(400).json({ error: contacts.message })
-  }
 
   return res.status(200).json({ success: "Ok", contacts })
 }

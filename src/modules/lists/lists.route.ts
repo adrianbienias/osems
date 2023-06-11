@@ -65,7 +65,6 @@ export async function handlePostList({
     unsubscribeRedirectUrl,
     confirmationTemplateId,
   })
-
   if (list instanceof Error) {
     return res.status(400).json({ error: list.message })
   }
@@ -81,9 +80,6 @@ export async function handleGetLists({
   res: NextApiResponse<ApiResponse & { lists?: List[] }>
 }) {
   const lists = await getLists()
-  if (lists instanceof Error) {
-    return res.status(400).json({ error: lists.message })
-  }
 
   return res.status(200).json({ success: "Ok", lists })
 }
@@ -104,20 +100,14 @@ export async function handleGetList({
   }
 
   const list = await getList({ id: listId })
-  if (list instanceof Error) {
-    return res.status(400).json({ error: list.message })
-  }
-  if (list === null) {
+  if (!list) {
     return res.status(400).json({ error: "No list with provided id" })
   }
 
   const confirmationTemplate = await getTemplate({
     id: list.confirmationTemplateId,
   })
-  if (confirmationTemplate instanceof Error) {
-    return res.status(400).json({ error: confirmationTemplate.message })
-  }
-  if (confirmationTemplate === null) {
+  if (!confirmationTemplate) {
     return res.status(400).json({ error: "Missing confirmation template" })
   }
 
@@ -177,10 +167,7 @@ export async function handlePatchList({
   }
 
   const list = await getList({ id: listId })
-  if (list instanceof Error) {
-    return Error(list.message)
-  }
-  if (list === null) {
+  if (!list) {
     return Error("Invalid list id")
   }
 
@@ -189,7 +176,6 @@ export async function handlePatchList({
     subject,
     html,
   })
-
   if (template instanceof Error) {
     return res.status(400).json({ error: template.message })
   }
@@ -201,7 +187,6 @@ export async function handlePatchList({
     confirmationRedirectUrl,
     unsubscribeRedirectUrl,
   })
-
   if (updatedList instanceof Error) {
     return res.status(400).json({ error: updatedList.message })
   }

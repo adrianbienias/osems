@@ -17,9 +17,6 @@ import {
 
 export async function sendAutoresponders() {
   const autoresponders = await getAutoresponders()
-  if (autoresponders instanceof Error) {
-    return console.error(autoresponders.message)
-  }
   if (autoresponders.length < 1) {
     return // No autoresponders to send
   }
@@ -59,10 +56,7 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
   const autoresponderTemplate = await getTemplate({
     id: autoresponder.templateId,
   })
-  if (autoresponderTemplate instanceof Error) {
-    return console.error(autoresponderTemplate.message)
-  }
-  if (autoresponderTemplate === null) {
+  if (!autoresponderTemplate) {
     return console.error("Missing newsletter template")
   }
   const { id, createdAt, ...template } = autoresponderTemplate
@@ -91,17 +85,13 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
       }),
     }
 
-    try {
-      await createAutoresponderLog({ autoresponderId, email })
-      await sendEmail(message)
-      await updateAutoresponderLog({
-        autoresponderId,
-        email,
-        sentAt: new Date(),
-      })
-    } catch (error) {
-      console.error(error)
-    }
+    await createAutoresponderLog({ autoresponderId, email })
+    await sendEmail(message)
+    await updateAutoresponderLog({
+      autoresponderId,
+      email,
+      sentAt: new Date(),
+    })
 
     await wait(1000 / appConfig.maxSendRatePerSecondAutoresponder)
   }

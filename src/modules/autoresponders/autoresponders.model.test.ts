@@ -49,13 +49,9 @@ describe("filterAutoresponders()", async () => {
     seedTestDatabase()
 
     const expectedNumberOfFilteredAutoresponders = 7
-
     const contacts = await filterAutoresponders({
       take: expectedNumberOfFilteredAutoresponders,
     })
-    if (contacts instanceof Error) {
-      return expect(contacts).not.toBeInstanceOf(Error)
-    }
 
     expect(contacts.length).toStrictEqual(
       expectedNumberOfFilteredAutoresponders
@@ -99,9 +95,6 @@ describe("getAutoresponders()", async () => {
     const expectedNumberOfAutoresponders = 82
 
     const autoresponders = await getAutoresponders()
-    if (autoresponders instanceof Error) {
-      return expect(autoresponders).not.toBeInstanceOf(Error)
-    }
 
     expect(autoresponders.length).toStrictEqual(expectedNumberOfAutoresponders)
 
@@ -129,9 +122,6 @@ describe("updateAutoresponder()", async () => {
     const updatedDelayDays = 0
 
     const autoresponder = await getAutoresponder({ id: autoresponderId })
-    if (autoresponder instanceof Error) {
-      return expect(autoresponder).not.toBeInstanceOf(Error)
-    }
     if (!autoresponder) {
       return expect(autoresponder).not.toBeNull()
     }

@@ -34,9 +34,7 @@ export async function addContact({
       }
     }
 
-    console.error(error)
-
-    return Error("Internal Server Error")
+    throw error
   }
 }
 
@@ -72,9 +70,7 @@ export async function confirmContact({
       }
     }
 
-    console.error(error)
-
-    return Error("Internal Server Error")
+    throw error
   }
 }
 
@@ -110,9 +106,7 @@ export async function unsubscribeContact({
       }
     }
 
-    console.error(error)
-
-    return Error("Internal Server Error")
+    throw error
   }
 }
 
@@ -135,28 +129,16 @@ export async function filterContacts({
   take?: number
   listId?: string
 }) {
-  try {
-    return await prisma.contact.findMany({
-      take,
-      where: { listId },
-      orderBy: { createdAt: "asc" },
-      include: { list: { select: { name: true, id: true } } },
-    })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.contact.findMany({
+    take,
+    where: { listId },
+    orderBy: { createdAt: "asc" },
+    include: { list: { select: { name: true, id: true } } },
+  })
 }
 
 export async function getContacts({ listId }: { listId?: string }) {
-  try {
-    return await prisma.contact.findMany({ where: { listId } })
-  } catch (error) {
-    console.error(error)
-
-    return Error("Internal Server Error")
-  }
+  return await prisma.contact.findMany({ where: { listId } })
 }
 
 export async function getAllContacts() {
