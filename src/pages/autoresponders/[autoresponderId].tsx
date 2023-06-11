@@ -80,57 +80,59 @@ export default function ShowAutoresponder() {
             <h2>Autoresponder details</h2>
 
             <form onSubmit={handleFormSubmit}>
-              <ListPicker currentId={autoresponder.listId} />
+              <fieldset disabled={isSubmitted}>
+                <ListPicker currentId={autoresponder.listId} />
 
-              <Input
-                label="Delay days"
-                id="input-delay-days"
-                name="delayDays"
-                type="number"
-                defaultValue={autoresponder.delayDays}
-                min={0}
-              />
+                <Input
+                  label="Delay days"
+                  id="input-delay-days"
+                  name="delayDays"
+                  type="number"
+                  defaultValue={autoresponder.delayDays}
+                  min={0}
+                />
 
-              <h2>Autoresponder template</h2>
+                <h2>Autoresponder template</h2>
 
-              <Input
-                label="Sender (set in .env)"
-                id="input-from"
-                name="from"
-                type="text"
-                defaultValue={appConfig.sender}
-                className="text-slate-400"
-                disabled
-              />
-              <Input
-                label="Subject"
-                id="input-subject"
-                name="subject"
-                type="text"
-                defaultValue={template.subject}
-                placeholder={template.subject}
-              />
-              <Textarea
-                label="Email template (HTML)"
-                id="textarea-html"
-                name="html"
-                rows={5}
-                className="resize-y"
-                defaultValue={template.html}
-                placeholder={template.html}
-                onChange={handleHtmlChange}
-              />
+                <Input
+                  label="Sender (set in .env)"
+                  id="input-from"
+                  name="from"
+                  type="text"
+                  defaultValue={appConfig.sender}
+                  className="text-slate-400"
+                  disabled
+                />
+                <Input
+                  label="Subject"
+                  id="input-subject"
+                  name="subject"
+                  type="text"
+                  defaultValue={template.subject}
+                  placeholder={template.subject}
+                />
+                <Textarea
+                  label="Email template (HTML)"
+                  id="textarea-html"
+                  name="html"
+                  rows={5}
+                  className="resize-y"
+                  defaultValue={template.html}
+                  placeholder={template.html}
+                  onChange={handleHtmlChange}
+                />
 
-              <div className="mt-8">
-                <ErrorMsg errorMsg={errorMsg} />
-                <Button
-                  type="submit"
-                  isLoading={isSubmitted}
-                  isSuccess={isSuccess}
-                >
-                  Save
-                </Button>
-              </div>
+                <div className="mt-8">
+                  <ErrorMsg errorMsg={errorMsg} />
+                  <Button
+                    type="submit"
+                    isLoading={isSubmitted}
+                    isSuccess={isSuccess}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </fieldset>
             </form>
           </section>
 

@@ -79,6 +79,9 @@
   td {
     @apply p-4;
   }
+  fieldset {
+    @apply border-none p-0;
+  }
 }
 
 .reset * {

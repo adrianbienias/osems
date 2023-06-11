@@ -1,11 +1,13 @@
 import { getLocalDateTime, wait } from "@/libs/datetime"
 import { describe, expect, test, vi } from "vitest"
 
-const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/
-
 describe("getLocalDateTime()", () => {
   test("should return date and time", async () => {
-    expect(getLocalDateTime()).toMatch(dateTimeRegex)
+    vi.setSystemTime(new Date("2000-01-01T00:00:00.000Z"))
+
+    expect(getLocalDateTime()).toStrictEqual("2000-01-01T01:00")
+
+    vi.useRealTimers()
   })
 })
 

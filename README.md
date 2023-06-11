@@ -234,12 +234,11 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 ## TODOs
 
 - [ ] Add fully fledged documentation (using https://nextra.site/)
-- [ ] Add instruction for using https://aws.amazon.com/ses/
-
-- [ ] Create a landing page with waiting list for a video course about building this app
+- [ ] Create a landing page with waiting list for a video course about building this app (at osems.dev)
 
 ---
 
+- [ ] Allow to add/edit/delete contacts through UI
 - [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] Dockerize the app
 - [ ] Handle resubscribing (signup again after unsubscribing)

@@ -168,3 +168,45 @@ export async function getUnsubscribedContacts() {
     where: { unsubscribedAt: { not: null } },
   })
 }
+
+export async function getContactById({ id }: { id: string }) {
+  return await prisma.contact.findUnique({ where: { id } })
+}
+
+export async function updateContact({
+  id,
+  email,
+  listId,
+  unsubscribedAt,
+}: {
+  id: string
+  email: string
+  listId: string
+  unsubscribedAt?: Date | null
+}) {
+  if (!isEmail(email)) {
+    return Error("Invalid email address")
+  }
+
+  email = email.trim().toLowerCase()
+
+  try {
+    return await prisma.contact.update({
+      where: { id },
+      data: { email, listId, unsubscribedAt },
+    })
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      switch (error.code) {
+        case "P2002": {
+          return Error("Contact already exists on the list")
+        }
+        case "P2003": {
+          return Error("List does not exist")
+        }
+      }
+    }
+
+    throw error
+  }
+}

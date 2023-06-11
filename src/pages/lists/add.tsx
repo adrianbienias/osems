@@ -65,7 +65,7 @@ export default function AddList() {
         <div className="mt-8 lg:grid lg:grid-cols-[2fr_3fr] gap-8 justify-between">
           <section>
             <form onSubmit={handleFormSubmit}>
-              <fieldset disabled={isSubmitted} className="border-none">
+              <fieldset disabled={isSubmitted}>
                 <div>
                   <h2>List details</h2>
                   <Input

@@ -53,16 +53,18 @@ export default function Login() {
         ) : (
           <>
             <form method="POST" onSubmit={handleSubmit}>
-              <Input label="Admin email" name="email" />
-              <Button
-                type="submit"
-                isLoading={isSubmitted}
-                isSuccess={isSuccess}
-              >
-                Submit
-              </Button>
+              <fieldset disabled={isSubmitted}>
+                <Input label="Admin email" name="email" />
+                <Button
+                  type="submit"
+                  isLoading={isSubmitted}
+                  isSuccess={isSuccess}
+                >
+                  Submit
+                </Button>
 
-              <ErrorMsg errorMsg={errorMsg} />
+                <ErrorMsg errorMsg={errorMsg} />
+              </fieldset>
             </form>
           </>
         )}

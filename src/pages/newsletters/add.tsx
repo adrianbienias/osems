@@ -86,7 +86,7 @@ export default function AddNewsletter() {
             <h2>Newsletter details</h2>
 
             <form onSubmit={handleFormSubmit}>
-              <fieldset disabled={isSubmitted} className="border-none">
+              <fieldset disabled={isSubmitted}>
                 {lists && lists.length > 0 ? (
                   <>
                     <ListPicker selectName="listId" label="List to send to" />

@@ -79,7 +79,7 @@ export default function ShowList() {
             <h2>List details</h2>
 
             <form onSubmit={handleFormSubmit}>
-              <fieldset disabled={isSubmitted} className="border-none">
+              <fieldset disabled={isSubmitted}>
                 <div>
                   <Input
                     label="List name"

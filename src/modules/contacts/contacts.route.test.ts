@@ -9,6 +9,7 @@ import {
   contactsPostHandler,
   handleGetContacts,
 } from "./contacts.route"
+import { uuidRegex } from "@/libs/validators"
 
 vi.mock("./contacts.model", async () => ({
   ...((await vi.importActual("./contacts.model")) as object),
@@ -96,6 +97,7 @@ describe("POST /api/v1/public/contacts", () => {
     await contactsPostHandler({ req, res })
 
     expect(await getContact({ listId, email })).toStrictEqual({
+      id: expect.stringMatching(uuidRegex),
       confirmedAt: null,
       createdAt: expect.any(Date),
       email,
@@ -208,6 +210,7 @@ describe("GET /api/v1/public/contacts", () => {
     const email = "marvin.johns@hotmail.com"
 
     expect(await getContact({ email, listId })).toStrictEqual({
+      id: expect.stringMatching(uuidRegex),
       listId,
       email,
       confirmedAt: null,
@@ -223,6 +226,7 @@ describe("GET /api/v1/public/contacts", () => {
     await contactsGetHandler({ req, res })
 
     expect(await getContact({ email, listId })).toStrictEqual({
+      id: expect.stringMatching(uuidRegex),
       listId,
       email,
       confirmedAt: expect.any(Date),
@@ -248,6 +252,7 @@ describe("GET /api/v1/public/contacts", () => {
     })
 
     expect(await getContact({ email, listId })).toStrictEqual({
+      id: expect.stringMatching(uuidRegex),
       listId,
       email,
       confirmedAt: expect.any(Date),
@@ -258,6 +263,7 @@ describe("GET /api/v1/public/contacts", () => {
     await contactsGetHandler({ req, res })
 
     expect(await getContact({ email, listId })).toStrictEqual({
+      id: expect.stringMatching(uuidRegex),
       listId,
       email,
       confirmedAt: expect.any(Date),

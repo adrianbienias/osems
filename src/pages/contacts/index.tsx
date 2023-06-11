@@ -1,3 +1,4 @@
+import { LinkButton } from "@/components/button"
 import { DatetimeUtc } from "@/components/datetime-utc"
 import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
@@ -27,6 +28,9 @@ export default function Contacts() {
 
       <main>
         <h2 className="mb-4">Contacts</h2>
+        <p>
+          <LinkButton href="/contacts/add">Add new contact</LinkButton>
+        </p>
 
         <ListPicker pushUrlQuery={true} />
 
@@ -46,7 +50,9 @@ export default function Contacts() {
               contacts.map((contact, index) => (
                 <Tr key={`${contact.email}-${contact.listId}`}>
                   <Td>{index + 1}</Td>
-                  <Td>{contact.email}</Td>
+                  <Td>
+                    <Link href={`contacts/${contact.id}`}>{contact.email}</Link>
+                  </Td>
                   <Td>
                     <Link href={`lists/${contact.list.id}`}>
                       {contact.list.name}

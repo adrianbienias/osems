@@ -113,8 +113,6 @@ describe("GET /api/v1/list/:listId", () => {
 
     await handleGetList({ req, res })
 
-    console.log(res._getJSONData())
-
     expect(res._getJSONData()).toStrictEqual({
       success: "Ok",
       list: { name: "Dummy mocked list" },

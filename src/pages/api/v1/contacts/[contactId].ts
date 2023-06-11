@@ -1,5 +1,5 @@
 import type { ApiResponse } from "@/libs/types"
-import { handleGetContacts, handlePostContact } from "@/modules/contacts"
+import { handleGetContact, handlePatchContact } from "@/modules/contacts"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
@@ -8,10 +8,10 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET": {
-      return await handleGetContacts({ req, res })
+      return await handleGetContact({ req, res })
     }
-    case "POST": {
-      return await handlePostContact({ req, res })
+    case "PATCH": {
+      return await handlePatchContact({ req, res })
     }
     default: {
       return res.status(405).json({ error: "Method not allowed" })

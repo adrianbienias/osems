@@ -18,15 +18,17 @@ type ReactSelectOption =
 export default function ListPicker({
   currentId,
   selectName = "listId",
-  label = "Lists:",
+  label = "List",
   isMulti = false,
   pushUrlQuery = false,
+  isClearable = true,
 }: {
   currentId?: string
   selectName?: string
   label?: string
   isMulti?: boolean
   pushUrlQuery?: boolean
+  isClearable?: boolean
 }) {
   const router = useRouter()
   const [selectedOption, setSelectedOption] = useState<ReactSelectOption>(null)
@@ -85,9 +87,9 @@ export default function ListPicker({
         <Select
           isMulti={isMulti}
           name={selectName}
-          instanceId="list-picker"
+          instanceId={`${selectName}-list-picker`}
           isLoading={isLoading}
-          isClearable={true}
+          isClearable={isClearable}
           value={selectedOption}
           onChange={handleChange}
           options={listOptions}

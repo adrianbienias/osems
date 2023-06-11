@@ -71,7 +71,7 @@ export default function AddAutoresponder() {
             <h2>Autoresponder details</h2>
 
             <form onSubmit={handleFormSubmit}>
-              <fieldset disabled={isSubmitted} className="border-none">
+              <fieldset disabled={isSubmitted}>
                 <ListPicker />
 
                 <Input

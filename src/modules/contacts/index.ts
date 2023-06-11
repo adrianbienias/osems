@@ -7,6 +7,9 @@ export type { Contact, ContactWithList } from "./contacts.model"
 export {
   contactsGetHandler,
   contactsPostHandler,
+  handleGetContact,
   handleGetContacts,
+  handlePatchContact,
+  handlePostContact,
 } from "./contacts.route"
 export { getContactsToSend } from "./contacts.service"

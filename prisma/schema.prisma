@@ -15,6 +15,7 @@ model Setting {
 }
 
 model Contact {
+    id             String    @id @default(uuid())
     email          String
     listId         String
     list           List      @relation(fields: [listId], references: [id])
@@ -22,7 +23,7 @@ model Contact {
     confirmedAt    DateTime?
     unsubscribedAt DateTime?
 
-    @@id([email, listId])
+    @@unique([email, listId])
 }
 
 model List {
