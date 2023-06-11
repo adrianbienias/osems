@@ -7,9 +7,21 @@ import {
   getAutoresponderLogs,
 } from "./autoresponders.model"
 import { sendAutoresponders } from "./autoresponders.service"
+import { setAutoresponderSendingInProgress } from "./autoresponders.model"
+import { setAutoresponderSendingIdle } from "./autoresponders.model"
 
 vi.mock("@/modules/sendings", () => ({ sendEmail: vi.fn() }))
 vi.mock("@/libs/datetime", () => ({ wait: vi.fn() }))
+vi.mock("./autoresponders.model", async () => {
+  const actual = await vi.importActual<typeof import("./autoresponders.model")>(
+    "./autoresponders.model"
+  )
+  return {
+    ...actual,
+    setAutoresponderSendingInProgress: vi.fn(),
+    setAutoresponderSendingIdle: vi.fn(),
+  }
+})
 
 beforeEach(() => {
   cleanTestDatabase()
@@ -18,8 +30,6 @@ beforeEach(() => {
 describe("sendAutoresponders()", () => {
   test("should send autoresponders while time passes", async () => {
     seedTestDatabase()
-
-    const expectedNumberOfUnsubscribedContacts = 86
 
     const days = [
       { date: "2000-01-01", totalAutorespondersSent: 3 },
@@ -31,36 +41,32 @@ describe("sendAutoresponders()", () => {
       { date: "2000-01-07", totalAutorespondersSent: 9 },
     ]
 
-    expect(await checkIfAutoresponderIsSending()).toStrictEqual(false)
+    expect((await getUnsubscribedContacts()).length).toStrictEqual(86)
 
     for (const day of days) {
-      vi.setSystemTime(new Date(day.date))
+      expect(await checkIfAutoresponderIsSending()).toStrictEqual(false)
 
-      expect((await getUnsubscribedContacts()).length).toStrictEqual(
-        expectedNumberOfUnsubscribedContacts
-      )
+      vi.setSystemTime(new Date(day.date))
 
       await sendAutoresponders()
 
+      vi.useRealTimers()
+
       const logs = await getAutoresponderLogs()
       expect(logs.length).toStrictEqual(day.totalAutorespondersSent)
-      expect(vi.mocked(sendEmail).mock.calls.length).toStrictEqual(
-        day.totalAutorespondersSent
-      )
-      expect(sendEmail).toHaveBeenCalledTimes(logs.length)
+      expect(sendEmail).toHaveBeenCalledTimes(day.totalAutorespondersSent)
 
       for (let i = 0; i < logs.length; i++) {
         expect(sendEmail).toHaveBeenNthCalledWith(
           i + 1,
-          expect.objectContaining({
-            to: logs[i].email,
-          })
+          expect.objectContaining({ to: logs[i].email })
         )
       }
 
       expect(await checkIfAutoresponderIsSending()).toStrictEqual(false)
     }
 
-    vi.useRealTimers()
+    expect(setAutoresponderSendingInProgress).toHaveBeenCalledTimes(days.length)
+    expect(setAutoresponderSendingIdle).toHaveBeenCalledTimes(days.length)
   })
 })
