@@ -1,4 +1,3 @@
-import { DatetimeUtc } from "@/components/datetime-utc"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
@@ -62,7 +61,9 @@ export default function ShowNewsletter() {
                       <Td>{index + 1}</Td>
                       <Td>{log.email}</Td>
                       <Td>
-                        <DatetimeUtc datetime={log.sentAt} />
+                        {log.sentAt
+                          ? new Date(log.sentAt).toLocaleString()
+                          : "N/A"}
                       </Td>
                     </Tr>
                   ))
@@ -89,7 +90,7 @@ export default function ShowNewsletter() {
               Scheduled to send at
             </h3>
             <p className="mt-0 [&>span]:text-black">
-              <DatetimeUtc datetime={newsletter.toSendAfter} />
+              {new Date(newsletter.toSendAfter).toLocaleString()}
             </p>
 
             <h3 className="mb-0 font-normal text-base text-slate-500">List</h3>

@@ -1,5 +1,4 @@
 import { LinkButton } from "@/components/button"
-import { DatetimeUtc } from "@/components/datetime-utc"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
@@ -45,9 +44,7 @@ export default function Lists() {
                     </Link>
                   </Td>
                   <Td>{list._count.contacts}</Td>
-                  <Td>
-                    <DatetimeUtc datetime={list.createdAt} />
-                  </Td>
+                  <Td>{new Date(list.createdAt).toLocaleString()}</Td>
                 </Tr>
               ))
             ) : (

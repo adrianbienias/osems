@@ -238,7 +238,7 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ---
 
-- [ ] Allow to add/edit/delete contacts through UI
+- [ ] Add missing tests
 - [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] Dockerize the app
 - [ ] Handle resubscribing (signup again after unsubscribing)

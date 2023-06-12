@@ -1,5 +1,4 @@
 import { LinkButton } from "@/components/button"
-import { DatetimeUtc } from "@/components/datetime-utc"
 import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
@@ -58,14 +57,16 @@ export default function Contacts() {
                       {contact.list.name}
                     </Link>
                   </Td>
+                  <Td>{new Date(contact.createdAt).toLocaleString()}</Td>
                   <Td>
-                    <DatetimeUtc datetime={contact.createdAt} />
+                    {contact.confirmedAt
+                      ? new Date(contact.confirmedAt).toLocaleString()
+                      : "N/A"}
                   </Td>
                   <Td>
-                    <DatetimeUtc datetime={contact.confirmedAt} />
-                  </Td>
-                  <Td>
-                    <DatetimeUtc datetime={contact.unsubscribedAt} />
+                    {contact.unsubscribedAt
+                      ? new Date(contact.unsubscribedAt).toLocaleString()
+                      : "N/A"}
                   </Td>
                 </Tr>
               ))

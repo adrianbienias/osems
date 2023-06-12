@@ -1,5 +1,4 @@
 import { LinkButton } from "@/components/button"
-import { DatetimeUtc } from "@/components/datetime-utc"
 import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
@@ -64,9 +63,7 @@ export default function Autoresponders() {
                       {autoresponder.list.name}
                     </Link>
                   </Td>
-                  <Td>
-                    <DatetimeUtc datetime={autoresponder.createdAt} />
-                  </Td>
+                  <Td>{new Date(autoresponder.createdAt).toLocaleString()}</Td>
                 </Tr>
               ))
             ) : (

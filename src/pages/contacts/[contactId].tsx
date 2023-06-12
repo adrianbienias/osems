@@ -58,7 +58,7 @@ export default function EditContact() {
     mutate()
   }
 
-  let unsubscribedAt
+  let unsubscribedAt: string | undefined
   if (contact.unsubscribedAt) {
     unsubscribedAt = getLocalDateTime(new Date(contact.unsubscribedAt))
   }
@@ -87,7 +87,7 @@ export default function EditContact() {
                 />
 
                 <Input
-                  label="Unsubscribed at (local time)"
+                  label="Unsubscribed at"
                   id="input-unsubscribed-at"
                   name="unsubscribedAt"
                   type="datetime-local"
