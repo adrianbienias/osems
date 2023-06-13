@@ -233,7 +233,7 @@ Even if sending plain text may sound optional, it's encouraged to send it along 
 
 ## TODOs
 
-- [ ] Add fully fledged documentation (using https://nextra.site/)
+- [ ] Add fully fledged documentation
 - [ ] Create a landing page with waiting list for a video course about building this app (at osems.dev)
 
 ---

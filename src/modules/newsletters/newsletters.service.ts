@@ -12,13 +12,12 @@ import {
   setNewsletterSendingIdle,
   setNewsletterSendingInProgress,
   updateNewsletter,
-  updateNewsletterLog,
 } from "./newsletters.model"
 
 export async function sendNewsletters() {
   const newsletters = await getScheduledNewsletters()
   if (newsletters.length < 1) {
-    return // No newsletters to send
+    return
   }
 
   if (await checkIfNewsletterIsSending()) {
@@ -39,12 +38,12 @@ export async function sendNewsletters() {
 }
 
 async function sendNewsletter(newsletter: Newsletter) {
-  const contacts = await getContactsToSend({
-    listId: newsletter.listId,
-    listIdsToExclude: JSON.parse(newsletter.listIdsToExclude),
-  })
+  const newsletterId = newsletter.id
+  const listId = newsletter.listId
+  const listIdsToExclude = JSON.parse(newsletter.listIdsToExclude)
+
+  const contacts = await getContactsToSend({ listId, listIdsToExclude })
   if (contacts.length < 1) {
-    const newsletterId = newsletter.id
     await updateNewsletter({ newsletterId, sentAt: new Date() })
 
     return console.error("No active contacts on the list to send newsletter")
@@ -56,12 +55,11 @@ async function sendNewsletter(newsletter: Newsletter) {
   if (!newsletterTemplate) {
     return console.error("Missing newsletter template")
   }
+
   const { id, createdAt, ...template } = newsletterTemplate
-  const newsletterId = newsletter.id
 
   for (const contact of contacts) {
     const email = contact.email
-    const listId = newsletter.listId
     const unsubscribeUrl = createUnsubscribeUrl({ email, listId })
     const messageVariables: Map<string, string> = new Map([
       // Here you can set all kinds of newsletter template variables
@@ -76,9 +74,8 @@ async function sendNewsletter(newsletter: Newsletter) {
       }),
     }
 
-    await createNewsletterLog({ email, newsletterId })
     await sendEmail(message)
-    await updateNewsletterLog({ email, newsletterId, sentAt: new Date() })
+    await createNewsletterLog({ email, newsletterId })
 
     await wait(1000 / appConfig.maxSendRatePerSecondNewsletter)
   }

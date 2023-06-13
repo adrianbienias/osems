@@ -8,6 +8,7 @@ const schedules = {
   everyDay: "0 0 * * *",
   everyHour: "0 * * * *",
   everyMinute: "* * * * *",
+  everyFifteenSeconds: "*/15 * * * * *",
   everyTenSeconds: "*/10 * * * * *",
   everySecond: "* * * * * *",
 }
@@ -16,13 +17,10 @@ export function startCronJobs() {
   consoleStamp(console, { format: ":date(yyyy-mm-dd HH:MM:ss) :label" })
   console.info("\n✔ Node cron jobs activated\n")
 
-  schedule(
-    appConfig.isProduction ? schedules.everyTenSeconds : schedules.everySecond,
-    async () => await sendNewsletters()
-  )
+  schedule(schedules.everyFifteenSeconds, async () => await sendNewsletters())
 
   schedule(
-    appConfig.isProduction ? schedules.everyTenSeconds : schedules.everySecond,
+    schedules.everyFifteenSeconds,
     async () => await sendAutoresponders()
   )
 }

@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma"
+import type { Contact } from "@/modules/contacts"
 import type { List } from "@/modules/lists"
 import type { Template } from "@/modules/templates"
 import { addTemplate } from "@/modules/templates"
@@ -115,45 +116,51 @@ export async function setAutoresponderSendingIdle() {
   })
 }
 
-export async function getAutoresponderLog({
-  autoresponderId,
-  email,
-}: {
-  autoresponderId: string
-  email: string
-}) {
-  return await prisma.autoresponderLog.findUnique({
-    where: { email_autoresponderId: { autoresponderId, email } },
-  })
-}
-
 export async function createAutoresponderLog({
   autoresponderId,
   email,
+  sentAt = new Date(),
 }: {
   autoresponderId: string
   email: string
+  sentAt?: Date
 }) {
   await prisma.autoresponderLog.create({
-    data: { autoresponderId, email },
-  })
-}
-
-export async function updateAutoresponderLog({
-  autoresponderId,
-  email,
-  sentAt,
-}: {
-  autoresponderId: string
-  email: string
-  sentAt: Date
-}) {
-  await prisma.autoresponderLog.update({
-    where: { email_autoresponderId: { autoresponderId, email } },
-    data: { sentAt },
+    data: { autoresponderId, email, sentAt },
   })
 }
 
 export async function getAutoresponderLogs() {
   return await prisma.autoresponderLog.findMany()
+}
+
+export async function getAutoresponderLogsByEmails({
+  emails,
+  autoresponderId,
+}: {
+  emails: string[]
+  autoresponderId: string
+}) {
+  return await prisma.autoresponderLog.findMany({
+    where: { email: { in: emails }, autoresponderId },
+  })
+}
+
+export async function getContactsToSendAutoresponder({
+  contactsFromDateRange,
+  autoresponderId,
+}: {
+  contactsFromDateRange: Contact[]
+  autoresponderId: string
+}) {
+  const emails = contactsFromDateRange.map((contact) => contact.email)
+  const sentLogs = await getAutoresponderLogsByEmails({
+    emails,
+    autoresponderId,
+  })
+  const contactsToSendTo = contactsFromDateRange.filter(
+    (contact) => !sentLogs.some((sentLog) => sentLog.email === contact.email)
+  )
+
+  return contactsToSendTo
 }

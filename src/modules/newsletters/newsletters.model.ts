@@ -116,30 +116,15 @@ export async function setNewsletterSendingIdle() {
 export async function createNewsletterLog({
   email,
   newsletterId,
+  sentAt = new Date(),
 }: {
   email: string
   newsletterId: string
+  sentAt?: Date
 }) {
-  await prisma.newsletterLog.create({
-    data: { email, newsletterId },
-  })
+  await prisma.newsletterLog.create({ data: { email, newsletterId, sentAt } })
 }
 
 export async function getNewsletterLogs() {
   return await prisma.newsletterLog.findMany()
-}
-
-export async function updateNewsletterLog({
-  email,
-  newsletterId,
-  sentAt,
-}: {
-  email: string
-  newsletterId: string
-  sentAt: Date
-}) {
-  await prisma.newsletterLog.update({
-    where: { email_newsletterId: { email, newsletterId } },
-    data: { sentAt },
-  })
 }

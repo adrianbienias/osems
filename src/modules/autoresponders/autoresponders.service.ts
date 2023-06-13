@@ -8,17 +8,16 @@ import {
   Autoresponder,
   checkIfAutoresponderIsSending,
   createAutoresponderLog,
-  getAutoresponderLog,
   getAutoresponders,
+  getContactsToSendAutoresponder,
   setAutoresponderSendingIdle,
   setAutoresponderSendingInProgress,
-  updateAutoresponderLog,
 } from "./autoresponders.model"
 
 export async function sendAutoresponders() {
   const autoresponders = await getAutoresponders()
   if (autoresponders.length < 1) {
-    return // No autoresponders to send
+    return
   }
 
   if (await checkIfAutoresponderIsSending()) {
@@ -39,19 +38,28 @@ export async function sendAutoresponders() {
 }
 
 export async function sendAutoresponder(autoresponder: Autoresponder) {
-  const now = new Date()
-  const maxDaysDelay = 1 // Prevents sending messages to contacts that had signed up earlier than 1 day before the autoresponder delay value
-  const confirmedBefore = new Date()
-  const confirmedAfter = new Date()
-  confirmedBefore.setDate(now.getDate() - autoresponder.delayDays)
-  confirmedAfter.setDate(now.getDate() - autoresponder.delayDays - maxDaysDelay)
-
+  const autoresponderId = autoresponder.id
   const listId = autoresponder.listId
-  const contacts = await getContactsConfirmedBetweenDates({
+
+  const { confirmedBefore, confirmedAfter } =
+    getDateRangeForAutoresponder(autoresponder)
+
+  const contactsFromDateRange = await getContactsConfirmedBetweenDates({
     listId,
     confirmedAfter,
     confirmedBefore,
   })
+  if (contactsFromDateRange.length < 1) {
+    return
+  }
+
+  const contacts = await getContactsToSendAutoresponder({
+    contactsFromDateRange,
+    autoresponderId,
+  })
+  if (contacts.length < 1) {
+    return
+  }
 
   const autoresponderTemplate = await getTemplate({
     id: autoresponder.templateId,
@@ -59,18 +67,11 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
   if (!autoresponderTemplate) {
     return console.error("Missing newsletter template")
   }
+
   const { id, createdAt, ...template } = autoresponderTemplate
 
   for (const contact of contacts) {
-    const autoresponderId = autoresponder.id
     const email = contact.email
-    const listId = autoresponder.listId
-
-    // TODO: Exclude contacts by existing autoresponder logs before iterating them
-    if (await getAutoresponderLog({ autoresponderId, email })) {
-      continue // Autoresponder has been already sent to this contact
-    }
-
     const unsubscribeUrl = createUnsubscribeUrl({ email, listId })
     const messageVariables: Map<string, string> = new Map([
       // Here you can set all kinds of autoresponder template variables
@@ -85,14 +86,21 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
       }),
     }
 
-    await createAutoresponderLog({ autoresponderId, email })
     await sendEmail(message)
-    await updateAutoresponderLog({
-      autoresponderId,
-      email,
-      sentAt: new Date(),
-    })
+    await createAutoresponderLog({ autoresponderId, email })
 
     await wait(1000 / appConfig.maxSendRatePerSecondAutoresponder)
   }
+}
+
+function getDateRangeForAutoresponder(autoresponder: Autoresponder) {
+  const maxDaysDelay = 1 // Prevents sending messages to contacts that had signed up earlier than 1 day before the autoresponder delay value
+
+  const now = new Date()
+  const confirmedBefore = new Date()
+  const confirmedAfter = new Date()
+  confirmedBefore.setDate(now.getDate() - autoresponder.delayDays)
+  confirmedAfter.setDate(now.getDate() - autoresponder.delayDays - maxDaysDelay)
+
+  return { confirmedBefore, confirmedAfter }
 }

@@ -11,7 +11,7 @@ vi.mock("@/app-config", () => ({ appConfig: { isProduction: true } }))
 describe("cron", () => {
   test("should start cron jobs", async () => {
     startCronJobs()
-    const cronSchedule = "*/10 * * * * *"
+    const cronSchedule = "*/15 * * * * *"
     const sendNewsletters = vi.mocked(schedule).mock.calls[0][1]
     const sendAutoresponders = vi.mocked(schedule).mock.calls[1][1]
 
@@ -20,10 +20,10 @@ describe("cron", () => {
     expect(schedule).toHaveBeenCalledWith(cronSchedule, sendNewsletters)
     expect(schedule).toHaveBeenCalledWith(cronSchedule, sendAutoresponders)
     expect(sendNewsletters.toString()).toStrictEqual(
-      "async () => await __vite_ssr_import_2__.sendNewsletters()"
+      "async () => await __vite_ssr_import_1__.sendNewsletters()"
     )
     expect(sendAutoresponders.toString()).toStrictEqual(
-      "async () => await __vite_ssr_import_1__.sendAutoresponders()"
+      "async () => await __vite_ssr_import_0__.sendAutoresponders()"
     )
   })
 })

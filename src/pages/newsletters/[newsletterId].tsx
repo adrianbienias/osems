@@ -12,7 +12,7 @@ import useSWR from "swr"
 
 export default function ShowNewsletter() {
   const router = useRouter()
-  const refreshInterval = useRef(1000)
+  const refreshInterval = useRef(2500)
   const { newsletterId } = router.query
   const { data, error, isLoading } = useSWR(
     `/api/v1/newsletters/${newsletterId}`,
