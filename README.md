@@ -9,8 +9,9 @@ Open Source Email Marketing Software
 Tasks marked as done are removed from the list.
 
 - [ ] Add missing tests
-- [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] Dockerize the app
+- [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
+- [ ] Handle private API endpoints with API token
 - [ ] Handle resubscribing (signup again after unsubscribing)
   - Place resubscribe button on the unsubscribe page
 - [ ] Add results pagination

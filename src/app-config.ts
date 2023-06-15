@@ -21,6 +21,9 @@ if (!process.env.NEXT_PUBLIC_EMAIL_FROM) {
 }
 
 if (isServer) {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("Missing env JWT_SECRET")
+  }
   if (!process.env.APP_ENV) {
     throw new Error("Missing env APP_ENV")
   }

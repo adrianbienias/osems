@@ -14,9 +14,8 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "setEnvVariables": "dotenv -- ts-node -e \"import { setEnvVariables } from './src/libs/installer'; setEnvVariables('.env');\"",
     "setInitialAdminEmail": "dotenv -- ts-node -e \"import { setInitialAdminEmail } from './src/libs/installer'; setInitialAdminEmail();\"",
-    "installer": "(npm run setEnvVariables) && (npm run setInitialAdminEmail)",
+    "installer": "npm run setInitialAdminEmail",
     "postinstall": "(prisma generate) && (prisma migrate deploy) && (npm run installer)",
     "cron": "dotenv -- ts-node -e \"import { startCronJobs } from './src/libs/cron'; startCronJobs();\"",
     "db:reset": "prisma migrate reset",
