@@ -5,6 +5,7 @@ import { Input, Textarea } from "@/components/form"
 import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
+import { useHtmlChange } from "@/hooks/use-html-change"
 import { fetcher } from "@/libs/fetcher"
 import type { ApiResponse } from "@/libs/types"
 import type { Autoresponder } from "@/modules/autoresponders"
@@ -14,7 +15,7 @@ import { useState } from "react"
 import useSWR from "swr"
 
 export default function ShowAutoresponder() {
-  const [html, setHtml] = useState("")
+  const { html, handleHtmlChange } = useHtmlChange()
   const [errorMsg, setErrorMsg] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -30,13 +31,6 @@ export default function ShowAutoresponder() {
   if (error) return <div>Failed to load</div>
   if (isLoading) return <div>Loading...</div>
   if (!autoresponder || !template) return null
-
-  function handleHtmlChange(event: React.SyntheticEvent) {
-    const target = event.target as HTMLTextAreaElement
-    const htmlData = target.value
-
-    setHtml(htmlData)
-  }
 
   const handleFormSubmit = async function (event: React.SyntheticEvent) {
     event.preventDefault()

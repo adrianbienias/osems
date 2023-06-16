@@ -4,6 +4,7 @@ import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
+import { useHtmlChange } from "@/hooks/use-html-change"
 import type { ApiResponse, StringValues } from "@/libs/types"
 import type { List } from "@/modules/lists"
 import { useRouter } from "next/router"
@@ -12,7 +13,7 @@ import { useState } from "react"
 const templateHtmlExample = `<p><a href="{{confirmation}}">Click here to confirm signup &raquo;</a></p>`
 
 export default function AddList() {
-  const [html, setHtml] = useState("")
+  const { html, handleHtmlChange } = useHtmlChange()
   const [errorMsg, setErrorMsg] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -46,13 +47,6 @@ export default function AddList() {
     setTimeout(() => setIsSuccess(false), 1500)
 
     router.push(`/lists/${list.id}`)
-  }
-
-  function handleHtmlChange(event: React.SyntheticEvent) {
-    const target = event.target as HTMLTextAreaElement
-    const htmlData = target.value
-
-    setHtml(htmlData)
   }
 
   return (

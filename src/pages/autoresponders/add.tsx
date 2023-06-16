@@ -5,6 +5,7 @@ import { Input, Textarea } from "@/components/form"
 import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
+import { useHtmlChange } from "@/hooks/use-html-change"
 import type { ApiResponse } from "@/libs/types"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -14,19 +15,12 @@ const templateHtmlExample = `<p>Test message</p>
 <p><a href="{{unsubscribe}}">Unsubscribe</a></p>`
 
 export default function AddAutoresponder() {
-  const [html, setHtml] = useState("")
+  const { html, handleHtmlChange } = useHtmlChange()
   const [errorMsg, setErrorMsg] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const router = useRouter()
   const { mutate } = useSWRConfig()
-
-  function handleHtmlChange(event: React.SyntheticEvent) {
-    const target = event.target as HTMLTextAreaElement
-    const htmlData = target.value
-
-    setHtml(htmlData)
-  }
 
   async function handleFormSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
