@@ -1,4 +1,3 @@
-import { appConfig } from "@/app-config"
 import { sendAutoresponders } from "@/modules/autoresponders"
 import { sendNewsletters } from "@/modules/newsletters"
 import consoleStamp from "console-stamp"

@@ -11,5 +11,6 @@ export {
   handleGetContacts,
   handlePatchContact,
   handlePostContact,
+  handlePostUploadContacts,
 } from "./contacts.route"
 export { getContactsToSend } from "./contacts.service"

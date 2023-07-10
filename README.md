@@ -8,10 +8,14 @@ Open Source Email Marketing Software
 
 Tasks marked as done are removed from the list.
 
+- [ ] Handle markdown in email templates
+  - [ ] Provide base HTML template with {{unsubscribe}} link in footer
+- [ ] Dockerize the app (with Nginx)
+- [ ] Create separate template schema for list, newsletter, and autoresponder
+- [ ] Use a wrapper for SWR
 - [ ] Add missing tests
-- [ ] Dockerize the app
-- [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] Handle private API endpoints with API token
+- [ ] Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] Handle resubscribing (signup again after unsubscribing)
   - Place resubscribe button on the unsubscribe page
 - [ ] Add results pagination

@@ -210,3 +210,43 @@ export async function updateContact({
     throw error
   }
 }
+
+export async function addContacts({
+  contacts,
+}: {
+  contacts: {
+    email: string
+    listId: string
+    createdAt?: string
+    confirmedAt?: string
+    unsubscribedAt?: string
+  }[]
+}) {
+  for (let i = 0; i < contacts.length; i++) {
+    const contact = contacts[i]
+    let { email, listId, createdAt, confirmedAt, unsubscribedAt } = contact
+    const now = new Date()
+
+    if (!createdAt) {
+      createdAt = now.toISOString()
+    }
+    if (!confirmedAt) {
+      confirmedAt = now.toISOString()
+    }
+    if (!unsubscribedAt) {
+      unsubscribedAt = undefined
+    }
+
+    await prisma.contact.upsert({
+      create: {
+        email,
+        listId,
+        createdAt,
+        confirmedAt,
+        unsubscribedAt,
+      },
+      update: {},
+      where: { email_listId: { email, listId } },
+    })
+  }
+}

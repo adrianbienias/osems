@@ -5,9 +5,11 @@ import { isEmail } from "@/libs/validators"
 import { getList } from "@/modules/lists"
 import { sendEmail } from "@/modules/sendings"
 import { getTemplate, parseTemplateVariables } from "@/modules/templates"
+import { parse as csvParse } from "csv-parse/sync"
 import type { NextApiRequest, NextApiResponse } from "next"
 import {
   addContact,
+  addContacts,
   confirmContact,
   Contact,
   filterContacts,
@@ -298,4 +300,38 @@ export async function handlePatchContact({
   }
 
   return res.status(200).json({ success: "Ok", contact })
+}
+
+export async function handlePostUploadContacts({
+  req,
+  res,
+}: {
+  req: NextApiRequest
+  res: NextApiResponse<ApiResponse & { contact?: Contact }>
+}) {
+  const csvFileContent = req.body
+  if (!csvFileContent) {
+    return res.status(400).json({ error: "Invalid or empty file" })
+  }
+
+  try {
+    const contacts = csvParse(csvFileContent, {
+      columns: true,
+      trim: true,
+      skip_empty_lines: true,
+      relax_column_count: true,
+    })
+
+    await addContacts({ contacts })
+
+    return res.status(200).json({ success: "Contacts added" })
+  } catch (error) {
+    console.error(error)
+
+    if (error instanceof Error) {
+      return res.status(400).json({ error: error.message })
+    }
+
+    return res.status(400).json({ error: "Undefined error" })
+  }
 }
