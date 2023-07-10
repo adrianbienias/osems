@@ -33,7 +33,7 @@ describe("sendEmail()", () => {
 Powered by OSEMS [https://osems.dev?ref=email]`,
       list: {
         unsubscribe:
-          "John Doe <email@example.com>?subject=Unsubscribe&body=to-foo%2540bar.baz",
+          "email@example.com?subject=Unsubscribe&body=to-foo%2540bar.baz",
       },
     })
   })

@@ -32,12 +32,13 @@ export async function sendEmail({
   text += getEmailFooter().text
 
   const from = appConfig.sender
+  const fromEmail = from.match(/<(?<email>.+)>/)?.groups?.email || from
   const transporter = await createNodemailerTransporter()
   const searchParams = new URLSearchParams([
     ["subject", encodeURIComponent("Unsubscribe")],
     ["body", encodeURIComponent(to)],
   ])
-  const unsubscribe = `${from}?${searchParams.toString()}`
+  const unsubscribe = `${fromEmail}?${searchParams.toString()}`
   const data = { from, to, subject, text, html, list: { unsubscribe } }
 
   await transporter.sendMail(data)
