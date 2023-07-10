@@ -5,6 +5,7 @@ import { fetcher } from "@/libs/fetcher"
 import type { List } from "@/modules/lists"
 import type { Template } from "@/modules/templates"
 import type { Newsletter, NewsletterLog } from "@prisma/client"
+import { marked } from "marked"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useRef } from "react"
@@ -123,7 +124,7 @@ export default function ShowNewsletter() {
             <h2 className="mt-0">Newsletter template preview</h2>
             <div
               className="reset mt-4 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
-              dangerouslySetInnerHTML={{ __html: template.html }}
+              dangerouslySetInnerHTML={{ __html: marked.parse(template.html) }}
             />
           </section>
         </div>

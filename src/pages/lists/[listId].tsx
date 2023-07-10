@@ -9,6 +9,7 @@ import { useHtmlChange } from "@/hooks/use-html-change"
 import { fetcher } from "@/libs/fetcher"
 import type { ApiResponse, StringValues } from "@/libs/types"
 import { Contact, List, Template } from "@prisma/client"
+import { marked } from "marked"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import useSWR from "swr"
@@ -160,7 +161,7 @@ export default function ShowList() {
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
               dangerouslySetInnerHTML={{
-                __html: html || confirmationTemplate.html,
+                __html: marked.parse(html || confirmationTemplate.html),
               }}
             />
           </section>

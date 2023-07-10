@@ -17,17 +17,6 @@ beforeEach(() => {
 })
 
 describe("addTemplate()", () => {
-  test("should trigger HTML validation error", async () => {
-    const template = await addTemplate({
-      subject: "Dummy template",
-      html: "<p>Dummy content of the email template",
-    })
-
-    expect(template).toStrictEqual(
-      Error("Invalid HTML markup in email template")
-    )
-  })
-
   test("should add a new template", async () => {
     expect(await getTemplates()).toStrictEqual([])
 

@@ -65,7 +65,7 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
     id: autoresponder.templateId,
   })
   if (!autoresponderTemplate) {
-    return console.error("Missing newsletter template")
+    return console.error("Missing autoresponder template")
   }
 
   const { id, createdAt, ...template } = autoresponderTemplate

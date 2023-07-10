@@ -7,6 +7,7 @@ import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { useHtmlChange } from "@/hooks/use-html-change"
 import type { ApiResponse } from "@/libs/types"
+import { marked } from "marked"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { useSWRConfig } from "swr"
@@ -125,7 +126,9 @@ export default function AddAutoresponder() {
 
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
-              dangerouslySetInnerHTML={{ __html: html || templateHtmlExample }}
+              dangerouslySetInnerHTML={{
+                __html: marked.parse(html || templateHtmlExample),
+              }}
             />
           </section>
         </div>

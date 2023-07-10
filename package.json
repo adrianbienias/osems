@@ -56,7 +56,6 @@
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "html-to-text": "^9.0.4",
-    "html-validate": "^7.13.3",
     "husky": "^8.0.3",
     "jose": "^4.14.4",
     "marked": "^4.3.0",

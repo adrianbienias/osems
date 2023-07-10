@@ -7,6 +7,7 @@ import { Navbar } from "@/components/navbar"
 import { useHtmlChange } from "@/hooks/use-html-change"
 import type { ApiResponse, StringValues } from "@/libs/types"
 import type { List } from "@/modules/lists"
+import { marked } from "marked"
 import { useRouter } from "next/router"
 import { useState } from "react"
 
@@ -146,7 +147,9 @@ export default function AddList() {
 
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
-              dangerouslySetInnerHTML={{ __html: html || templateHtmlExample }}
+              dangerouslySetInnerHTML={{
+                __html: marked.parse(html || templateHtmlExample),
+              }}
             />
           </section>
         </div>
