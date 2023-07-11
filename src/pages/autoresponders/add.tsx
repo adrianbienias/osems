@@ -103,6 +103,14 @@ export default function AddAutoresponder() {
                   defaultValue="Autoresponder subject"
                   placeholder="Autoresponder subject"
                 />
+                <Input
+                  label="Preheader"
+                  id="input-preheader"
+                  name="preheader"
+                  type="text"
+                  defaultValue=""
+                  placeholder=""
+                />
                 <Textarea
                   label="Email template (markdown)"
                   id="textarea-markdown"

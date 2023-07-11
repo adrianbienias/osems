@@ -8,19 +8,23 @@
   },
   "confirmationTemplate": {
     "subject": "Foo subject",
+    "preheader": "Foo preheader",
     "markdown": "<p>Foo <a href=\"{{confirmation}}\">Confirmation</a></p>"
   },
   "autoresponderTemplate": {
     "subject": "Dummy autoresponder subject",
+    "preheader": "Dummy autoresponder preheader",
     "markdown": "<p>Dummy autoresponder content. <a href=\"{{unsubscribe}}\">Unsubscribe</a></p>"
   },
   "newsletterTemplate": {
     "subject": "Dummy newsletter subject",
+    "preheader": "Dummy newsletter preheader",
     "markdown": "<p>Dummy newsletter content. <a href=\"{{unsubscribe}}\">Unsubscribe</a></p>"
   },
   "email": {
     "to": "to-foo@bar.baz",
     "subject": "Dummy subject",
+    "preheader": "",
     "html": "<p>Dummy html message</p>",
     "text": "Dummy text message"
   },

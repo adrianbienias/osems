@@ -124,6 +124,14 @@ export default function AddList() {
                     defaultValue="Confirmation required"
                     placeholder="Confirmation required"
                   />
+                  <Input
+                    label="Confirmation email preheader"
+                    id="input-preheader"
+                    name="preheader"
+                    type="text"
+                    defaultValue=""
+                    placeholder=""
+                  />
                   <Textarea
                     label="Confirmation email template (markdown)"
                     id="textarea-markdown"

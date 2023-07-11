@@ -4,12 +4,16 @@ export type { Template } from "@prisma/client"
 
 export async function addTemplate({
   subject,
+  preheader,
   markdown,
 }: {
   subject: string
+  preheader: string
   markdown: string
 }) {
-  return await prisma.template.create({ data: { subject, markdown } })
+  return await prisma.template.create({
+    data: { subject, preheader, markdown },
+  })
 }
 
 export async function getTemplates() {
@@ -19,15 +23,17 @@ export async function getTemplates() {
 export async function updateTemplate({
   id,
   subject,
+  preheader,
   markdown,
 }: {
-  id: string
+  id?: string
   subject?: string
+  preheader?: string
   markdown?: string
 }) {
   return await prisma.template.update({
     where: { id },
-    data: { subject, markdown },
+    data: { subject, preheader, markdown },
   })
 }
 

@@ -68,6 +68,7 @@ async function sendNewsletter(newsletter: Newsletter) {
     .replaceAll("%7D", "}")
   const emailTemplate = {
     subject: template.subject,
+    preheader: template.preheader,
     html,
     text: convertTemplateHtmlToText(html),
   }

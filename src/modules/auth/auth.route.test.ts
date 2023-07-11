@@ -71,6 +71,7 @@ describe("handlePostAuth()", () => {
       subject: "Confirm logging in",
       html: `<a href="http://localhost:3000/api/v1/public/auth?token=dummy-token">Click here to log in</a>`,
       text: `Click here to log in\n[http://localhost:3000/api/v1/public/auth?token=dummy-token]`,
+      preheader: "Click the link in message",
     })
   })
 })

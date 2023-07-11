@@ -114,6 +114,7 @@ describe("POST /api/v1/public/contacts", () => {
     expect(sendEmail).toHaveBeenCalledWith({
       to: email,
       subject: "Foo subject",
+      preheader: "Foo preheader",
       html: '<p>Foo <a href="http://localhost:3000/api/v1/public/contacts?email=foo%2540bar.baz&listId=2e4b0581-0bdc-4a54-bc05-8877b8808a40&action=confirm">Confirmation</a></p>',
       text: "Foo Confirmation [http://localhost:3000/api/v1/public/contacts?email=foo%2540bar.baz&listId=2e4b0581-0bdc-4a54-bc05-8877b8808a40&action=confirm]",
     })

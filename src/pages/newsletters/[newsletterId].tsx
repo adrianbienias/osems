@@ -121,6 +121,11 @@ export default function ShowNewsletter() {
             </h3>
             <p className="mt-0">{template.subject}</p>
 
+            <h3 className="mb-0 font-normal text-base text-slate-500">
+              Preheader
+            </h3>
+            <p className="mt-0">{template.preheader}</p>
+
             <h2 className="mt-0">Newsletter template preview</h2>
             <div
               className="reset mt-4 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"

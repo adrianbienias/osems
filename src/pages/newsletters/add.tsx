@@ -133,6 +133,14 @@ export default function AddNewsletter() {
                   defaultValue="Newsletter subject"
                   placeholder="Newsletter subject"
                 />
+                <Input
+                  label="Preheader"
+                  id="input-preheader"
+                  name="preheader"
+                  type="text"
+                  defaultValue=""
+                  placeholder=""
+                />
                 <Textarea
                   label="Email template (markdown)"
                   id="textarea-markdown"

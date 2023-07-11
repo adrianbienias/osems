@@ -18,9 +18,10 @@ export async function handlePostNewsletter({
   req: NextApiRequest
   res: NextApiResponse<ApiResponse & { newsletter?: Newsletter }>
 }) {
-  let { subject, markdown, listId, listIdsToExclude, toSendAfter } =
+  let { subject, preheader, markdown, listId, listIdsToExclude, toSendAfter } =
     req.body as {
       subject?: string
+      preheader?: string
       markdown?: string
       listId?: string
       listIdsToExclude?: string[]
@@ -46,6 +47,9 @@ export async function handlePostNewsletter({
   if (!subject) {
     return res.status(400).json({ error: "Missing subject" })
   }
+  if (typeof preheader !== "string") {
+    return res.status(400).json({ error: "Invalid preheader" })
+  }
   if (!markdown) {
     return res.status(400).json({ error: "Missing markdown content" })
   }
@@ -64,7 +68,7 @@ export async function handlePostNewsletter({
   }
 
   const newsletter = await scheduleNewsletter({
-    newsletterTemplate: { subject, markdown },
+    newsletterTemplate: { subject, preheader, markdown },
     listId,
     listIdsToExclude: JSON.stringify(listIdsToExclude),
     toSendAfter: new Date(toSendAfter),

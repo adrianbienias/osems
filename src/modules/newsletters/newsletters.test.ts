@@ -189,18 +189,21 @@ describe("sendNewsletters()", () => {
     expect(sendEmail).toHaveBeenNthCalledWith(1, {
       to: "santa_wiza@yahoo.com",
       subject: "Dummy newsletter subject",
+      preheader: "",
       html: `<p>Dummy newsletter content. <a href="http://localhost:3000/api/v1/public/contacts?email=santa_wiza%2540yahoo.com&listId=048df004-02a0-4b26-b77a-0d6f713fac4c&action=unsubscribe">Unsubscribe</a></p>`,
       text: `Dummy newsletter content. Unsubscribe [http://localhost:3000/api/v1/public/contacts?email=santa_wiza%2540yahoo.com&listId=048df004-02a0-4b26-b77a-0d6f713fac4c&action=unsubscribe]`,
     })
     expect(sendEmail).toHaveBeenNthCalledWith(20, {
       to: "lou16@gmail.com",
       subject: "Dummy newsletter subject",
+      preheader: "",
       html: `<p>Dummy newsletter content. <a href="http://localhost:3000/api/v1/public/contacts?email=lou16%2540gmail.com&listId=048df004-02a0-4b26-b77a-0d6f713fac4c&action=unsubscribe">Unsubscribe</a></p>`,
       text: `Dummy newsletter content. Unsubscribe [http://localhost:3000/api/v1/public/contacts?email=lou16%2540gmail.com&listId=048df004-02a0-4b26-b77a-0d6f713fac4c&action=unsubscribe]`,
     })
     expect(sendEmail).toHaveBeenNthCalledWith(43, {
       to: "mittie.kuhn84@gmail.com",
       subject: "Dummy newsletter subject",
+      preheader: "",
       html: `<p>Dummy newsletter content. <a href="http://localhost:3000/api/v1/public/contacts?email=mittie.kuhn84%2540gmail.com&listId=048df004-02a0-4b26-b77a-0d6f713fac4c&action=unsubscribe">Unsubscribe</a></p>`,
       text: `Dummy newsletter content. Unsubscribe [http://localhost:3000/api/v1/public/contacts?email=mittie.kuhn84%2540gmail.com&listId=048df004-02a0-4b26-b77a-0d6f713fac4c&action=unsubscribe]`,
     })

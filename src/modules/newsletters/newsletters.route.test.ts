@@ -38,6 +38,7 @@ describe("POST /api/v1/newsletters", () => {
       method: "POST",
       body: {
         subject: "Dummy subject",
+        preheader: "Dummy preheader",
         markdown: `<p>Dummy email content</p><p><a href="{{unsubscribe}}">Unsubscribe</a></p>`,
         listId: "list-id-to-include",
         listIdsToExclude: ["list-id-to-exclude"],
@@ -57,8 +58,9 @@ describe("POST /api/v1/newsletters", () => {
       listId: "list-id-to-include",
       listIdsToExclude: JSON.stringify(["list-id-to-exclude"]),
       newsletterTemplate: {
-        markdown: `<p>Dummy email content</p><p><a href="{{unsubscribe}}">Unsubscribe</a></p>`,
         subject: "Dummy subject",
+        preheader: "Dummy preheader",
+        markdown: `<p>Dummy email content</p><p><a href="{{unsubscribe}}">Unsubscribe</a></p>`,
       },
       toSendAfter: expect.any(Date),
     })

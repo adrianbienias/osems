@@ -8,6 +8,7 @@ import {
   getAutoresponders,
   updateAutoresponder,
 } from "./autoresponders.model"
+import testData from "../../../mocks/test-data.json"
 
 beforeEach(() => {
   cleanTestDatabase()
@@ -19,12 +20,8 @@ describe("addAutoresponder()", () => {
 
     const listId = "2e4b0581-0bdc-4a54-bc05-8877b8808a40"
     const delayDays = 9
-
     const autoresponder = await addAutoresponder({
-      autoresponderTemplate: {
-        markdown: "<p>Autoresponder dummy content</p>",
-        subject: "Autoresponder dummy subject",
-      },
+      autoresponderTemplate: testData.autoresponderTemplate,
       delayDays,
       listId,
     })
@@ -67,10 +64,7 @@ describe("getAutoresponder()", async () => {
     const delayDays = 4
 
     const autoresponder = await addAutoresponder({
-      autoresponderTemplate: {
-        markdown: "<p>Autoresponder dummy content</p>",
-        subject: "Autoresponder dummy subject",
-      },
+      autoresponderTemplate: testData.autoresponderTemplate,
       delayDays,
       listId,
     })

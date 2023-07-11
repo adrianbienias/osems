@@ -7,22 +7,26 @@ export function convertTemplateHtmlToText(html: string): string {
   })
 }
 
-export function parseTemplateVariables<T>({
+export function parseTemplateVariables({
   message,
   messageVariables,
 }: {
-  message: { [K in keyof T]: string }
+  message: {
+    subject: string
+    preheader: string
+    html: string
+    text: string
+  }
   messageVariables: Map<string, string>
-}): { [K in keyof T]: string } {
-  const parsedTemplate = { ...message }
+}) {
+  const parsedTemplate = structuredClone(message)
 
   for (const templateItemKey of Object.keys(parsedTemplate)) {
+    const key = templateItemKey as keyof typeof parsedTemplate
+    const item = parsedTemplate[key]
+
     for (const [variableKey, variableValue] of messageVariables) {
-      // Info: it mutates `parsedTemplate` object
-      parsedTemplate[templateItemKey as keyof typeof parsedTemplate] =
-        parsedTemplate[
-          templateItemKey as keyof typeof parsedTemplate
-        ].replaceAll(variableKey, variableValue)
+      parsedTemplate[key] = item.replaceAll(variableKey, variableValue)
     }
   }
 

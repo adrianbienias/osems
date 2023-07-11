@@ -15,6 +15,7 @@ export async function handlePostList({
   let {
     name,
     subject,
+    preheader,
     markdown,
     signupRedirectUrl,
     confirmationRedirectUrl,
@@ -22,6 +23,7 @@ export async function handlePostList({
   } = req.body as {
     name?: string
     subject?: string
+    preheader?: string
     markdown?: string
     signupRedirectUrl?: string
     confirmationRedirectUrl?: string
@@ -43,6 +45,9 @@ export async function handlePostList({
   if (!subject) {
     return res.status(400).json({ error: "Missing subject" })
   }
+  if (typeof preheader !== "string") {
+    return res.status(400).json({ error: "Invalid preheader" })
+  }
   if (!markdown) {
     return res.status(400).json({ error: "Missing email template" })
   }
@@ -52,7 +57,11 @@ export async function handlePostList({
       .json({ error: "Missing {{confirmation}} in email template" })
   }
 
-  const confirmationTemplate = await addTemplate({ subject, markdown })
+  const confirmationTemplate = await addTemplate({
+    subject,
+    preheader,
+    markdown,
+  })
   if (confirmationTemplate instanceof Error) {
     return res.status(400).json({ error: confirmationTemplate.message })
   }
@@ -124,6 +133,7 @@ export async function handlePatchList({
   let {
     name,
     subject,
+    preheader,
     markdown,
     signupRedirectUrl,
     confirmationRedirectUrl,
@@ -131,6 +141,7 @@ export async function handlePatchList({
   } = req.body as {
     name?: string
     subject?: string
+    preheader?: string
     markdown?: string
     signupRedirectUrl?: string
     confirmationRedirectUrl?: string
@@ -157,6 +168,9 @@ export async function handlePatchList({
   if (subject === "") {
     return res.status(400).json({ error: "Missing subject" })
   }
+  if (typeof preheader !== "string") {
+    return res.status(400).json({ error: "Invalid preheader" })
+  }
   if (markdown === "") {
     return res.status(400).json({ error: "Missing email template" })
   }
@@ -174,6 +188,7 @@ export async function handlePatchList({
   const template = await updateTemplate({
     id: list.confirmationTemplateId,
     subject,
+    preheader,
     markdown,
   })
   if (template instanceof Error) {

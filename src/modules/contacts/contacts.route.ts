@@ -100,6 +100,7 @@ export async function contactsPostHandler({
     .replaceAll("%7D", "}")
   const emailTemplate = {
     subject: template.subject,
+    preheader: template.preheader,
     html,
     text: convertTemplateHtmlToText(html),
   }

@@ -22,6 +22,7 @@ describe("addTemplate()", () => {
 
     await addTemplate({
       subject: "Dummy template",
+      preheader: "Dummy preheader",
       markdown: "<p>Dummy content of the email template</p>",
     })
 
@@ -29,6 +30,7 @@ describe("addTemplate()", () => {
       {
         id: expect.stringMatching(uuidRegex),
         subject: "Dummy template",
+        preheader: "Dummy preheader",
         markdown: "<p>Dummy content of the email template</p>",
         createdAt: expect.any(Date),
       },
@@ -40,14 +42,17 @@ describe("getTemplates()", () => {
   test("should get multiple templates", async () => {
     await addTemplate({
       subject: "Dummy template #1",
+      preheader: "",
       markdown: "Dummy content of the email template #1",
     })
     await addTemplate({
       subject: "Dummy template #2",
+      preheader: "Dummy preheader",
       markdown: "Dummy content of the email template #2",
     })
     await addTemplate({
       subject: "Dummy template #3",
+      preheader: "",
       markdown: "Dummy content of the email template #3",
     })
 
@@ -55,18 +60,21 @@ describe("getTemplates()", () => {
       {
         id: expect.stringMatching(uuidRegex),
         subject: "Dummy template #3",
+        preheader: "",
         markdown: "Dummy content of the email template #3",
         createdAt: expect.any(Date),
       },
       {
         id: expect.stringMatching(uuidRegex),
         subject: "Dummy template #2",
+        preheader: "Dummy preheader",
         markdown: "Dummy content of the email template #2",
         createdAt: expect.any(Date),
       },
       {
         id: expect.stringMatching(uuidRegex),
         subject: "Dummy template #1",
+        preheader: "",
         markdown: "Dummy content of the email template #1",
         createdAt: expect.any(Date),
       },
@@ -78,6 +86,7 @@ describe("updateTemplate()", () => {
   test("should update template", async () => {
     const template = await addTemplate({
       subject: "Dummy template",
+      preheader: "",
       markdown: "<p>Dummy content of the email template</p>",
     })
     if (template instanceof Error) {
@@ -87,6 +96,7 @@ describe("updateTemplate()", () => {
     expect(await getTemplate({ id: template.id })).toStrictEqual({
       id: expect.stringMatching(uuidRegex),
       subject: "Dummy template",
+      preheader: "",
       markdown: "<p>Dummy content of the email template</p>",
       createdAt: expect.any(Date),
     })
@@ -94,12 +104,14 @@ describe("updateTemplate()", () => {
     await updateTemplate({
       id: template.id,
       subject: "Updated template",
+      preheader: "Updated preheader",
       markdown: "<p>Updated content of the email template</p>",
     })
 
     expect(await getTemplate({ id: template.id })).toStrictEqual({
       id: expect.stringMatching(uuidRegex),
       subject: "Updated template",
+      preheader: "Updated preheader",
       markdown: "<p>Updated content of the email template</p>",
       createdAt: expect.any(Date),
     })
@@ -110,6 +122,7 @@ describe("getTemplate()", () => {
   test("should get a template by its id", async () => {
     const template = await addTemplate({
       subject: "Dummy template",
+      preheader: "",
       markdown: "Dummy content of the email template",
     })
     if (template instanceof Error) {
@@ -119,6 +132,7 @@ describe("getTemplate()", () => {
     expect(await getTemplate({ id: template.id })).toStrictEqual({
       id: expect.stringMatching(uuidRegex),
       subject: "Dummy template",
+      preheader: "",
       markdown: "Dummy content of the email template",
       createdAt: expect.any(Date),
     })
@@ -175,12 +189,14 @@ describe("parseTemplateVariables()", () => {
   test("should replace template variables with dynamic content", async () => {
     const message = {
       subject: "Subject with {{variable}}",
+      preheader: "Dummy preheader",
       html: "<p>Message with {{variable}} that appears twice, {{variable}}.</p>",
       text: "Message with {{variable}} that appears twice, {{variable}}.",
     }
     const messageVariables = new Map([["{{variable}}", "dynamic content"]])
     const expectedOutput = {
       subject: "Subject with dynamic content",
+      preheader: "Dummy preheader",
       html: "<p>Message with dynamic content that appears twice, dynamic content.</p>",
       text: "Message with dynamic content that appears twice, dynamic content.",
     }

@@ -14,15 +14,8 @@ CREATE TABLE "new_Template" (
     "markdown" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO "new_Template" ("createdAt", "id", "subject") SELECT "createdAt", "id", "subject" FROM "Template";
+INSERT INTO "new_Template" ("createdAt", "id", "subject", "markdown") SELECT "createdAt", "id", "subject", "html" FROM "Template";
 DROP TABLE "Template";
 ALTER TABLE "new_Template" RENAME TO "Template";
 PRAGMA foreign_key_check;
 PRAGMA foreign_keys=ON;
-
-/*
-  Manual (more appropriate) alternative:
-
-  ALTER TABLE "Template" RENAME "html" to "markdown";
-  ALTER TABLE "Template" DROP COLUMN "text";
-*/

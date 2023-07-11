@@ -18,7 +18,7 @@ export async function addAutoresponder({
   listId,
   delayDays,
 }: {
-  autoresponderTemplate: Pick<Template, "subject" | "markdown">
+  autoresponderTemplate: Pick<Template, "subject" | "preheader" | "markdown">
   listId: string
   delayDays: number
 }) {

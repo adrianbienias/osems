@@ -130,6 +130,14 @@ export default function ShowList() {
                     defaultValue={confirmationTemplate.subject}
                     placeholder={confirmationTemplate.subject}
                   />
+                  <Input
+                    label="Confirmation email preheader"
+                    id="input-preheader"
+                    name="preheader"
+                    type="text"
+                    defaultValue={confirmationTemplate.preheader}
+                    placeholder={confirmationTemplate.preheader}
+                  />
                   <Textarea
                     label="Confirmation email template (markdown)"
                     id="textarea-markdown"

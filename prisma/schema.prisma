@@ -85,6 +85,7 @@ model Template {
     id        String   @id @default(uuid())
     subject   String
     markdown  String
+    preheader String
     createdAt DateTime @default(now())
 }
 

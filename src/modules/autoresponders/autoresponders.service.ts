@@ -80,6 +80,7 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
     .replaceAll("%7D", "}")
   const emailTemplate = {
     subject: template.subject,
+    preheader: template.preheader,
     html,
     text: convertTemplateHtmlToText(html),
   }

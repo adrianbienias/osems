@@ -33,8 +33,14 @@ export async function handlePostAuth({
 
   const magicLoginLink = `${appConfig.baseUrl}/api/v1/public/auth?token=${token}`
   const html = `<a href="${magicLoginLink}">Click here to log in</a>`
-  const subject = `Confirm logging in`
-  const template = { subject, html, text: convertTemplateHtmlToText(html) }
+  const subject = "Confirm logging in"
+  const preheader = "Click the link in message"
+  const template = {
+    subject,
+    html,
+    text: convertTemplateHtmlToText(html),
+    preheader,
+  }
   await sendEmail({ to: email, ...template })
 
   return res.status(200).json({ success: "Ok" })

@@ -106,6 +106,14 @@ export default function ShowAutoresponder() {
                   defaultValue={template.subject}
                   placeholder={template.subject}
                 />
+                <Input
+                  label="Preheader"
+                  id="input-preheader"
+                  name="preheader"
+                  type="text"
+                  defaultValue={template.preheader}
+                  placeholder={template.preheader}
+                />
                 <Textarea
                   label="Email template (markdown)"
                   id="textarea-markdown"

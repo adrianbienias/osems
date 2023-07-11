@@ -20,10 +20,11 @@ export async function handlePostAutoresponders({
   req: NextApiRequest
   res: NextApiResponse
 }) {
-  const { listId, delayDays, subject, markdown } = req.body as {
+  const { listId, delayDays, subject, preheader, markdown } = req.body as {
     listId?: string
     delayDays?: string
     subject?: string
+    preheader?: string
     markdown?: string
   }
   if (!listId) {
@@ -34,6 +35,9 @@ export async function handlePostAutoresponders({
   }
   if (!subject) {
     return res.status(400).json({ error: "Missing subject" })
+  }
+  if (typeof preheader !== "string") {
+    return res.status(400).json({ error: "Invalid preheader" })
   }
   if (!markdown) {
     return res.status(400).json({ error: "Missing markdown content" })
@@ -47,6 +51,7 @@ export async function handlePostAutoresponders({
   const autoresponder = await addAutoresponder({
     autoresponderTemplate: {
       subject,
+      preheader,
       markdown,
     },
     listId,
@@ -127,10 +132,11 @@ export async function handlePatchAutoresponder({
     ApiResponse & { autoresponder?: Autoresponder; template?: Template }
   >
 }) {
-  const { listId, delayDays, subject, markdown } = req.body as {
+  const { listId, delayDays, subject, preheader, markdown } = req.body as {
     listId?: string
     delayDays?: string
     subject?: string
+    preheader?: string
     markdown?: string
   }
 
@@ -147,6 +153,9 @@ export async function handlePatchAutoresponder({
   }
   if (!subject) {
     return res.status(400).json({ error: "Missing subject" })
+  }
+  if (typeof preheader !== "string") {
+    return res.status(400).json({ error: "Invalid preheader" })
   }
   if (!markdown) {
     return res.status(400).json({ error: "Missing markdown content" })
@@ -166,6 +175,7 @@ export async function handlePatchAutoresponder({
   const template = await updateTemplate({
     id: autoresponder.templateId,
     subject,
+    preheader,
     markdown,
   })
   if (template instanceof Error) {

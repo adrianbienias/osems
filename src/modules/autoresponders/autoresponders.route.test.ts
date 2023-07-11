@@ -86,6 +86,25 @@ describe("handlePostAutoresponders()", () => {
     expect(addAutoresponder).not.toHaveBeenCalled()
   })
 
+  test("should return error for invalid preheader", async () => {
+    const { req, res } = createMocks({
+      method: "POST",
+      body: {
+        listId: "dummy-list-id",
+        delayDays: "5",
+        subject: "Dummy autoresponder subject",
+      },
+    })
+
+    await handlePostAutoresponders({ req, res })
+
+    expect(res._getJSONData()).toStrictEqual({
+      error: "Invalid preheader",
+    })
+    expect(res._getStatusCode()).toStrictEqual(400)
+    expect(addAutoresponder).not.toHaveBeenCalled()
+  })
+
   test("should return error for missing template markdown content", async () => {
     const { req, res } = createMocks({
       method: "POST",
@@ -93,6 +112,7 @@ describe("handlePostAutoresponders()", () => {
         listId: "dummy-list-id",
         delayDays: "5",
         subject: "Dummy autoresponder subject",
+        preheader: "Dummy autoresponder preheader",
       },
     })
 
@@ -112,6 +132,7 @@ describe("handlePostAutoresponders()", () => {
         listId: "dummy-list-id",
         delayDays: "5",
         subject: "Dummy autoresponder subject",
+        preheader: "Dummy autoresponder preheader",
         markdown: `<p>Dummy autoresponder content</p><p><a href="{{unsubscribe}}">Unsubscribe</a></p>`,
       },
     })
@@ -128,6 +149,7 @@ describe("handlePostAutoresponders()", () => {
       delayDays: 5,
       autoresponderTemplate: {
         subject: "Dummy autoresponder subject",
+        preheader: "Dummy autoresponder preheader",
         markdown: `<p>Dummy autoresponder content</p><p><a href="{{unsubscribe}}">Unsubscribe</a></p>`,
       },
     })
@@ -189,6 +211,7 @@ describe("handlePatchAutoresponder()", () => {
         listId: "dummy-list-id",
         delayDays: 123,
         subject: "Dummy autoresponder subject",
+        preheader: "Dummy preheader",
         markdown: `<p>Dummy autoresponder content</p><p><a href="{{unsubscribe}}">Unsubscribe</a></p>`,
       },
     })

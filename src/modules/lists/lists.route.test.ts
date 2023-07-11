@@ -64,6 +64,7 @@ describe("POST /api/v1/lists", () => {
         confirmationRedirectUrl: "http://confirmationRedirectUrl",
         unsubscribeRedirectUrl: "http://unsubscribeRedirectUrl",
         subject: "Dummy subject",
+        preheader: "Dummy preheader",
         markdown: `<p>Foo bar content</p><a href="{{confirmation}}">Confirm</a>`,
       },
     })
@@ -135,6 +136,7 @@ describe("PATCH /api/v1/list/:listId", () => {
       },
       body: {
         name: "Changed name",
+        preheader: "Updated preheader",
         markdown: `<p>Foo bar content</p><a href="{{confirmation}}">Confirm</a>`,
       },
     })
