@@ -89,6 +89,9 @@ export function wrapHtmlTemplate({
     pre > code { background-color: transparent; padding: 0; border-radius: 0px; }
 
     @media (max-width: 600px) {
+      body {
+        padding: 0 !important;
+      }
       #main-content {
         padding: 1rem !important;
         font-size: 1rem !important;
@@ -97,10 +100,10 @@ export function wrapHtmlTemplate({
     }
   </style>
 </head>
-<body style="margin: 0; background-color: #f5f5f5;">${
+<body style="margin: 0; background-color: #f5f5f5; padding: 2rem;">${
     preheader ? wrapPreheader(preheader) : ""
   }
-  <div id="main-content" style="background-color: white; max-width: 600px; padding: 2.5rem 3rem; margin: 2rem auto; font-family: Arial, Helvetica, sans-serif; font-size: 1.125rem; line-height: 1.75rem;">
+  <div id="main-content" style="background-color: white; max-width: 600px; padding: 2.5rem 3rem; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; font-size: 1.125rem; line-height: 1.75rem;">
 ${html}
   </div>
 </body>
