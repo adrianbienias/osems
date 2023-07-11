@@ -19,7 +19,7 @@ export function parseTemplateVariables({
   }
   messageVariables: Map<string, string>
 }) {
-  const parsedTemplate = structuredClone(message)
+  const parsedTemplate = { ...message }
 
   for (const templateItemKey of Object.keys(parsedTemplate)) {
     const key = templateItemKey as keyof typeof parsedTemplate
