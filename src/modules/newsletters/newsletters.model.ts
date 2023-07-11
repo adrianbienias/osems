@@ -18,7 +18,7 @@ export async function scheduleNewsletter({
   listIdsToExclude,
   toSendAfter,
 }: {
-  newsletterTemplate: Pick<Template, "subject" | "html">
+  newsletterTemplate: Pick<Template, "subject" | "markdown">
   listId: string
   listIdsToExclude: string
   toSendAfter: Date

@@ -8,7 +8,6 @@ Open Source Email Marketing Software
 
 Tasks marked as done are removed from the list.
 
-- [ ] Save templates in markdown format only, without text version (html is valid markdown)
 - [ ] Handle preheader in email templates
 - [ ] Dockerize the app (with Nginx)
 - [ ] Create separate template schema for list, newsletter, and autoresponder

@@ -18,13 +18,14 @@ export async function handlePostNewsletter({
   req: NextApiRequest
   res: NextApiResponse<ApiResponse & { newsletter?: Newsletter }>
 }) {
-  let { subject, html, listId, listIdsToExclude, toSendAfter } = req.body as {
-    subject?: string
-    html?: string
-    listId?: string
-    listIdsToExclude?: string[]
-    toSendAfter?: string
-  }
+  let { subject, markdown, listId, listIdsToExclude, toSendAfter } =
+    req.body as {
+      subject?: string
+      markdown?: string
+      listId?: string
+      listIdsToExclude?: string[]
+      toSendAfter?: string
+    }
 
   if (!listId) {
     return res.status(400).json({ error: "Missing list to send to" })
@@ -45,13 +46,13 @@ export async function handlePostNewsletter({
   if (!subject) {
     return res.status(400).json({ error: "Missing subject" })
   }
-  if (!html) {
-    return res.status(400).json({ error: "Missing html content" })
+  if (!markdown) {
+    return res.status(400).json({ error: "Missing markdown content" })
   }
-  if (!html?.includes("{{unsubscribe}}")) {
+  if (!markdown?.includes("{{unsubscribe}}")) {
     return res
       .status(400)
-      .json({ error: "Missing {{unsubscribe}} in html content" })
+      .json({ error: "Missing {{unsubscribe}} in markdown content" })
   }
 
   const list = await getListWithContacts({ id: listId })
@@ -63,7 +64,7 @@ export async function handlePostNewsletter({
   }
 
   const newsletter = await scheduleNewsletter({
-    newsletterTemplate: { subject, html },
+    newsletterTemplate: { subject, markdown },
     listId,
     listIdsToExclude: JSON.stringify(listIdsToExclude),
     toSendAfter: new Date(toSendAfter),

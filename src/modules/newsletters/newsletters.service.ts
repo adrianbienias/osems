@@ -3,7 +3,12 @@ import { wait } from "@/libs/datetime"
 import { createUnsubscribeUrl } from "@/libs/urls"
 import { getContactsToSend } from "@/modules/contacts"
 import { sendEmail } from "@/modules/sendings"
-import { getTemplate, parseTemplateVariables } from "@/modules/templates"
+import {
+  convertTemplateHtmlToText,
+  getTemplate,
+  parseTemplateVariables,
+} from "@/modules/templates"
+import { marked } from "marked"
 import type { Newsletter } from "./newsletters.model"
 import {
   checkIfNewsletterIsSending,
@@ -57,19 +62,28 @@ async function sendNewsletter(newsletter: Newsletter) {
   }
 
   const { id, createdAt, ...template } = newsletterTemplate
+  const html = marked
+    .parse(template.markdown)
+    .replaceAll("%7B", "{")
+    .replaceAll("%7D", "}")
+  const emailTemplate = {
+    subject: template.subject,
+    html,
+    text: convertTemplateHtmlToText(html),
+  }
 
   for (const contact of contacts) {
     const email = contact.email
     const unsubscribeUrl = createUnsubscribeUrl({ email, listId })
     const messageVariables: Map<string, string> = new Map([
       // Here you can set all kinds of newsletter template variables
-      ["{{email}}", email],
+      // Example: ["{{email}}", email]
       ["{{unsubscribe}}", unsubscribeUrl],
     ])
     const message = {
       to: email,
       ...parseTemplateVariables({
-        message: template,
+        message: emailTemplate,
         messageVariables,
       }),
     }

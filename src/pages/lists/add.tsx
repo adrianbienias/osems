@@ -4,17 +4,24 @@ import { Button } from "@/components/button"
 import { Input, Textarea } from "@/components/form"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
-import { useHtmlChange } from "@/hooks/use-html-change"
+import { useTextareaChange } from "@/hooks/use-textarea-change"
 import type { ApiResponse, StringValues } from "@/libs/types"
 import type { List } from "@/modules/lists"
 import { marked } from "marked"
 import { useRouter } from "next/router"
 import { useState } from "react"
 
-const templateHtmlExample = `<p><a href="{{confirmation}}">Click here to confirm signup &raquo;</a></p>`
+const templateMarkdownExample = `# Signup confirmation
+
+<p>
+  <a href="{{confirmation}}">Click here to confirm signup (html link) &raquo;</a>
+</p>
+
+[Click here to confirm signup (markdown link) &raquo;]({{confirmation}})
+`
 
 export default function AddList() {
-  const { html, handleHtmlChange } = useHtmlChange()
+  const { textareaValue, handleTextareaChange } = useTextareaChange()
   const [errorMsg, setErrorMsg] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -118,13 +125,13 @@ export default function AddList() {
                     placeholder="Confirmation required"
                   />
                   <Textarea
-                    label="Confirmation email template (HTML)"
-                    id="textarea-html"
-                    name="html"
+                    label="Confirmation email template (markdown)"
+                    id="textarea-markdown"
+                    name="markdown"
                     rows={5}
-                    defaultValue={templateHtmlExample}
-                    placeholder={templateHtmlExample}
-                    onChange={handleHtmlChange}
+                    defaultValue={templateMarkdownExample}
+                    placeholder={templateMarkdownExample}
+                    onChange={handleTextareaChange}
                   />
                 </div>
 
@@ -148,7 +155,7 @@ export default function AddList() {
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
               dangerouslySetInnerHTML={{
-                __html: marked.parse(html || templateHtmlExample),
+                __html: marked.parse(textareaValue || templateMarkdownExample),
               }}
             />
           </section>

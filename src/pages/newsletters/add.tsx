@@ -5,7 +5,7 @@ import { Input, Textarea } from "@/components/form"
 import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
-import { useHtmlChange } from "@/hooks/use-html-change"
+import { useTextareaChange } from "@/hooks/use-textarea-change"
 import { getLocalDateTime } from "@/libs/datetime"
 import { fetcher } from "@/libs/fetcher"
 import type { ApiResponse, StringValues } from "@/libs/types"
@@ -16,11 +16,17 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import useSWR from "swr"
 
-const templateHtmlExample = `<p>Test message</p>
-<p><a href="{{unsubscribe}}">Unsubscribe</a></p>`
+const templateMarkdownExample = `# Newsletter title
+
+<p>
+  <a href="{{unsubscribe}}">Unsubscribe (html link)</a>
+</p>
+
+[Unsubscribe (markdown link)]({{unsubscribe}})
+`
 
 export default function AddNewsletter() {
-  const { html, handleHtmlChange } = useHtmlChange()
+  const { textareaValue, handleTextareaChange } = useTextareaChange()
   const [errorMsg, setErrorMsg] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -128,13 +134,13 @@ export default function AddNewsletter() {
                   placeholder="Newsletter subject"
                 />
                 <Textarea
-                  label="Email template (HTML)"
-                  id="textarea-html"
-                  name="html"
+                  label="Email template (markdown)"
+                  id="textarea-markdown"
+                  name="markdown"
                   rows={5}
-                  defaultValue={templateHtmlExample}
-                  placeholder={templateHtmlExample}
-                  onChange={handleHtmlChange}
+                  defaultValue={templateMarkdownExample}
+                  placeholder={templateMarkdownExample}
+                  onChange={handleTextareaChange}
                 />
 
                 <div className="mt-8">
@@ -157,7 +163,7 @@ export default function AddNewsletter() {
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
               dangerouslySetInnerHTML={{
-                __html: marked.parse(html || templateHtmlExample),
+                __html: marked.parse(textareaValue || templateMarkdownExample),
               }}
             />
           </section>

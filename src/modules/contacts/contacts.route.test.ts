@@ -11,21 +11,28 @@ import {
 } from "./contacts.route"
 import { uuidRegex } from "@/libs/validators"
 
-vi.mock("./contacts.model", async () => ({
-  ...((await vi.importActual("./contacts.model")) as object),
-  filterContacts: vi.fn().mockResolvedValue([{ dummy: "contact" }]),
-}))
-vi.mock("@/modules/sendings", () => ({ sendEmail: vi.fn() }))
-vi.mock("@/modules/templates", () => {
-  const templateMock = {
-    subject: "Dummy subject",
-    html: "<p>Dummy html content</p>",
-    text: "Dummy text content",
-  }
+vi.mock("./contacts.model", async () => {
+  const actualModule = await vi.importActual<typeof import("./contacts.model")>(
+    "./contacts.model"
+  )
 
   return {
-    getTemplate: vi.fn().mockResolvedValue(templateMock),
-    parseTemplateVariables: vi.fn().mockReturnValue(templateMock),
+    ...actualModule,
+    filterContacts: vi.fn().mockResolvedValue([{ dummy: "contact" }]),
+  }
+})
+vi.mock("@/modules/sendings", () => ({ sendEmail: vi.fn() }))
+vi.mock("@/modules/templates", async () => {
+  const actualModule = await vi.importActual<
+    typeof import("@/modules/templates")
+  >("@/modules/templates")
+  const testData = await vi.importActual<
+    typeof import("../../../mocks/test-data.json")
+  >("../../../mocks/test-data.json")
+
+  return {
+    ...actualModule,
+    getTemplate: vi.fn().mockResolvedValue(testData.confirmationTemplate),
   }
 })
 
@@ -106,9 +113,9 @@ describe("POST /api/v1/public/contacts", () => {
     })
     expect(sendEmail).toHaveBeenCalledWith({
       to: email,
-      subject: "Dummy subject",
-      html: `<p>Dummy html content</p>`,
-      text: `Dummy text content`,
+      subject: "Foo subject",
+      html: '<p>Foo <a href="http://localhost:3000/api/v1/public/contacts?email=foo%2540bar.baz&listId=2e4b0581-0bdc-4a54-bc05-8877b8808a40&action=confirm">Confirmation</a></p>',
+      text: "Foo Confirmation [http://localhost:3000/api/v1/public/contacts?email=foo%2540bar.baz&listId=2e4b0581-0bdc-4a54-bc05-8877b8808a40&action=confirm]",
     })
 
     expect(res._getRedirectUrl()).toStrictEqual(

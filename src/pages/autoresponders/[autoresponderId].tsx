@@ -5,7 +5,7 @@ import { Input, Textarea } from "@/components/form"
 import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
-import { useHtmlChange } from "@/hooks/use-html-change"
+import { useTextareaChange } from "@/hooks/use-textarea-change"
 import { fetcher } from "@/libs/fetcher"
 import type { ApiResponse } from "@/libs/types"
 import type { Autoresponder } from "@/modules/autoresponders"
@@ -16,7 +16,7 @@ import { useState } from "react"
 import useSWR from "swr"
 
 export default function ShowAutoresponder() {
-  const { html, handleHtmlChange } = useHtmlChange()
+  const { textareaValue, handleTextareaChange } = useTextareaChange()
   const [errorMsg, setErrorMsg] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -107,14 +107,14 @@ export default function ShowAutoresponder() {
                   placeholder={template.subject}
                 />
                 <Textarea
-                  label="Email template (HTML)"
-                  id="textarea-html"
-                  name="html"
+                  label="Email template (markdown)"
+                  id="textarea-markdown"
+                  name="markdown"
                   rows={5}
                   className="resize-y"
-                  defaultValue={template.html}
-                  placeholder={template.html}
-                  onChange={handleHtmlChange}
+                  defaultValue={template.markdown}
+                  placeholder={template.markdown}
+                  onChange={handleTextareaChange}
                 />
 
                 <div className="mt-8">
@@ -137,7 +137,7 @@ export default function ShowAutoresponder() {
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
               dangerouslySetInnerHTML={{
-                __html: marked.parse(html || template.html),
+                __html: marked.parse(textareaValue || template.markdown),
               }}
             />
           </section>

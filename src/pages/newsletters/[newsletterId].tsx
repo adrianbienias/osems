@@ -124,7 +124,9 @@ export default function ShowNewsletter() {
             <h2 className="mt-0">Newsletter template preview</h2>
             <div
               className="reset mt-4 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
-              dangerouslySetInnerHTML={{ __html: marked.parse(template.html) }}
+              dangerouslySetInnerHTML={{
+                __html: marked.parse(template.markdown),
+              }}
             />
           </section>
         </div>

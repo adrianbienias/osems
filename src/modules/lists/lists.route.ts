@@ -15,14 +15,14 @@ export async function handlePostList({
   let {
     name,
     subject,
-    html,
+    markdown,
     signupRedirectUrl,
     confirmationRedirectUrl,
     unsubscribeRedirectUrl,
   } = req.body as {
     name?: string
     subject?: string
-    html?: string
+    markdown?: string
     signupRedirectUrl?: string
     confirmationRedirectUrl?: string
     unsubscribeRedirectUrl?: string
@@ -43,16 +43,16 @@ export async function handlePostList({
   if (!subject) {
     return res.status(400).json({ error: "Missing subject" })
   }
-  if (!html) {
+  if (!markdown) {
     return res.status(400).json({ error: "Missing email template" })
   }
-  if (!html.includes("{{confirmation}}")) {
+  if (!markdown.includes("{{confirmation}}")) {
     return res
       .status(400)
       .json({ error: "Missing {{confirmation}} in email template" })
   }
 
-  const confirmationTemplate = await addTemplate({ subject, html })
+  const confirmationTemplate = await addTemplate({ subject, markdown })
   if (confirmationTemplate instanceof Error) {
     return res.status(400).json({ error: confirmationTemplate.message })
   }
@@ -124,14 +124,14 @@ export async function handlePatchList({
   let {
     name,
     subject,
-    html,
+    markdown,
     signupRedirectUrl,
     confirmationRedirectUrl,
     unsubscribeRedirectUrl,
   } = req.body as {
     name?: string
     subject?: string
-    html?: string
+    markdown?: string
     signupRedirectUrl?: string
     confirmationRedirectUrl?: string
     unsubscribeRedirectUrl?: string
@@ -157,10 +157,10 @@ export async function handlePatchList({
   if (subject === "") {
     return res.status(400).json({ error: "Missing subject" })
   }
-  if (html === "") {
+  if (markdown === "") {
     return res.status(400).json({ error: "Missing email template" })
   }
-  if (!html?.includes("{{confirmation}}")) {
+  if (!markdown?.includes("{{confirmation}}")) {
     return res
       .status(400)
       .json({ error: "Missing {{confirmation}} in email template" })
@@ -174,7 +174,7 @@ export async function handlePatchList({
   const template = await updateTemplate({
     id: list.confirmationTemplateId,
     subject,
-    html,
+    markdown,
   })
   if (template instanceof Error) {
     return res.status(400).json({ error: template.message })

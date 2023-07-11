@@ -84,8 +84,7 @@ model AutoresponderLog {
 model Template {
     id        String   @id @default(uuid())
     subject   String
-    html      String
-    text      String
+    markdown  String
     createdAt DateTime @default(now())
 }
 

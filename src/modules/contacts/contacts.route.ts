@@ -4,8 +4,13 @@ import { createConfirmationUrl } from "@/libs/urls"
 import { isEmail } from "@/libs/validators"
 import { getList } from "@/modules/lists"
 import { sendEmail } from "@/modules/sendings"
-import { getTemplate, parseTemplateVariables } from "@/modules/templates"
+import {
+  convertTemplateHtmlToText,
+  getTemplate,
+  parseTemplateVariables,
+} from "@/modules/templates"
 import { parse as csvParse } from "csv-parse/sync"
+import { marked } from "marked"
 import type { NextApiRequest, NextApiResponse } from "next"
 import {
   addContact,
@@ -89,6 +94,15 @@ export async function contactsPostHandler({
   }
 
   const { id, createdAt, ...template } = confirmationTemplate
+  const html = marked
+    .parse(template.markdown)
+    .replaceAll("%7B", "{")
+    .replaceAll("%7D", "}")
+  const emailTemplate = {
+    subject: template.subject,
+    html,
+    text: convertTemplateHtmlToText(html),
+  }
   const confirmationUrl = createConfirmationUrl({ email, listId })
   const messageVariables: Map<string, string> = new Map([
     ["{{confirmation}}", confirmationUrl],
@@ -96,7 +110,7 @@ export async function contactsPostHandler({
   const message = {
     to: email,
     ...parseTemplateVariables({
-      message: template,
+      message: emailTemplate,
       messageVariables,
     }),
   }

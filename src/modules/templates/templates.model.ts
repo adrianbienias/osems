@@ -1,18 +1,15 @@
 import { prisma } from "@/libs/prisma"
-import { convertTemplateHtmlToText } from "./templates.service"
 
 export type { Template } from "@prisma/client"
 
 export async function addTemplate({
   subject,
-  html,
+  markdown,
 }: {
   subject: string
-  html: string
+  markdown: string
 }) {
-  const text = convertTemplateHtmlToText(html)
-
-  return await prisma.template.create({ data: { subject, html, text } })
+  return await prisma.template.create({ data: { subject, markdown } })
 }
 
 export async function getTemplates() {
@@ -22,21 +19,15 @@ export async function getTemplates() {
 export async function updateTemplate({
   id,
   subject,
-  html,
+  markdown,
 }: {
   id: string
   subject?: string
-  html?: string
+  markdown?: string
 }) {
-  let text
-
-  if (html) {
-    text = convertTemplateHtmlToText(html)
-  }
-
   return await prisma.template.update({
     where: { id },
-    data: { subject, html, text },
+    data: { subject, markdown },
   })
 }
 

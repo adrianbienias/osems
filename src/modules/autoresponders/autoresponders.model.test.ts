@@ -22,7 +22,7 @@ describe("addAutoresponder()", () => {
 
     const autoresponder = await addAutoresponder({
       autoresponderTemplate: {
-        html: "<p>Autoresponder dummy content</p>",
+        markdown: "<p>Autoresponder dummy content</p>",
         subject: "Autoresponder dummy subject",
       },
       delayDays,
@@ -68,7 +68,7 @@ describe("getAutoresponder()", async () => {
 
     const autoresponder = await addAutoresponder({
       autoresponderTemplate: {
-        html: "<p>Autoresponder dummy content</p>",
+        markdown: "<p>Autoresponder dummy content</p>",
         subject: "Autoresponder dummy subject",
       },
       delayDays,

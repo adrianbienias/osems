@@ -20,11 +20,11 @@ export async function handlePostAutoresponders({
   req: NextApiRequest
   res: NextApiResponse
 }) {
-  const { listId, delayDays, subject, html } = req.body as {
+  const { listId, delayDays, subject, markdown } = req.body as {
     listId?: string
     delayDays?: string
     subject?: string
-    html?: string
+    markdown?: string
   }
   if (!listId) {
     return res.status(400).json({ error: "Missing list id" })
@@ -35,19 +35,19 @@ export async function handlePostAutoresponders({
   if (!subject) {
     return res.status(400).json({ error: "Missing subject" })
   }
-  if (!html) {
-    return res.status(400).json({ error: "Missing html content" })
+  if (!markdown) {
+    return res.status(400).json({ error: "Missing markdown content" })
   }
-  if (!html?.includes("{{unsubscribe}}")) {
+  if (!markdown?.includes("{{unsubscribe}}")) {
     return res
       .status(400)
-      .json({ error: "Missing {{unsubscribe}} in html content" })
+      .json({ error: "Missing {{unsubscribe}} in markdown content" })
   }
 
   const autoresponder = await addAutoresponder({
     autoresponderTemplate: {
       subject,
-      html,
+      markdown,
     },
     listId,
     delayDays: Number(delayDays),
@@ -127,11 +127,11 @@ export async function handlePatchAutoresponder({
     ApiResponse & { autoresponder?: Autoresponder; template?: Template }
   >
 }) {
-  const { listId, delayDays, subject, html } = req.body as {
+  const { listId, delayDays, subject, markdown } = req.body as {
     listId?: string
     delayDays?: string
     subject?: string
-    html?: string
+    markdown?: string
   }
 
   const { autoresponderId } = req.query
@@ -148,13 +148,13 @@ export async function handlePatchAutoresponder({
   if (!subject) {
     return res.status(400).json({ error: "Missing subject" })
   }
-  if (!html) {
-    return res.status(400).json({ error: "Missing html content" })
+  if (!markdown) {
+    return res.status(400).json({ error: "Missing markdown content" })
   }
-  if (!html?.includes("{{unsubscribe}}")) {
+  if (!markdown?.includes("{{unsubscribe}}")) {
     return res
       .status(400)
-      .json({ error: "Missing {{unsubscribe}} in html content" })
+      .json({ error: "Missing {{unsubscribe}} in markdown content" })
   }
 
   const autoresponder = await updateAutoresponder({
@@ -166,7 +166,7 @@ export async function handlePatchAutoresponder({
   const template = await updateTemplate({
     id: autoresponder.templateId,
     subject,
-    html,
+    markdown,
   })
   if (template instanceof Error) {
     return res.status(400).json({ error: template.message })

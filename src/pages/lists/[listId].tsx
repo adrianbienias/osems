@@ -5,7 +5,7 @@ import { Input, Textarea } from "@/components/form"
 import ListSignup from "@/components/lists/list-signup"
 import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
-import { useHtmlChange } from "@/hooks/use-html-change"
+import { useTextareaChange } from "@/hooks/use-textarea-change"
 import { fetcher } from "@/libs/fetcher"
 import type { ApiResponse, StringValues } from "@/libs/types"
 import { Contact, List, Template } from "@prisma/client"
@@ -16,7 +16,7 @@ import useSWR from "swr"
 
 export default function ShowList() {
   const router = useRouter()
-  const { html, handleHtmlChange } = useHtmlChange()
+  const { textareaValue, handleTextareaChange } = useTextareaChange()
   const [errorMsg, setErrorMsg] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -131,13 +131,13 @@ export default function ShowList() {
                     placeholder={confirmationTemplate.subject}
                   />
                   <Textarea
-                    label="Confirmation email template (HTML)"
-                    id="textarea-html"
-                    name="html"
+                    label="Confirmation email template (markdown)"
+                    id="textarea-markdown"
+                    name="markdown"
                     rows={5}
-                    defaultValue={confirmationTemplate.html}
-                    placeholder={confirmationTemplate.html}
-                    onChange={handleHtmlChange}
+                    defaultValue={confirmationTemplate.markdown}
+                    placeholder={confirmationTemplate.markdown}
+                    onChange={handleTextareaChange}
                   />
                 </div>
 
@@ -161,7 +161,9 @@ export default function ShowList() {
             <div
               className="reset mt-10 border-solid border border-slate-200 p-4 h-max max-h-[600px] rounded overflow-auto"
               dangerouslySetInnerHTML={{
-                __html: marked.parse(html || confirmationTemplate.html),
+                __html: marked.parse(
+                  textareaValue || confirmationTemplate.markdown
+                ),
               }}
             />
           </section>

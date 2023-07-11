@@ -40,8 +40,7 @@ async function seedNewsletters({
 
     const numberOfNewsletters = Math.ceil(Math.random() * maxNewslettersPerList)
     for (let i = 0; i < numberOfNewsletters; i++) {
-      const { text, ...templateData } = testData.newsletterTemplate
-      const newsletterTemplate = await addTemplate(templateData)
+      const newsletterTemplate = await addTemplate(testData.newsletterTemplate)
       if (newsletterTemplate instanceof Error) {
         throw new Error(newsletterTemplate.message)
       }
@@ -91,8 +90,7 @@ async function seedList() {
   let listName = faker.word.words({ count: { min: 1, max: 10 } })
   listName = `${listName[0].toUpperCase()}${listName.slice(1)}`
 
-  const { text, ...templateData } = testData.confirmationTemplate
-  const confirmationTemplate = await addTemplate(templateData)
+  const confirmationTemplate = await addTemplate(testData.confirmationTemplate)
   if (confirmationTemplate instanceof Error) {
     throw new Error(confirmationTemplate.message)
   }
@@ -141,8 +139,9 @@ async function seedAutoresponders({
   maxDelayDays?: number
 }) {
   for (let i = 0; i < numberOfAutoresponders; i++) {
-    const { text, ...templateData } = testData.autoresponderTemplate
-    const autoresponderTemplate = await addTemplate(templateData)
+    const autoresponderTemplate = await addTemplate(
+      testData.autoresponderTemplate
+    )
     if (autoresponderTemplate instanceof Error) {
       throw new Error(autoresponderTemplate.message)
     }

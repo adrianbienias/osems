@@ -8,18 +8,15 @@
   },
   "confirmationTemplate": {
     "subject": "Foo subject",
-    "html": "<p>Foo <a href=\"{{confirmation}}\">Confirmation</a></p>",
-    "text": "Foo Confirmation [{{confirmation}}]"
+    "markdown": "<p>Foo <a href=\"{{confirmation}}\">Confirmation</a></p>"
   },
   "autoresponderTemplate": {
     "subject": "Dummy autoresponder subject",
-    "html": "<p>Dummy autoresponder content. <a href=\"{{unsubscribe}}\">Unsubscribe</a></p>",
-    "text": "Dummy autoresponder content. Unsubscribe [{{unsubscribe}}]"
+    "markdown": "<p>Dummy autoresponder content. <a href=\"{{unsubscribe}}\">Unsubscribe</a></p>"
   },
   "newsletterTemplate": {
     "subject": "Dummy newsletter subject",
-    "html": "<p>Dummy newsletter content. <a href=\"{{unsubscribe}}\">Unsubscribe</a></p>",
-    "text": "Dummy newsletter content. Unsubscribe [{{unsubscribe}}]"
+    "markdown": "<p>Dummy newsletter content. <a href=\"{{unsubscribe}}\">Unsubscribe</a></p>"
   },
   "email": {
     "to": "to-foo@bar.baz",

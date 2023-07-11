@@ -1,5 +1,4 @@
 import { appConfig } from "@/app-config"
-import { marked } from "marked"
 import nodemailer from "nodemailer"
 
 async function createNodemailerTransporter() {
@@ -30,7 +29,7 @@ export async function sendEmail({
   text: string
 }) {
   html += getEmailFooter().html
-  html = wrapHtmlTemplate({ subject, content: marked.parse(html) })
+  html = wrapHtmlTemplate({ subject, html })
   text += getEmailFooter().text
 
   const from = appConfig.sender
@@ -66,10 +65,10 @@ function getEmailFooter() {
 
 export function wrapHtmlTemplate({
   subject,
-  content,
+  html,
 }: {
   subject: string
-  content: string
+  html: string
 }) {
   return `<!DOCTYPE html>
 <html>
@@ -96,7 +95,7 @@ export function wrapHtmlTemplate({
 </head>
 <body style="margin: 0; background-color: #f5f5f5;">
   <div id="main-content" style="background-color: white; max-width: 600px; padding: 2.5rem 3rem; margin: 2rem auto; font-family: Arial, Helvetica, sans-serif; font-size: 1.125rem; line-height: 1.75rem;">
-${content}
+${html}
   </div>
 </body>
 </html>`

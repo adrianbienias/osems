@@ -22,15 +22,14 @@ describe("addTemplate()", () => {
 
     await addTemplate({
       subject: "Dummy template",
-      html: "<p>Dummy content of the email template</p>",
+      markdown: "<p>Dummy content of the email template</p>",
     })
 
     expect(await getTemplates()).toStrictEqual([
       {
         id: expect.stringMatching(uuidRegex),
         subject: "Dummy template",
-        html: "<p>Dummy content of the email template</p>",
-        text: "Dummy content of the email template",
+        markdown: "<p>Dummy content of the email template</p>",
         createdAt: expect.any(Date),
       },
     ])
@@ -41,37 +40,34 @@ describe("getTemplates()", () => {
   test("should get multiple templates", async () => {
     await addTemplate({
       subject: "Dummy template #1",
-      html: "Dummy content of the email template #1",
+      markdown: "Dummy content of the email template #1",
     })
     await addTemplate({
       subject: "Dummy template #2",
-      html: "Dummy content of the email template #2",
+      markdown: "Dummy content of the email template #2",
     })
     await addTemplate({
       subject: "Dummy template #3",
-      html: "Dummy content of the email template #3",
+      markdown: "Dummy content of the email template #3",
     })
 
     expect(await getTemplates()).toStrictEqual([
       {
         id: expect.stringMatching(uuidRegex),
         subject: "Dummy template #3",
-        html: "Dummy content of the email template #3",
-        text: "Dummy content of the email template #3",
+        markdown: "Dummy content of the email template #3",
         createdAt: expect.any(Date),
       },
       {
         id: expect.stringMatching(uuidRegex),
         subject: "Dummy template #2",
-        html: "Dummy content of the email template #2",
-        text: "Dummy content of the email template #2",
+        markdown: "Dummy content of the email template #2",
         createdAt: expect.any(Date),
       },
       {
         id: expect.stringMatching(uuidRegex),
         subject: "Dummy template #1",
-        html: "Dummy content of the email template #1",
-        text: "Dummy content of the email template #1",
+        markdown: "Dummy content of the email template #1",
         createdAt: expect.any(Date),
       },
     ])
@@ -82,7 +78,7 @@ describe("updateTemplate()", () => {
   test("should update template", async () => {
     const template = await addTemplate({
       subject: "Dummy template",
-      html: "<p>Dummy content of the email template</p>",
+      markdown: "<p>Dummy content of the email template</p>",
     })
     if (template instanceof Error) {
       return expect(template).not.toBeInstanceOf(Error)
@@ -91,22 +87,20 @@ describe("updateTemplate()", () => {
     expect(await getTemplate({ id: template.id })).toStrictEqual({
       id: expect.stringMatching(uuidRegex),
       subject: "Dummy template",
-      html: "<p>Dummy content of the email template</p>",
-      text: "Dummy content of the email template",
+      markdown: "<p>Dummy content of the email template</p>",
       createdAt: expect.any(Date),
     })
 
     await updateTemplate({
       id: template.id,
       subject: "Updated template",
-      html: "<p>Updated content of the email template</p>",
+      markdown: "<p>Updated content of the email template</p>",
     })
 
     expect(await getTemplate({ id: template.id })).toStrictEqual({
       id: expect.stringMatching(uuidRegex),
       subject: "Updated template",
-      html: "<p>Updated content of the email template</p>",
-      text: "Updated content of the email template",
+      markdown: "<p>Updated content of the email template</p>",
       createdAt: expect.any(Date),
     })
   })
@@ -116,7 +110,7 @@ describe("getTemplate()", () => {
   test("should get a template by its id", async () => {
     const template = await addTemplate({
       subject: "Dummy template",
-      html: "Dummy content of the email template",
+      markdown: "Dummy content of the email template",
     })
     if (template instanceof Error) {
       return expect(template).not.toBeInstanceOf(Error)
@@ -125,8 +119,7 @@ describe("getTemplate()", () => {
     expect(await getTemplate({ id: template.id })).toStrictEqual({
       id: expect.stringMatching(uuidRegex),
       subject: "Dummy template",
-      html: "Dummy content of the email template",
-      text: "Dummy content of the email template",
+      markdown: "Dummy content of the email template",
       createdAt: expect.any(Date),
     })
   })

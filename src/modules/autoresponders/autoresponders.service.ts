@@ -3,7 +3,12 @@ import { wait } from "@/libs/datetime"
 import { createUnsubscribeUrl } from "@/libs/urls"
 import { getContactsConfirmedBetweenDates } from "@/modules/contacts"
 import { sendEmail } from "@/modules/sendings"
-import { getTemplate, parseTemplateVariables } from "@/modules/templates"
+import {
+  convertTemplateHtmlToText,
+  getTemplate,
+  parseTemplateVariables,
+} from "@/modules/templates"
+import { marked } from "marked"
 import {
   Autoresponder,
   checkIfAutoresponderIsSending,
@@ -69,19 +74,28 @@ export async function sendAutoresponder(autoresponder: Autoresponder) {
   }
 
   const { id, createdAt, ...template } = autoresponderTemplate
+  const html = marked
+    .parse(template.markdown)
+    .replaceAll("%7B", "{")
+    .replaceAll("%7D", "}")
+  const emailTemplate = {
+    subject: template.subject,
+    html,
+    text: convertTemplateHtmlToText(html),
+  }
 
   for (const contact of contacts) {
     const email = contact.email
     const unsubscribeUrl = createUnsubscribeUrl({ email, listId })
     const messageVariables: Map<string, string> = new Map([
       // Here you can set all kinds of autoresponder template variables
-      ["{{email}}", email],
+      // Example: ["{{email}}", email]
       ["{{unsubscribe}}", unsubscribeUrl],
     ])
     const message = {
       to: email,
       ...parseTemplateVariables({
-        message: template,
+        message: emailTemplate,
         messageVariables,
       }),
     }
