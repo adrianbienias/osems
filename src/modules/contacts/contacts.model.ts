@@ -217,22 +217,27 @@ export async function addContacts({
   contacts: {
     email: string
     listId: string
-    createdAt?: string
-    confirmedAt?: string
-    unsubscribedAt?: string
+    createdAt?: string | Date
+    confirmedAt?: string | Date
+    unsubscribedAt?: string | Date
   }[]
 }) {
   for (let i = 0; i < contacts.length; i++) {
     const contact = contacts[i]
     let { email, listId, createdAt, confirmedAt, unsubscribedAt } = contact
-    const now = new Date()
 
     if (!createdAt) {
-      createdAt = now.toISOString()
+      createdAt = new Date()
+    } else {
+      createdAt = new Date(createdAt)
     }
+
     if (!confirmedAt) {
-      confirmedAt = now.toISOString()
+      confirmedAt = new Date()
+    } else {
+      confirmedAt = new Date(confirmedAt)
     }
+
     if (!unsubscribedAt) {
       unsubscribedAt = undefined
     }
