@@ -11,7 +11,7 @@ vi.mock("@/app-config", () => ({ appConfig: { isProduction: true } }))
 describe("cron", () => {
   test("should start cron jobs", async () => {
     startCronJobs()
-    const cronSchedule = "*/15 * * * * *"
+    const cronSchedule = "* * * * *"
     const sendNewsletters = vi.mocked(schedule).mock.calls[0][1]
     const sendAutoresponders = vi.mocked(schedule).mock.calls[1][1]
 

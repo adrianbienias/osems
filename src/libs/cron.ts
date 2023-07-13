@@ -16,10 +16,6 @@ export function startCronJobs() {
   consoleStamp(console, { format: ":date(yyyy-mm-dd HH:MM:ss) :label" })
   console.info("\n✔ Node cron jobs activated\n")
 
-  schedule(schedules.everyFifteenSeconds, async () => await sendNewsletters())
-
-  schedule(
-    schedules.everyFifteenSeconds,
-    async () => await sendAutoresponders()
-  )
+  schedule(schedules.everyMinute, async () => await sendNewsletters())
+  schedule(schedules.everyMinute, async () => await sendAutoresponders())
 }
