@@ -60,14 +60,7 @@ export async function getAutoresponder({ id }: { id: string }) {
 }
 
 export async function getAutoresponders() {
-  const autorespondersCount = await prisma.autoresponder.count()
-  if (autorespondersCount < 1) {
-    return []
-  }
-
-  const autoresponders = await prisma.autoresponder.findMany()
-
-  return autoresponders
+  return await prisma.autoresponder.findMany()
 }
 
 export async function updateAutoresponder({
@@ -148,16 +141,9 @@ export async function getAutoresponderLogsByEmails({
   emails: string[]
   autoresponderId: string
 }) {
-  const where = { email: { in: emails }, autoresponderId }
-
-  const autoresponderLogsCount = await prisma.autoresponderLog.count({ where })
-  if (autoresponderLogsCount < 1) {
-    return []
-  }
-
-  const autoresponderLogs = await prisma.autoresponderLog.findMany({ where })
-
-  return autoresponderLogs
+  return await prisma.autoresponderLog.findMany({
+    where: { email: { in: emails }, autoresponderId },
+  })
 }
 
 export async function getContactsToSendAutoresponder({

@@ -41,15 +41,8 @@ export async function scheduleNewsletter({
 }
 
 export async function getScheduledNewsletters() {
-  const where = { sentAt: null, toSendAfter: { lte: new Date() } }
-
-  const newslettersCount = await prisma.newsletter.count({ where })
-  if (newslettersCount < 1) {
-    return []
-  }
-
   const newsletters = await prisma.newsletter.findMany({
-    where,
+    where: { sentAt: null, toSendAfter: { lte: new Date() } },
     orderBy: { toSendAfter: "asc" },
   })
 
