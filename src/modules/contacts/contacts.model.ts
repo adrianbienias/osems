@@ -154,13 +154,20 @@ export async function getContactsConfirmedBetweenDates({
   confirmedAfter: Date
   confirmedBefore: Date
 }) {
-  return await prisma.contact.findMany({
-    where: {
-      listId,
-      confirmedAt: { gte: confirmedAfter, lte: confirmedBefore },
-      unsubscribedAt: null,
-    },
-  })
+  const where = {
+    listId,
+    confirmedAt: { gte: confirmedAfter, lte: confirmedBefore },
+    unsubscribedAt: null,
+  }
+
+  const contactsCount = await prisma.contact.count({ where })
+  if (contactsCount < 1) {
+    return []
+  }
+
+  const contacts = await prisma.contact.findMany({ where })
+
+  return contacts
 }
 
 export async function getUnsubscribedContacts() {
