@@ -28,6 +28,7 @@
     "test:e2e": "dotenv -e .env.test -- playwright test",
     "lint": "next lint",
     "build": "next build",
+    "build:pre": "(PRE_BUILD=true next build) && (rm -rf .next-previous/) ; (mv .next/ .next-previous) && (mv .next-pre-build/ .next/)",
     "start": "(npm run cron) & (next start)"
   },
   "dependencies": {

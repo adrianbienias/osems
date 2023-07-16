@@ -12,6 +12,8 @@ dependency-graph.svg
 
 # next.js
 /.next/
+/.next-previous/
+/.next-pre-build/
 /out/
 
 # production
