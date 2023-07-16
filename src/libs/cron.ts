@@ -2,6 +2,7 @@ import { sendAutoresponders } from "@/modules/autoresponders"
 import { sendNewsletters } from "@/modules/newsletters"
 import consoleStamp from "console-stamp"
 import { schedule } from "node-cron"
+import { dbBackup } from "./backup"
 
 const schedules = {
   everyDay: "0 0 * * *",
@@ -18,4 +19,5 @@ export function startCronJobs() {
 
   schedule(schedules.everyMinute, async () => await sendNewsletters())
   schedule(schedules.everyMinute, async () => await sendAutoresponders())
+  schedule(schedules.everyDay, async () => await dbBackup())
 }

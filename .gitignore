@@ -50,3 +50,6 @@ next-env.d.ts
 # don't ignore
 !empty-db.sqlite
 !seeded-db.sqlite
+
+# backups
+/backups
