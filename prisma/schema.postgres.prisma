@@ -1,0 +1,101 @@
+// To learn more about the Prisma schema file, visit https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgres"
+    url      = env("DATABASE_URL")
+}
+
+model Setting {
+    key   String @id
+    value String
+}
+
+model Contact {
+    id             String    @id @default(uuid())
+    email          String
+    listId         String
+    list           List      @relation(fields: [listId], references: [id])
+    createdAt      DateTime  @default(now())
+    confirmedAt    DateTime?
+    unsubscribedAt DateTime?
+
+    @@unique([email, listId])
+}
+
+model List {
+    id                      String          @id @default(uuid())
+    name                    String          @unique
+    confirmationTemplateId  String
+    signupRedirectUrl       String
+    confirmationRedirectUrl String
+    unsubscribeRedirectUrl  String
+    contacts                Contact[]
+    newsletters             Newsletter[]
+    autoresponders          Autoresponder[]
+    createdAt               DateTime        @default(now())
+}
+
+model Newsletter {
+    id               String          @id @default(uuid())
+    listId           String
+    list             List            @relation(fields: [listId], references: [id])
+    listIdsToExclude String
+    templateId       String
+    toSendAfter      DateTime
+    sentAt           DateTime?
+    logs             NewsletterLog[]
+    createdAt        DateTime        @default(now())
+}
+
+model NewsletterLog {
+    email        String
+    newsletterId String
+    newsletter   Newsletter @relation(fields: [newsletterId], references: [id])
+    sentAt       DateTime?
+    createdAt    DateTime   @default(now())
+
+    @@id([email, newsletterId])
+}
+
+model Autoresponder {
+    id         String             @id @default(uuid())
+    listId     String
+    list       List               @relation(fields: [listId], references: [id])
+    templateId String
+    delayDays  Int
+    logs       AutoresponderLog[]
+    createdAt  DateTime           @default(now())
+}
+
+model AutoresponderLog {
+    email           String
+    autoresponderId String
+    autoresponder   Autoresponder @relation(fields: [autoresponderId], references: [id])
+    sentAt          DateTime?
+    createdAt       DateTime      @default(now())
+
+    @@id([email, autoresponderId])
+}
+
+model Template {
+    id        String   @id @default(uuid())
+    subject   String
+    markdown  String
+    preheader String
+    createdAt DateTime @default(now())
+}
+
+model Auth {
+    token       String    @id
+    email       String
+    confirmedAt DateTime?
+    createdAt   DateTime  @default(now())
+}
+
+model Admin {
+    email String @id
+}

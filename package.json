@@ -16,7 +16,7 @@
     "prepare": "husky install",
     "setInitialAdminEmail": "dotenv -- ts-node -e \"import { setInitialAdminEmail } from './src/libs/installer'; setInitialAdminEmail();\"",
     "installer": "npm run setInitialAdminEmail",
-    "postinstall": "(prisma generate) && (prisma migrate deploy) && (npm run installer)",
+    "postinstall": "(prisma generate --schema=./prisma/schema.postgres.prisma) && (prisma migrate deploy --schema=./prisma/schema.postgres.prisma) && (npm run installer)",
     "cron": "dotenv -- ts-node -e \"import { startCronJobs } from './src/libs/cron'; startCronJobs();\"",
     "db:reset": "prisma migrate reset",
     "dev": "(npm run lint) && (prisma db push) ; (npm run installer) && (npm run cron) & (next dev)",
