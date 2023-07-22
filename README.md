@@ -8,13 +8,18 @@ Open Source Email Marketing Software
 
 Tasks marked as done are removed from the list.
 
-- [ ] build: Dockerize the app
+- [ ] feat: Update admin login email template
+- [ ] feat: Add results pagination
 - [ ] feat: Add preheader text to newsletters/autoresponders table view
 - [ ] feat: Add option to delete autoresponder (along with log), prompt to confirm
 - [ ] feat: Add ability to cancel scheduled newsletter, prompt to confirm
 - [ ] feat: Provide an option to send a test email for newsletter/autoresponder
 - [ ] feat: Show autoresponder logs in dashboard
+- [ ] build: Automate Railway Postgres backups
+  - https://blog.railway.app/p/automated-postgresql-backups
 - [ ] feat: Handle SIGNUP_FORM_ACTION separately, without setting it as fixed option per OSEMS instance
+- [ ] build: Dockerize the app
+  - https://github.com/vercel/next.js/tree/canary/examples/with-docker-compose
 - [ ] docs: Record demo video showing how OSEMS works and how to use it (in Polish and English language)
 - [ ] feat: Handle private API endpoints with API token
 - [ ] refactor: Separate template schema for list, newsletter, and autoresponder and add relations
@@ -22,7 +27,6 @@ Tasks marked as done are removed from the list.
 - [ ] test: Add missing tests
 - [ ] feat: Handle resubscribing (signup again after unsubscribing)
   - Place resubscribe button on the unsubscribe page
-- [ ] feat: Add results pagination
 - [ ] refactor: Distill routes in modules to distinct files
 - [ ] test: Measure performance depending on the dataset size
 
