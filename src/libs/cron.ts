@@ -19,5 +19,4 @@ export function startCronJobs() {
 
   schedule(schedules.everyMinute, async () => await sendNewsletters())
   schedule(schedules.everyMinute, async () => await sendAutoresponders())
-  schedule(schedules.everyDay, async () => await dbBackup())
 }
