@@ -219,7 +219,7 @@ export async function addContacts({
     listId: string
     createdAt?: string | Date
     confirmedAt?: string | Date
-    unsubscribedAt?: string | Date
+    unsubscribedAt?: string | Date | null
   }[]
 }) {
   for (let i = 0; i < contacts.length; i++) {
@@ -239,7 +239,9 @@ export async function addContacts({
     }
 
     if (!unsubscribedAt) {
-      unsubscribedAt = undefined
+      unsubscribedAt = null
+    } else {
+      unsubscribedAt = new Date(unsubscribedAt)
     }
 
     await prisma.contact.upsert({
@@ -250,7 +252,7 @@ export async function addContacts({
         confirmedAt,
         unsubscribedAt,
       },
-      update: {},
+      update: { unsubscribedAt },
       where: { email_listId: { email, listId } },
     })
   }
