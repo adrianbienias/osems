@@ -1,7 +1,8 @@
-import { sendEmail } from "@/modules/sendings"
 import { cleanTestDatabase, seedTestDatabase } from "mocks/seed-db"
 import { createMocks } from "node-mocks-http"
 import { beforeEach, describe, expect, test, vi } from "vitest"
+import { uuidRegex } from "@/libs/validators"
+import { sendEmail } from "@/modules/sendings"
 import { mockRequestResponse } from "../../../mocks/api-mocks"
 import { filterContacts, getAllContacts, getContact } from "./contacts.model"
 import {
@@ -9,12 +10,10 @@ import {
   contactsPostHandler,
   handleGetContacts,
 } from "./contacts.route"
-import { uuidRegex } from "@/libs/validators"
 
 vi.mock("./contacts.model", async () => {
-  const actualModule = await vi.importActual<typeof import("./contacts.model")>(
-    "./contacts.model"
-  )
+  const actualModule =
+    await vi.importActual<typeof import("./contacts.model")>("./contacts.model")
 
   return {
     ...actualModule,

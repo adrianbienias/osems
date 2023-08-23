@@ -1,3 +1,7 @@
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useState } from "react"
+import useSWR from "swr"
 import { ErrorMsg } from "@/components/alert"
 import { Button, LinkButton } from "@/components/button"
 import ListPicker from "@/components/lists/list-picker"
@@ -7,10 +11,6 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
 import type { StringValues } from "@/libs/types"
 import type { ContactWithList } from "@/modules/contacts"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { useState } from "react"
-import useSWR from "swr"
 
 export default function Contacts() {
   const router = useRouter()

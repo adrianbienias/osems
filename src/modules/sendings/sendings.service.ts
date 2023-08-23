@@ -1,5 +1,5 @@
-import { appConfig } from "@/app-config"
 import nodemailer from "nodemailer"
+import { appConfig } from "@/app-config"
 
 async function createNodemailerTransporter() {
   let transporter

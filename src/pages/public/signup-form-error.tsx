@@ -1,6 +1,6 @@
+import { useRouter } from "next/router"
 import MetaHead from "@/components/meta-head"
 import { SignupForm } from "@/components/signup-form"
-import { useRouter } from "next/router"
 
 export default function SignupFormError() {
   const router = useRouter()

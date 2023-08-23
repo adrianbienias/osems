@@ -1,3 +1,4 @@
+import { marked } from "marked"
 import { appConfig } from "@/app-config"
 import { wait } from "@/libs/datetime"
 import { createUnsubscribeUrl } from "@/libs/urls"
@@ -8,7 +9,6 @@ import {
   getTemplate,
   parseTemplateVariables,
 } from "@/modules/templates"
-import { marked } from "marked"
 import type { Newsletter } from "./newsletters.model"
 import {
   checkIfNewsletterIsSending,

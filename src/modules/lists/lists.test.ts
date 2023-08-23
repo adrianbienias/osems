@@ -1,7 +1,7 @@
-import { uuidRegex } from "@/libs/validators"
-import { addContact } from "@/modules/contacts/contacts.model"
 import { cleanTestDatabase } from "mocks/seed-db"
 import { beforeEach, describe, expect, test, vi } from "vitest"
+import { uuidRegex } from "@/libs/validators"
+import { addContact } from "@/modules/contacts/contacts.model"
 import testData from "../../../mocks/test-data.json"
 import {
   addList,

@@ -1,7 +1,7 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import type { ApiResponse } from "@/libs/types"
 import type { Template } from "@/modules/templates"
 import { addTemplate, getTemplate, updateTemplate } from "@/modules/templates"
-import type { NextApiRequest, NextApiResponse } from "next"
 import type { List } from "./lists.model"
 import { addList, getList, getLists, updateList } from "./lists.model"
 

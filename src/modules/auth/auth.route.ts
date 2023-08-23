@@ -1,12 +1,12 @@
+import { deleteCookie, setCookie } from "cookies-next"
+import type { NextApiRequest, NextApiResponse } from "next"
+import { generate } from "randomstring"
 import { appConfig } from "@/app-config"
 import type { ApiResponse } from "@/libs/types"
 import { isEmail } from "@/libs/validators"
 import { signAdminJwt } from "@/modules/auth"
 import { sendEmail } from "@/modules/sendings"
 import { convertTemplateHtmlToText } from "@/modules/templates"
-import { deleteCookie, setCookie } from "cookies-next"
-import type { NextApiRequest, NextApiResponse } from "next"
-import { generate } from "randomstring"
 import { confirmToken, getToken, isAdminEmail, setToken } from "./auth.model"
 
 export async function handlePostAuth({

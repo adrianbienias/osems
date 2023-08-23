@@ -1,9 +1,9 @@
+import type { Newsletter } from "@prisma/client"
 import { prisma } from "@/libs/prisma"
 import type { List } from "@/modules/lists"
 import type { Template } from "@/modules/templates"
 import { addTemplate } from "@/modules/templates"
 import { SETTINGS } from "@/settings"
-import type { Newsletter } from "@prisma/client"
 
 export type { Newsletter } from "@prisma/client"
 export type NewsletterWithTemplate = Newsletter & { template: Template }

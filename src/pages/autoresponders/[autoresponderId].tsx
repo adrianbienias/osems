@@ -1,3 +1,7 @@
+import { marked } from "marked"
+import { useRouter } from "next/router"
+import { useState } from "react"
+import useSWR from "swr"
 import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
@@ -10,10 +14,6 @@ import { fetcher } from "@/libs/fetcher"
 import type { ApiResponse } from "@/libs/types"
 import type { Autoresponder } from "@/modules/autoresponders"
 import type { Template } from "@/modules/templates"
-import { marked } from "marked"
-import { useRouter } from "next/router"
-import { useState } from "react"
-import useSWR from "swr"
 
 export default function ShowAutoresponder() {
   const { textareaValue, handleTextareaChange } = useTextareaChange()

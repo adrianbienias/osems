@@ -1,9 +1,9 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import type { ApiResponse } from "@/libs/types"
 import type { List } from "@/modules/lists"
 import { getListWithContacts, getListsByIds } from "@/modules/lists"
 import type { Template } from "@/modules/templates"
 import { getTemplate } from "@/modules/templates"
-import type { NextApiRequest, NextApiResponse } from "next"
 import type { Newsletter, NewsletterWithTemplate } from "./newsletters.model"
 import {
   getNewsletter,

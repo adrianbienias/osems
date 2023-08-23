@@ -1,6 +1,6 @@
-import { uuidRegex } from "@/libs/validators"
 import { cleanTestDatabase } from "mocks/seed-db"
 import { beforeEach, describe, expect, test } from "vitest"
+import { uuidRegex } from "@/libs/validators"
 import {
   addTemplate,
   getTemplate,

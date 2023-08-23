@@ -1,3 +1,6 @@
+import { marked } from "marked"
+import { useRouter } from "next/router"
+import { useState } from "react"
 import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
@@ -7,9 +10,6 @@ import { Navbar } from "@/components/navbar"
 import { useTextareaChange } from "@/hooks/use-textarea-change"
 import type { ApiResponse, StringValues } from "@/libs/types"
 import type { List } from "@/modules/lists"
-import { marked } from "marked"
-import { useRouter } from "next/router"
-import { useState } from "react"
 
 const templateMarkdownExample = `# Signup confirmation
 

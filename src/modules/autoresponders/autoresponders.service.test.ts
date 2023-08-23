@@ -1,7 +1,7 @@
-import { getUnsubscribedContacts } from "@/modules/contacts"
-import { sendEmail } from "@/modules/sendings"
 import { cleanTestDatabase, seedTestDatabase } from "mocks/seed-db"
 import { beforeEach, describe, expect, test, vi } from "vitest"
+import { getUnsubscribedContacts } from "@/modules/contacts"
+import { sendEmail } from "@/modules/sendings"
 import {
   checkIfAutoresponderIsSending,
   getAutoresponderLogs,

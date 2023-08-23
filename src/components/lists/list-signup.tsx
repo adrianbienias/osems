@@ -1,10 +1,30 @@
-import type { List } from "@/modules/lists"
-import htmlParser from "prettier/parser-html"
+import prettierPluginHtml from "prettier/plugins/html"
 import prettier from "prettier/standalone"
+import { useEffect, useState } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
+import type { List } from "@/modules/lists"
 import { SignupForm } from "../signup-form"
 
 export default function ListSignup({ list }: { list: List }) {
+  const [parsedHtml, setParsedHtml] = useState<string>()
+
+  useEffect(() => {
+    async function parseHtml() {
+      const html = await prettier.format(
+        renderToStaticMarkup(<SignupForm listId={list.id} />),
+        {
+          parser: "html",
+          plugins: [prettierPluginHtml],
+          htmlWhitespaceSensitivity: "ignore",
+        }
+      )
+
+      setParsedHtml(html)
+    }
+
+    parseHtml()
+  })
+
   return (
     <>
       <section>
@@ -18,16 +38,7 @@ export default function ListSignup({ list }: { list: List }) {
             </p>
 
             <div className="overflow-auto max-w-lg border-solid border border-slate-200 px-4 py-2 mb-4 rounded">
-              <pre className="whitespace-pre-wrap">
-                {prettier.format(
-                  renderToStaticMarkup(<SignupForm listId={list.id} />),
-                  {
-                    parser: "html",
-                    plugins: [htmlParser],
-                    htmlWhitespaceSensitivity: "ignore",
-                  }
-                )}
-              </pre>
+              <pre className="whitespace-pre-wrap">{parsedHtml}</pre>
             </div>
           </div>
 

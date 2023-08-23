@@ -1,5 +1,5 @@
-import { appConfig } from "@/app-config"
 import { SignJWT, jwtVerify } from "jose"
+import { appConfig } from "@/app-config"
 
 export async function verifyJwt(token: string) {
   const secret = new TextEncoder().encode(appConfig.jwtSecret)

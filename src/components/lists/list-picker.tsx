@@ -1,9 +1,9 @@
-import { fetcher } from "@/libs/fetcher"
 import { List } from "@prisma/client"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useState } from "react"
 import Select, { MultiValue, SingleValue } from "react-select"
 import useSWR from "swr"
+import { fetcher } from "@/libs/fetcher"
 
 type ReactSelectOption =
   | MultiValue<{

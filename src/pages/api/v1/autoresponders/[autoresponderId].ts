@@ -1,9 +1,9 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import type { ApiResponse } from "@/libs/types"
 import {
   handleGetAutoresponder,
   handlePatchAutoresponder,
 } from "@/modules/autoresponders"
-import type { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
   req: NextApiRequest,

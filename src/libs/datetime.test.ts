@@ -1,5 +1,5 @@
-import { getLocalDateTime, wait } from "@/libs/datetime"
 import { describe, expect, test, vi } from "vitest"
+import { getLocalDateTime, wait } from "@/libs/datetime"
 
 describe("getLocalDateTime()", () => {
   test("should return date and time", async () => {

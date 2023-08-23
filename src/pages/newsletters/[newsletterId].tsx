@@ -1,15 +1,15 @@
-import MetaHead from "@/components/meta-head"
-import { Navbar } from "@/components/navbar"
-import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
-import { fetcher } from "@/libs/fetcher"
-import type { List } from "@/modules/lists"
-import type { Template } from "@/modules/templates"
 import type { Newsletter, NewsletterLog } from "@prisma/client"
 import { marked } from "marked"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useRef } from "react"
 import useSWR from "swr"
+import MetaHead from "@/components/meta-head"
+import { Navbar } from "@/components/navbar"
+import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
+import { fetcher } from "@/libs/fetcher"
+import type { List } from "@/modules/lists"
+import type { Template } from "@/modules/templates"
 
 export default function ShowNewsletter() {
   const router = useRouter()

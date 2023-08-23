@@ -1,6 +1,6 @@
+import { describe, expect, test, vi } from "vitest"
 import { getListsByIds } from "@/modules/lists"
 import { getTemplate } from "@/modules/templates"
-import { describe, expect, test, vi } from "vitest"
 import { mockRequestResponse } from "../../../mocks/api-mocks"
 import {
   getNewsletter,

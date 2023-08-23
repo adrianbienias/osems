@@ -1,7 +1,7 @@
-import { sendEmail } from "./sendings.service"
 import nodemailer from "nodemailer"
 import { describe, expect, test, vi } from "vitest"
 import testData from "../../../mocks/test-data.json"
+import { sendEmail } from "./sendings.service"
 
 vi.mock("nodemailer", async () => ({
   default: {

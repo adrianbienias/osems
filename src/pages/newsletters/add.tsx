@@ -1,3 +1,7 @@
+import { marked } from "marked"
+import { useRouter } from "next/router"
+import { useState } from "react"
+import useSWR from "swr"
 import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
@@ -11,10 +15,6 @@ import { fetcher } from "@/libs/fetcher"
 import type { ApiResponse, StringValues } from "@/libs/types"
 import type { List } from "@/modules/lists"
 import type { Newsletter } from "@/modules/newsletters"
-import { marked } from "marked"
-import { useRouter } from "next/router"
-import { useState } from "react"
-import useSWR from "swr"
 
 const templateMarkdownExample = `# Newsletter title
 

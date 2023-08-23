@@ -1,3 +1,4 @@
+import { describe, expect, test, vi } from "vitest"
 import {
   handleGetAutoresponder,
   handleGetAutoresponders,
@@ -6,7 +7,6 @@ import {
 } from "@/modules/autoresponders"
 import apiAutorespondersHandler from "@/pages/api/v1/autoresponders"
 import apiAutoresponderHandler from "@/pages/api/v1/autoresponders/[autoresponderId]"
-import { describe, expect, test, vi } from "vitest"
 import { mockRequestResponse } from "../../../mocks/api-mocks"
 
 vi.mock("@/modules/autoresponders", () => ({

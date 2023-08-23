@@ -1,6 +1,6 @@
+import { describe, expect, test, vi } from "vitest"
 import { handleDeleteAuth, handleGetAuth, handlePostAuth } from "@/modules/auth"
 import apiAuthHandler from "@/pages/api/v1/public/auth"
-import { describe, expect, test, vi } from "vitest"
 import { mockRequestResponse } from "../../../../mocks/api-mocks"
 
 vi.mock("@/modules/auth", () => ({

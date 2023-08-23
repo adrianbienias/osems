@@ -1,3 +1,7 @@
+import { marked } from "marked"
+import { useRouter } from "next/router"
+import { useState } from "react"
+import { useSWRConfig } from "swr"
 import { appConfig } from "@/app-config"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
@@ -7,10 +11,6 @@ import MetaHead from "@/components/meta-head"
 import { Navbar } from "@/components/navbar"
 import { useTextareaChange } from "@/hooks/use-textarea-change"
 import type { ApiResponse } from "@/libs/types"
-import { marked } from "marked"
-import { useRouter } from "next/router"
-import { useState } from "react"
-import { useSWRConfig } from "swr"
 
 const templateMarkdownExample = `# Autoresponder title
 

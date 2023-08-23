@@ -1,3 +1,6 @@
+import { parse as csvParse } from "csv-parse/sync"
+import { marked } from "marked"
+import type { NextApiRequest, NextApiResponse } from "next"
 import { appConfig, SIGNUP_FORM_ACTIONS } from "@/app-config"
 import type { ApiResponse } from "@/libs/types"
 import { createConfirmationUrl } from "@/libs/urls"
@@ -9,9 +12,6 @@ import {
   getTemplate,
   parseTemplateVariables,
 } from "@/modules/templates"
-import { parse as csvParse } from "csv-parse/sync"
-import { marked } from "marked"
-import type { NextApiRequest, NextApiResponse } from "next"
 import {
   addContact,
   addContacts,

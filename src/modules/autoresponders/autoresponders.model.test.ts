@@ -1,6 +1,7 @@
-import { uuidRegex } from "@/libs/validators"
 import { cleanTestDatabase, seedTestDatabase } from "mocks/seed-db"
 import { beforeEach, describe, expect, test } from "vitest"
+import { uuidRegex } from "@/libs/validators"
+import testData from "../../../mocks/test-data.json"
 import {
   addAutoresponder,
   filterAutoresponders,
@@ -8,7 +9,6 @@ import {
   getAutoresponders,
   updateAutoresponder,
 } from "./autoresponders.model"
-import testData from "../../../mocks/test-data.json"
 
 beforeEach(() => {
   cleanTestDatabase()

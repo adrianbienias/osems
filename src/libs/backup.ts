@@ -1,5 +1,3 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs"
-import { prisma } from "./prisma"
 import {
   Admin,
   Auth,
@@ -12,6 +10,8 @@ import {
   Setting,
   Template,
 } from "@prisma/client"
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs"
+import { prisma } from "./prisma"
 
 /*
   Database dumps may differ depending on database type.

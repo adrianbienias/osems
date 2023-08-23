@@ -1,6 +1,6 @@
-import { prisma } from "@/libs/prisma"
 import type { List } from "@prisma/client"
 import { Prisma } from "@prisma/client"
+import { prisma } from "@/libs/prisma"
 
 export type { List } from "@prisma/client"
 export type ListWithCount = List & { _count: { contacts: number } }

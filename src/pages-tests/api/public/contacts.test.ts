@@ -1,6 +1,6 @@
+import { describe, expect, test, vi } from "vitest"
 import { contactsGetHandler, contactsPostHandler } from "@/modules/contacts"
 import apiContactsHandler from "@/pages/api/v1/public/contacts"
-import { describe, expect, test, vi } from "vitest"
 import { mockRequestResponse } from "../../../../mocks/api-mocks"
 
 vi.mock("@/modules/contacts", () => ({

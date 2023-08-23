@@ -20,10 +20,10 @@ describe("cron", () => {
     expect(schedule).toHaveBeenCalledWith(cronSchedule, sendNewsletters)
     expect(schedule).toHaveBeenCalledWith(cronSchedule, sendAutoresponders)
     expect(sendNewsletters.toString()).toStrictEqual(
-      "async () => await __vite_ssr_import_1__.sendNewsletters()"
+      expect.stringContaining("__.sendNewsletters()")
     )
     expect(sendAutoresponders.toString()).toStrictEqual(
-      "async () => await __vite_ssr_import_0__.sendAutoresponders()"
+      expect.stringContaining("__.sendAutoresponders()")
     )
   })
 })

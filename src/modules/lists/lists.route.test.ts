@@ -1,5 +1,5 @@
-import { getTemplate } from "@/modules/templates"
 import { describe, expect, test, vi } from "vitest"
+import { getTemplate } from "@/modules/templates"
 import { mockRequestResponse } from "../../../mocks/api-mocks"
 import { addList, getList, getLists, updateList } from "./lists.model"
 import {

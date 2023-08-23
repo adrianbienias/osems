@@ -1,6 +1,6 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import type { ApiResponse } from "@/libs/types"
 import { handleDeleteAuth, handleGetAuth, handlePostAuth } from "@/modules/auth"
-import type { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
   req: NextApiRequest,

@@ -1,8 +1,7 @@
 // Best practice for instantiating PrismaClient with Next.js:
 // https://www.prisma.io/docs/guides/database/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
-
-import { appConfig } from "@/app-config"
 import { PrismaClient } from "@prisma/client"
+import { appConfig } from "@/app-config"
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 

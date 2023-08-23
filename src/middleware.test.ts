@@ -4,9 +4,8 @@ import testData from "../mocks/test-data.json"
 import { config, middleware } from "./middleware"
 
 vi.mock("@/app-config", async () => {
-  const actualModule = await vi.importActual<typeof import("@/app-config")>(
-    "@/app-config"
-  )
+  const actualModule =
+    await vi.importActual<typeof import("@/app-config")>("@/app-config")
   const testData = await vi.importActual<
     typeof import("../mocks/test-data.json")
   >("../mocks/test-data.json")

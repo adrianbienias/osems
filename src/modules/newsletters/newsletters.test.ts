@@ -1,7 +1,8 @@
-import { uuidRegex } from "@/libs/validators"
-import { sendEmail } from "@/modules/sendings"
 import { cleanTestDatabase, seedTestDatabase } from "mocks/seed-db"
 import { beforeEach, describe, expect, test, vi } from "vitest"
+import { uuidRegex } from "@/libs/validators"
+import { sendEmail } from "@/modules/sendings"
+import testData from "../../../mocks/test-data.json"
 import {
   getNewsletter,
   getNewsletterLogs,
@@ -11,7 +12,6 @@ import {
   setNewsletterSendingInProgress,
 } from "./newsletters.model"
 import { sendNewsletters } from "./newsletters.service"
-import testData from "../../../mocks/test-data.json"
 
 const toSendAfter = new Date()
 

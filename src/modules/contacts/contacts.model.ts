@@ -1,8 +1,8 @@
+import type { Contact } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 import { prisma } from "@/libs/prisma"
 import { isEmail } from "@/libs/validators"
 import type { List } from "@/modules/lists"
-import type { Contact } from "@prisma/client"
-import { Prisma } from "@prisma/client"
 
 export type { Contact } from "@prisma/client"
 export type ContactWithList = Contact & { list: List }

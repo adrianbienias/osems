@@ -1,3 +1,4 @@
+import { describe, expect, test, vi } from "vitest"
 import {
   handleGetList,
   handleGetLists,
@@ -6,7 +7,6 @@ import {
 } from "@/modules/lists"
 import apiListsHandler from "@/pages/api/v1/lists"
 import apiListHandler from "@/pages/api/v1/lists/[listId]"
-import { describe, expect, test, vi } from "vitest"
 import { mockRequestResponse } from "../../../mocks/api-mocks"
 
 vi.mock("@/modules/lists", () => ({

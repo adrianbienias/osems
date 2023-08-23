@@ -1,3 +1,6 @@
+import Link from "next/link"
+import { useRouter } from "next/router"
+import useSWR from "swr"
 import { LinkButton } from "@/components/button"
 import ListPicker from "@/components/lists/list-picker"
 import MetaHead from "@/components/meta-head"
@@ -6,9 +9,6 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@/components/table"
 import { fetcher } from "@/libs/fetcher"
 import type { StringValues } from "@/libs/types"
 import { NewsletterWithListAndTemplate } from "@/modules/newsletters"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import useSWR from "swr"
 
 export default function Newsletters() {
   const router = useRouter()

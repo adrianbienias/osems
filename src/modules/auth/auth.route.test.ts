@@ -1,17 +1,16 @@
-import { setInitialAdminEmail } from "@/libs/installer"
-import { sendEmail } from "@/modules/sendings"
 import { deleteCookie, setCookie } from "cookies-next"
 import { cleanTestDatabase } from "mocks/seed-db"
 import { createMocks } from "node-mocks-http"
 import { beforeEach, describe, expect, test, vi } from "vitest"
+import { setInitialAdminEmail } from "@/libs/installer"
+import { sendEmail } from "@/modules/sendings"
 import testData from "../../../mocks/test-data.json"
 import { setToken } from "./auth.model"
 import { handleDeleteAuth, handleGetAuth, handlePostAuth } from "./auth.route"
 
 vi.mock("@/app-config", async () => {
-  const actualModule = await vi.importActual<typeof import("@/app-config")>(
-    "@/app-config"
-  )
+  const actualModule =
+    await vi.importActual<typeof import("@/app-config")>("@/app-config")
   const testData = await vi.importActual<
     typeof import("../../../mocks/test-data.json")
   >("../../../mocks/test-data.json")

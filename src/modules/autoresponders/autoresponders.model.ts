@@ -1,10 +1,10 @@
+import type { Autoresponder } from "@prisma/client"
 import { prisma } from "@/libs/prisma"
 import type { Contact } from "@/modules/contacts"
 import type { List } from "@/modules/lists"
 import type { Template } from "@/modules/templates"
 import { addTemplate } from "@/modules/templates"
 import { SETTINGS } from "@/settings"
-import type { Autoresponder } from "@prisma/client"
 
 export type { Autoresponder } from "@prisma/client"
 export type AutoresponderWithTemplate = Autoresponder & { template: Template }

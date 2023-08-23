@@ -1,8 +1,7 @@
-import { sendAutoresponders } from "@/modules/autoresponders"
-import { sendNewsletters } from "@/modules/newsletters"
 import consoleStamp from "console-stamp"
 import { schedule } from "node-cron"
-import { dbBackup } from "./backup"
+import { sendAutoresponders } from "@/modules/autoresponders"
+import { sendNewsletters } from "@/modules/newsletters"
 
 const schedules = {
   everyDay: "0 0 * * *",

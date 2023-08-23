@@ -1,3 +1,6 @@
+import { useRouter } from "next/router"
+import { useState } from "react"
+import useSWR from "swr"
 import { ErrorMsg } from "@/components/alert"
 import { Button } from "@/components/button"
 import { Input } from "@/components/form"
@@ -8,9 +11,6 @@ import { getLocalDateTime } from "@/libs/datetime"
 import { fetcher } from "@/libs/fetcher"
 import type { ApiResponse, StringValues } from "@/libs/types"
 import { Contact } from "@/modules/contacts"
-import { useRouter } from "next/router"
-import { useState } from "react"
-import useSWR from "swr"
 
 export default function EditContact() {
   const [errorMsg, setErrorMsg] = useState("")
