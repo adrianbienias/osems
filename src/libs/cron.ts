@@ -1,5 +1,5 @@
 import consoleStamp from "console-stamp"
-import { schedule } from "node-cron"
+import cron from "cron"
 import { sendAutoresponders } from "@/modules/autoresponders"
 import { sendNewsletters } from "@/modules/newsletters"
 
@@ -16,6 +16,6 @@ export function startCronJobs() {
   consoleStamp(console, { format: ":date(yyyy-mm-dd HH:MM:ss) :label" })
   console.info("\n✔ Node cron jobs activated\n")
 
-  schedule(schedules.everyMinute, async () => await sendNewsletters())
-  schedule(schedules.everyMinute, async () => await sendAutoresponders())
+  new cron.CronJob(schedules.everyMinute, sendNewsletters, null, true)
+  new cron.CronJob(schedules.everyMinute, sendAutoresponders, null, true)
 }
