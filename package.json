@@ -17,8 +17,7 @@
     "setInitialAdminEmail": "dotenv -- ts-node -e \"import { setInitialAdminEmail } from './src/libs/installer'; setInitialAdminEmail();\"",
     "installer": "npm run setInitialAdminEmail",
     "postinstall": "(prisma generate --schema=./prisma/schema.postgres.prisma) && (prisma migrate deploy --schema=./prisma/schema.postgres.prisma) && (npm run installer)",
-    "cron": "dotenv -- ts-node -e \"import { startCronJobs } from './src/libs/cron'; startCronJobs();\"",
-    "dev": "(npm run lint) && (prisma db push --schema=./prisma/schema.sqlite.prisma) ; (npm run installer) && (npm run cron) & (next dev)",
+    "dev": "(npm run lint) && (prisma db push --schema=./prisma/schema.sqlite.prisma) ; (npm run installer) && (next dev)",
     "dev:db:seed": "dotenv -- ts-node -e \"import { seedDb } from './mocks/seed-db'; seedDb('dev-db.sqlite')\"",
     "dev:e2e": "(dotenv -e .env.test -- prisma db push --schema=./prisma/schema.sqlite.prisma) & (dotenv -e .env.test -- next dev)",
     "test": "(npm run lint) && (npm run test:unit) && (npm run test:e2e)",
@@ -28,7 +27,7 @@
     "lint": "next lint",
     "build": "next build",
     "build:pre": "(PRE_BUILD=true next build) && (rm -rf .next-previous/) ; (mv .next/ .next-previous) && (mv .next-pre-build/ .next/)",
-    "start": "(npm run cron) & (next start)"
+    "start": "next start"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.1",
@@ -50,7 +49,6 @@
     "console-stamp": "^3.1.1",
     "cookies-next": "^2.1.1",
     "cors": "^2.8.5",
-    "cron": "^2.4.3",
     "csv": "^6.3.1",
     "dependency-cruiser": "^12.10.1",
     "dotenv-cli": "^7.1.0",
