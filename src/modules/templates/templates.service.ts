@@ -23,10 +23,12 @@ export function parseTemplateVariables({
 
   for (const templateItemKey of Object.keys(parsedTemplate)) {
     const key = templateItemKey as keyof typeof parsedTemplate
-    const item = parsedTemplate[key]
 
     for (const [variableKey, variableValue] of messageVariables) {
-      parsedTemplate[key] = item.replaceAll(variableKey, variableValue)
+      parsedTemplate[key] = parsedTemplate[key].replaceAll(
+        variableKey,
+        variableValue
+      )
     }
   }
 
